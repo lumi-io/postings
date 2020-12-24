@@ -2,14 +2,12 @@ import React, {Component} from 'react';
 import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types'
-import Drawer from '@material-ui/core/Drawer';
+
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Paper from '@material-ui/core/Paper';
@@ -20,14 +18,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
 
 import SideMenu from './SideMenu';
 
@@ -117,14 +107,14 @@ const styles = theme => ({
 });
 
 const rows = [
-    createData('Candidate','Employer', 'Date', 'Feedback obj' ),
-    createData('Candidate', 'Employer', 'Date', 'Feedback obj'),
-    createData('Candidate', 'Employer', 'Date', 'Feedback obj'),
-  ];
+  createData('Candidate','Employer', 'Date', 'Feedback obj' ),
+  createData('Candidate', 'Employer', 'Date', 'Feedback obj'),
+  createData('Candidate', 'Employer', 'Date', 'Feedback obj'),
+];
 
-  function createData(candidateName, interviewer, date, feedback) {
+function createData(candidateName, interviewer, date, feedback) {
     return { candidateName, interviewer, date, feedback };
-  }
+}
 
 class Dashboard extends Component {
     constructor(props) {
@@ -172,29 +162,6 @@ render() {
       <SideMenu showSideMenu={showSideMenu} onClose={()=>this.closeSideMenu()} theme={theme}/>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {/* <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-          facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-          tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-          consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-          vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-          hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-          tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-          nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-          accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography> */}
         <Container maxWidth='lg' className={classes.container}>
        <Grid container className={classes.root} spacing={3}>
        <Typography variant="h6" gutterBottom ailgn='left'>
@@ -241,38 +208,30 @@ render() {
       
       </Container>
       <Container maxWidth='lg' className={classes.container}>
-      <TableContainer component={Paper}>
-      <Table className={classes.table} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Candidate Name</TableCell>
-            <TableCell>Interviewer</TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Feedback</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.candidateName}>
-              <TableCell component="th" scope="row">
-                {row.candidateName}
-              </TableCell>
-              <TableCell>{row.interviewer}</TableCell>
-              <TableCell>{row.date}</TableCell>
-              <TableCell>{row.feedback}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-            {/* <Typography variant="h6" gutterBottom align='left'>
-                Recent Interviews
-            </Typography>
-            <Grid container className={classes.root} spacing={3}>
-            <Grid item item xs={12} md={8} lg={9} justify='center'>
-            
-            </Grid>
-            </Grid> */}
+        <TableContainer component={Paper}>
+          <Table className={classes.table} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>Candidate Name</TableCell>
+                <TableCell>Interviewer</TableCell>
+                <TableCell>Date</TableCell>
+                <TableCell>Feedback</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {rows.map((row) => (
+                <TableRow key={row.candidateName}>
+                  <TableCell component="th" scope="row">
+                    {row.candidateName}
+                  </TableCell>
+                  <TableCell>{row.interviewer}</TableCell>
+                  <TableCell>{row.date}</TableCell>
+                  <TableCell>{row.feedback}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </Container>
       </main>
     </div>

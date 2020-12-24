@@ -3,14 +3,9 @@ import clsx from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types'
 import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
@@ -18,13 +13,11 @@ import MailIcon from '@material-ui/icons/Mail';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import LayersIcon from '@material-ui/icons/Layers';
-import AssignmentIcon from '@material-ui/icons/Assignment';
 
 const drawerWidth = 240;
 
@@ -97,74 +90,74 @@ class SideMenu extends Component {
 
         return(
             <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: showSideMenu,
-          [classes.drawerClose]: !showSideMenu,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: showSideMenu,
-            [classes.drawerClose]: !showSideMenu,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          <IconButton onClick={() => this.props.onClose()}>
-            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-          </IconButton>
-        </div>
-        <Divider />
-        <List>
-            <div>
-                <ListItem button>
-                <ListItemIcon>
-                    <DashboardIcon />
-                </ListItemIcon>
-                <ListItemText primary="Dashboard" />
-                </ListItem>
-                <ListItem button>
-                <ListItemIcon>
-                    <ShoppingCartIcon />
-                </ListItemIcon>
-                <ListItemText primary="Job Listings" />
-                </ListItem>
-                <ListItem button>
-                <ListItemIcon>
-                    <PeopleIcon />
-                </ListItemIcon>
-                <ListItemText primary="Applications" />
-                </ListItem>
-                <ListItem button>
-                <ListItemIcon>
-                    <BarChartIcon />
-                </ListItemIcon>
-                <ListItemText primary="Interviews" />
-                </ListItem>
-                <ListItem button>
-                <ListItemIcon>
-                    <LayersIcon />
-                </ListItemIcon>
-                <ListItemText primary="Offers" />
-                </ListItem>
-            </div>
-        </List>
-        <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
-        </List>
-      </Drawer>);
+                variant="permanent"
+                className={clsx(classes.drawer, {
+                    [classes.drawerOpen]: showSideMenu,
+                    [classes.drawerClose]: !showSideMenu,
+                })}
+                classes={{
+                paper: clsx({
+                    [classes.drawerOpen]: showSideMenu,
+                    [classes.drawerClose]: !showSideMenu,
+                }),}}>
+                <div className={classes.toolbar}>
+                    <IconButton onClick={() => this.props.onClose()}>
+                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                    </IconButton>
+                </div>
+                <Divider />
+                <List>
+                    <div>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <DashboardIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Dashboard" />
+                        </ListItem>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <ShoppingCartIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Job Listings" />
+                        </ListItem>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <PeopleIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Applications" />
+                        </ListItem>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <BarChartIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Interviews" />
+                        </ListItem>
+                        <ListItem button>
+                            <ListItemIcon>
+                                <LayersIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="Offers" />
+                        </ListItem>
+                    </div>
+                </List>
+                <Divider />
+                <List>
+                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                    <ListItem button key={text}>
+                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
+                    <ListItemText primary={text} />
+                    </ListItem>
+                ))}
+                </List>
+            </Drawer>);
     }
 }
+
 SideMenu.propTypes = {
     classes: PropTypes.object.isRequired,
     theme: PropTypes.object.isRequired,
     onClose: PropTypes.func.isRequired,
     showSideMenu: PropTypes.bool.isRequired,
 }
+
 export default withStyles(styles) (SideMenu);
