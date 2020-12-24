@@ -1,9 +1,9 @@
 import './App.css';
-import { Route, Link, BrowserRouter as Router } from 'react-router-dom'
+import { Route, BrowserRouter as Router } from 'react-router-dom'
 import Dashboard from './components/Dashboard';
 import Form from './components/Form';
 import Login from './components/Login';
-import SideMenu from './components/SideMenu';
+import SignUp from './components/SignUp';
 
 function App() {
   return (
@@ -12,6 +12,7 @@ function App() {
         <Route exact path="/" component={Dashboard} />
         <Route path="/form" component={Form} />
         <Route path="/login" component={Login} />
+        <Route path="/sign-up" component={SignUp}/>
       </div>
     </Router>
   );
