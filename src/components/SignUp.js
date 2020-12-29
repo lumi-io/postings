@@ -1,6 +1,7 @@
 import React, {Component} from 'react'; 
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types'
+import axios from 'axios';
 
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -12,6 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
+import BoardsAPI from './../data/BoardsAPI';
 
 const styles = theme => ({
   paper: {
@@ -46,8 +48,8 @@ class SignUp extends Component {
         }
     }
 
-    handleSubmit(signUpParameters) {
-        console.log(signUpParameters);
+    handleSubmit() {
+      BoardsAPI.register();
     }
     
     handleFormChange(event) {
@@ -130,12 +132,12 @@ class SignUp extends Component {
                     </Grid>
                   </Grid>
                   <Button
-                    type="submit"
+                    type="button"
                     fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    onClick={()=> {this.handleSubmit(this.state.signUpParameters)}}
+                    onClick={()=> {this.handleSubmit()}}
                   >
                     Sign Up
                   </Button>
