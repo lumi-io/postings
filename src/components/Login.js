@@ -10,7 +10,9 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
 
+import PopUp from './PopUp';
 import BoardsAPI from './../data/BoardsAPI'
 
 const styles = theme => ({
@@ -34,31 +36,61 @@ const styles = theme => ({
 });
 
 class Login extends Component{
-    constructor(props) {
-        super(props);
-        this.state = {
-            loginParameters: {
-                emailAddress: '',
-                password: ''
-            }        
-        }
+  constructor(props) {
+    super(props);
+    this.state = {
+      loginParameters: {
+        emailAddress: '',
+        password: ''
+      },
+      showResponse: false,
+      response: {
+        message: "",
+        popUpType: ""
+      }
     }
+  }
 
     handleSubmit(loginParameters) {
       const {emailAddress, password} = loginParameters;
-        BoardsAPI.login(emailAddress, password);
+      BoardsAPI.login(emailAddress, password)
+        .then(response => { 
+          console.log("Go to next page.")
+          this.setLocalStorage(response);
+        })
+        .catch(e => {
+          console.log(e.response.data.message);
+          const newResponse = {
+            message: e.response.data.message,
+            type: "error"
+          };
+          this.setState({showResponse: true, response: newResponse});
+        });
     }
 
     handleFormChange(event) {
-        const {id, value} = event.target;
-        const newLoginParameters = Object.assign({}, this.state.loginParameters, {[id]: value});
-        this.setState({loginParameters: newLoginParameters})
+      const {id, value} = event.target;
+      const newLoginParameters = Object.assign({}, this.state.loginParameters, {[id]: value});
+      this.setState({loginParameters: newLoginParameters})
+    }
+
+    setLocalStorage(response) {
+      localStorage.id = response.data.data._id;
+      localStorage.setItem("email", response.data.data.email);
+      localStorage.setItem("refresh", response.data.data.refresh);
+      localStorage.setItem("token", response.data.data.token);
+    }
+
+    closeSnackBar() {
+      this.setState({showResponse: false});
     }
 
     render() {
         const {emailAddress, password} = this.state.loginParameters;
+        const {message, popUpType} = this.state.response;
         const {classes} = this.props;
 
+        console.log(localStorage.id);
         return (
             <Container component="main" maxWidth="xs">
               <CssBaseline />
@@ -94,7 +126,7 @@ class Login extends Component{
                     id="password"
                     autoComplete="current-password"
                     value={password}
-                    onChange={this.handleFormChange}
+                    onChange={event=>this.handleFormChange(event)}
                   />
                   <Button
                     type="button"
@@ -102,7 +134,7 @@ class Login extends Component{
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    onClick={()=> {this.handleSubmit()}}
+                    onClick={()=> {this.handleSubmit(this.state.loginParameters)}}
                   >
                     Sign In
                   </Button>
@@ -119,6 +151,9 @@ class Login extends Component{
                     </Grid>
                   </Grid>
                 </form>
+                <Snackbar open={this.state.showResponse} autoHideDuration={6000} onClose={() => this.closeSnackBar()}>
+                  <PopUp message={message} severity={popUpType}/>
+                </Snackbar>
               </div>
             </Container>
           );

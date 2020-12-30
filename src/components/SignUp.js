@@ -49,7 +49,7 @@ class SignUp extends Component {
             showResponse: false,
             response: {
               message: '',
-              type: ''
+              popUpType: ''
             }
 
         }
@@ -57,7 +57,21 @@ class SignUp extends Component {
 
     handleSubmit(signUpParameters) {
       const {emailAddress, password} = signUpParameters;
-      BoardsAPI.register(emailAddress, password).then(response=> {console.log(response)}).catch(e => console.log(e.response.data.message));
+      BoardsAPI.register(emailAddress, password)
+        .then(response => { 
+          const newResponse = {
+          message: response.data.message,
+          type: "success"
+          };
+          this.setState({showResponse: true, response: newResponse});
+        })
+        .catch(e => {
+          const newResponse = {
+            message: e.response.data.message,
+            type: "error"
+            };
+            this.setState({showResponse: true, response: newResponse});
+        });
     }
     
     handleFormChange(event) {
@@ -66,10 +80,16 @@ class SignUp extends Component {
         this.setState({signUpParameters: newSignUpParameters})
     }
 
+    closeSnackBar() {
+      this.setState({showResponse: false});
+    }
+
 
     render() {
         const {firstName, lastName, emailAddress, password} = this.state.signUpParameters;
+        const {message, popUpType} = this.state.response;
         const {classes} = this.props;
+        
         return (
             <Container component="main" maxWidth="xs">
               <CssBaseline />
@@ -155,8 +175,8 @@ class SignUp extends Component {
                     </Grid>
                   </Grid>
                 </form>
-                <Snackbar open={this.state.showResponse} autoHideDuration={6000}>
-                  <PopUp message="hello" severity="success"/>
+                <Snackbar open={this.state.showResponse} autoHideDuration={6000} onClose={() => this.closeSnackBar()}>
+                  <PopUp message={message} severity={popUpType}/>
                 </Snackbar>
                 
               </div>
