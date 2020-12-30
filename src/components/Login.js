@@ -11,6 +11,8 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
+import BoardsAPI from './../data/BoardsAPI'
+
 const styles = theme => ({
   paper: {
     marginTop: theme.spacing(8),
@@ -43,15 +45,13 @@ class Login extends Component{
     }
 
     handleSubmit(loginParameters) {
-        console.log(loginParameters);
+      const {emailAddress, password} = loginParameters;
+        BoardsAPI.login(emailAddress, password);
     }
 
     handleFormChange(event) {
         const {id, value} = event.target;
-        const newLoginParameters = {
-            ...this.state.loginParameters,
-            [id]: value,
-        }
+        const newLoginParameters = Object.assign({}, this.state.loginParameters, {[id]: value});
         this.setState({loginParameters: newLoginParameters})
     }
 
@@ -94,15 +94,15 @@ class Login extends Component{
                     id="password"
                     autoComplete="current-password"
                     value={password}
-                    onChange={event=>this.handleFormChange(event)}
+                    onChange={this.handleFormChange}
                   />
                   <Button
-                    type="submit"
+                    type="button"
                     fullWidth
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                    onClick={()=> {this.handleSubmit(this.state.loginParameters)}}
+                    onClick={()=> {this.handleSubmit()}}
                   >
                     Sign In
                   </Button>
