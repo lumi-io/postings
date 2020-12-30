@@ -1,15 +1,14 @@
 import axios from 'axios';
 
-function register() {
-    axios.post('http://127.0.0.1:5000/admin/register',  
-        {"email": "test2@test.com", "password": "testpassword"}, 
-        {headers: {'Content-Type': 'application/json'}}
-).then(() => console.log("hello"))
+function register(email, password) {
+    return axios.post('http://127.0.0.1:5000/admin/register',  
+        {"email": email, "password": password}, 
+        {headers: {'Content-Type': 'application/json'}});
 }
 
-function login() {
+function login(email, password) {
     axios.post('http://127.0.0.1:5000/admin/auth',  
-    {"email": "test2@test.com", "password": "testpassword"}, 
+    {"email": email, "password": password}, 
     {headers: {'Content-Type': 'application/json'}}
 ).then(() => console.log("hello"))
 }

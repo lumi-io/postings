@@ -44,16 +44,14 @@ class Login extends Component{
         }
     }
 
-    handleSubmit() {
-        BoardsAPI.login();
+    handleSubmit(loginParameters) {
+      const {emailAddress, password} = loginParameters;
+        BoardsAPI.login(emailAddress, password);
     }
 
     handleFormChange(event) {
         const {id, value} = event.target;
-        const newLoginParameters = {
-            ...this.state.loginParameters,
-            [id]: value,
-        }
+        const newLoginParameters = Object.assign({}, this.state.loginParameters, {[id]: value});
         this.setState({loginParameters: newLoginParameters})
     }
 
@@ -96,7 +94,7 @@ class Login extends Component{
                     id="password"
                     autoComplete="current-password"
                     value={password}
-                    onChange={event=>this.handleFormChange(event)}
+                    onChange={this.handleFormChange}
                   />
                   <Button
                     type="button"
