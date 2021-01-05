@@ -11,7 +11,10 @@ import Grid from '@material-ui/core/Grid';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
+import Snackbar from '@material-ui/core/Snackbar';
 
+import PopUp from './PopUp';
+import BoardsAPI from './../data/BoardsAPI';
 
 const styles = theme => ({
   paper: {
@@ -42,22 +45,27 @@ class SignUp extends Component {
                 lastName: '',
                 emailAddress: '',
                 password: ''
+            },
+            showResponse: false,
+            response: {
+              message: '',
+              type: ''
             }
+
         }
     }
 
     handleSubmit(signUpParameters) {
-        console.log(signUpParameters);
+      const {emailAddress, password} = signUpParameters;
+      BoardsAPI.register(emailAddress, password).then(response=> {console.log(response)}).catch(e => console.log(e.response.data.message));
     }
     
     handleFormChange(event) {
         const {id, value} = event.target;
-        const newSignUpParameters = {
-            ...this.state.signInParameters,
-            [id]: value,
-        }
+        const newSignUpParameters = Object.assign({}, this.state.signUpParameters, {[id]: value});
         this.setState({signUpParameters: newSignUpParameters})
     }
+
 
     render() {
         const {firstName, lastName, emailAddress, password} = this.state.signUpParameters;
@@ -125,12 +133,12 @@ class SignUp extends Component {
                         id="password"
                         autoComplete="current-password"
                         value={password}
-                        onChange={event=>this.handleFormChange(event)}
+                        onChange={event => this.handleFormChange(event)}
                       />
                     </Grid>
                   </Grid>
                   <Button
-                    type="submit"
+                    type="button"
                     fullWidth
                     variant="contained"
                     color="primary"
@@ -147,8 +155,13 @@ class SignUp extends Component {
                     </Grid>
                   </Grid>
                 </form>
+                <Snackbar open={this.state.showResponse} autoHideDuration={6000}>
+                  <PopUp message="hello" severity="success"/>
+                </Snackbar>
+                
               </div>
             </Container>
+            
           );
     }
 }
