@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'; 
+import {Link} from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
@@ -43,7 +44,7 @@ export default function Listing() {
       })
       .catch(err => {
         console.log("API Error");
-      })
+      }) 
   }
 
   return (
@@ -62,9 +63,11 @@ export default function Listing() {
                 </CardContent>
               </CardActionArea>
               <CardActions>
-                <Button size="small" color="primary" href={"http://127.0.0.1:5000/admin/postings/" + post._id}>
-                  Apply now
-                </Button>
+                <Link to={`/Form?id=` + post._id}>
+                  <Button size="small" color="primary" href={"/" + post._id}>
+                    Apply now
+                  </Button>
+                </Link>
               </CardActions>
             </Card>
           </div>
