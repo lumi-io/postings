@@ -1,13 +1,13 @@
 import React from 'react'
 import Sidebar from './Sidebar'
-import Listings from './Main/Listings'
+import ApplicantInfo from './Main/ApplicantInfo'
 import styled from 'styled-components';
 
-const Admin = () => {
+const Applicant = () => {
     return (
         <Container>
             <Sidebar />
-            <Listings />
+            <ApplicantInfo />
         </Container>
     )
 }
@@ -24,4 +24,4 @@ const Container = styled.div`
   position: absolute;
 `;
 
-export default Admin
+export default Applicant;

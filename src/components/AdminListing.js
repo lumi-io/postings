@@ -1,13 +1,13 @@
 import React from 'react'
 import Sidebar from './Sidebar'
-import Listings from './Main/Listings'
+import ListingInfo from './Main/ListingInfo'
 import styled from 'styled-components';
 
 const Admin = () => {
     return (
         <Container>
             <Sidebar />
-            <Listings />
+            <ListingInfo />
         </Container>
     )
 }

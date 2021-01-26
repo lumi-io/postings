@@ -5,11 +5,11 @@ import axios from 'axios';
 
 const columns = [
     { field: 'id', headerName: 'ID', width: 70 },
-    { field: 'title', headerName: 'Title', width: 400 },
+    { field: 'title', headerName: 'Job Name', width: 400 },
     { field: 'location', headerName: 'Location', width: 200}
 ];
 
-const Main = () => {
+const Listings = () => {
 
     const [rows, setRows] = useState([]);
 
@@ -44,18 +44,20 @@ const Main = () => {
         <Container>
             <Title>Listings</Title>
             <ListingRow>
-            <div style={{ height: 380, width: '100%' }}>
-                <DataGrid rows={rows} columns={columns} />
-            </div>
+                <div style={{ height: 380, width: '100%' }}>
+                    <StyledGrid rows={rows} columns={columns} />
+                </div>
             </ListingRow>
         </Container>
     )
 }
 
+const StyledGrid = styled(DataGrid)`
+    background-color: #F9F6F9
+`;
+
 const ListingRow = styled.div`
-    height: 380;
-    width: 100%
-    padding: 10px 10px 10px 10px;
+    padding: 40px 0px 40px 0px;
 `;
 
 const Container = styled.div`
@@ -74,4 +76,4 @@ const Title = styled.div`
     color: #873CA2; /* Accent Purple */
 `;
 
-export default Main
+export default Listings;
