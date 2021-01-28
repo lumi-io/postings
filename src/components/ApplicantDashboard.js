@@ -1,13 +1,13 @@
 import React from 'react'
 import Sidebar from './Sidebar'
-import ApplicantInfo from './Main/ApplicantInfo'
+import ApplicantDashboard from './Main/ApplicantDashboard'
 import styled from 'styled-components';
 
 const Applicant = () => {
     return (
         <Container>
             <Sidebar />
-            <ApplicantInfo />
+            <ApplicantDashboard />
         </Container>
     )
 }
