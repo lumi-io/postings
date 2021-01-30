@@ -1,4 +1,6 @@
-import React from 'react'; 
+import React, { useState, useEffect } from 'react'; 
+import axios from 'axios';
+import { useLocation } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 // import clsx from 'clsx';
 // import CssBaseline from '@material-ui/core/CssBaseline';
@@ -83,12 +85,40 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
+
 export default function Form() {
+
   const classes = useStyles();
+  const [post, setPost] = useState([]);
+
+  let query = useQuery();
+
+  useEffect(() => {
+    getPost(post);
+  }, []);
+
+  const getPost = posts => {
+    axios.get(`http://127.0.0.1:5000/admin/postings/` + query.get("id"))
+      .then(res => {
+        console.log(res.data);
+        return res.data;
+      })
+      .then(post => {
+        console.log(post.postingInfo);
+        setPost(post.postingInfo);
+      })
+      .catch(err => {
+        console.log("API Error");
+      }) 
+  }
+
   return (
     <div className={classes.root}>
       <div className={classes.role}>
-       {defineRole(example_job)}
+       {defineRole(post)}
       </div>
       <div className={classes.form}>
         <div className={classes.formContent}>

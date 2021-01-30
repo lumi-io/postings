@@ -7,7 +7,7 @@ function register(email, password) {
 }
 
 function login(email, password) {
-    axios.post('http://127.0.0.1:5000/admin/auth',  
+    axios.post('http://127.0.0.1:5000/admin/auth',
     {"email": email, "password": password}, 
     {headers: {'Content-Type': 'application/json'}}
 ).then(() => console.log("hello"))
