@@ -1,13 +1,13 @@
 import React from 'react'
 import Sidebar from './Sidebar'
-import Listings from './Main/Listings'
+import ListingsDashboard from './Main/ListingsDashboard'
 import styled from 'styled-components';
 
-const Admin = () => {
+const Listings = () => {
     return (
         <Container>
             <Sidebar />
-            <Listings />
+            <ListingsDashboard />
         </Container>
     )
 }
@@ -24,4 +24,4 @@ const Container = styled.div`
   position: absolute;
 `;
 
-export default Admin
+export default Listings;

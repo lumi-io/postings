@@ -3,7 +3,7 @@ import Form from './components/Form';
 import Listing from './components/legacy/Listing';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
-import Admin from './components/Admin'
+import Listings from './components/Listings'
 import AdminListing from './components/AdminListing'
 import AdminNewListing from './components/AdminNewListing'
 import ApplicantDashboard from './components/ApplicantDashboard'
@@ -13,7 +13,7 @@ function App() {
   return (
       <Router>
         <div className="App">
-          <Route exact path={["","/admin"]} component={Admin} />
+          <Route exact path={["/admin/listing"]} component={Listings} />
           <Route exact path="/admin/listing/:id" component={AdminListing} />
           <Route exact path="/admin/listing/:id/applicant" component={ApplicantDashboard} />
           <Route exact path="/admin/listing/:id/applicant/:applicantId" component={ApplicantInfo} />
