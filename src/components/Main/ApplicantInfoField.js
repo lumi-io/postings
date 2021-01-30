@@ -4,6 +4,9 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import Grid from '@material-ui/core/Grid';
+import EssayBox from '../Applicant/EssayBox';
+import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
+import LinkedInIcon from '@material-ui/icons/LinkedIn';
 
 const ApplicantInfoField = () => {
 
@@ -34,7 +37,7 @@ const ApplicantInfoField = () => {
             .then(application => {
                 console.log(application)
                 setApplicantData(application);
-                if (application["minor"] != "") setHasMinor(true);
+                if (application["minor"] !== "") setHasMinor(true);
                 return;
             })
             .catch(err => {
@@ -42,31 +45,54 @@ const ApplicantInfoField = () => {
             })
     }
 
-
-
     return (
         <Container>
             <Title>Applicant Information</Title>
             <br></br>
             <br></br>
             <Grid container spacing={3}>
-                <Grid item xs={3}>
-                    Image here
+                <Grid item xs={3} wrap='nowrap'>
+                    <img
+                        src={applicantData["img"]}
+                        alt="new"
+                        style={{width: '100%', height: '100%'}}
+                    />
                 </Grid>
-                <Grid item xs={9}>
-                    <NameTitle>{ applicantData["name"] }</NameTitle>
-                    <InfoSubtitle>Email: { applicantData["email"] } </InfoSubtitle>
-                    <InfoSubtitle>Phone: { applicantData["phone"] } </InfoSubtitle>
-                    <InfoSubtitle>Year: { applicantData["gradYear"] } </InfoSubtitle>
-                    <InfoSubtitle>Major: { applicantData["major"] } </InfoSubtitle>
-                    { 
+                <Grid item xs={4}>
+                    <NameTitle>{applicantData["name"]}</NameTitle>
+                    <InfoSubtitle>Email: {applicantData["email"]} </InfoSubtitle>
+                    <InfoSubtitle>Phone: {applicantData["phone"]} </InfoSubtitle>
+                    <InfoSubtitle>Year: {applicantData["gradYear"]} </InfoSubtitle>
+                    <InfoSubtitle>Major: {applicantData["major"]} </InfoSubtitle>
+                    {
                         hasMinor
-                        ? <InfoSubtitle>Minor: { applicantData["minor"] } </InfoSubtitle>
-                        : <InfoSubtitle>Minor: None </InfoSubtitle>
+                            ? <InfoSubtitle>Minor: {applicantData["minor"]} </InfoSubtitle>
+                            : <InfoSubtitle>Minor: None </InfoSubtitle>
                     }
-                    <InfoSubtitle>GPA: { applicantData["gpa"] }</InfoSubtitle>
+                    <InfoSubtitle>GPA: {applicantData["gpa"]}</InfoSubtitle>
+                </Grid>
+                <Grid item xs={5}>
+                    <InfoSubtitle>LinkedIn: {applicantData["linkedin"]} </InfoSubtitle>
+                    <InfoSubtitle>Website: {applicantData["website"]} </InfoSubtitle>
+                    <InfoSubtitle>Ethnicity: {applicantData["ethnicity"]} </InfoSubtitle>
+                    <InfoSubtitle>Gender: {applicantData["gender"]} </InfoSubtitle>
+                    <DescriptionOutlinedIcon></DescriptionOutlinedIcon>
+                    <LinkedInIcon></LinkedInIcon>
                 </Grid>
             </Grid>
+
+            {
+                applicantData["essay"] && applicantData["essay"].map(
+                    (prompt) => (
+                        <EssayBox
+                            question={prompt[0]}
+                            answer={prompt[1]}>
+                        </EssayBox>
+
+                    )
+                )
+            }
+
         </Container>
     )
 }
