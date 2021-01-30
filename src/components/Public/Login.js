@@ -11,7 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 
-import BoardsAPI from './../data/BoardsAPI'
+import BoardsAPI from '../../data/BoardsAPI'
 
 const styles = theme => ({
   paper: {

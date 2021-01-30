@@ -13,8 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Snackbar from '@material-ui/core/Snackbar';
 
-import PopUp from './PopUp';
-import BoardsAPI from './../data/BoardsAPI';
+import PopUp from '../PopUp';
+import BoardsAPI from '../../data/BoardsAPI';
 
 const styles = theme => ({
   paper: {

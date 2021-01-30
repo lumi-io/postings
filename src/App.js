@@ -1,8 +1,10 @@
 import { Route, BrowserRouter as Router } from 'react-router-dom'
-import Form from './components/Form';
+
+import Form from './components/Public/Form';
 import Listing from './components/legacy/Listing';
-import Login from './components/Login';
-import SignUp from './components/SignUp';
+import Login from './components/Public/Login';
+import SignUp from './components/Public/SignUp';
+
 import Listings from './components/Listings'
 import AdminListing from './components/AdminListing'
 import AdminNewListing from './components/AdminNewListing'
