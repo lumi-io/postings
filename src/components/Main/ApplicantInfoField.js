@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import EssayBox from '../Applicant/EssayBox';
 import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
 import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const ApplicantInfoField = () => {
 
@@ -47,15 +48,24 @@ const ApplicantInfoField = () => {
 
     return (
         <Container>
-            <Title>Applicant Information</Title>
+            <Grid container spacing={1}>
+                <Grid item xs={11}>
+                    <Title>Applicant Information</Title>
+                </Grid>
+                <Grid item xs={1}>
+                    <BackIcon onClick={() => window.location.href = "http://localhost:3000/admin/listing/" + id + "/applicant"}>
+                        <ArrowBackIosIcon></ArrowBackIosIcon>
+                    </BackIcon>
+                </Grid>
+            </Grid>
             <br></br>
             <br></br>
-            <Grid container spacing={3}>
+            <Grid container spacing={5}>
                 <Grid item xs={3} wrap='nowrap'>
                     <img
                         src={applicantData["img"]}
                         alt="new"
-                        style={{width: '100%', height: '100%'}}
+                        style={{ width: '100%', height: '100%' }}
                     />
                 </Grid>
                 <Grid item xs={4}>
@@ -74,10 +84,11 @@ const ApplicantInfoField = () => {
                 <Grid item xs={5}>
                     <InfoSubtitle>LinkedIn: {applicantData["linkedin"]} </InfoSubtitle>
                     <InfoSubtitle>Website: {applicantData["website"]} </InfoSubtitle>
+                    <InfoSubtitle>Resume: {applicantData["resume"]} </InfoSubtitle>
                     <InfoSubtitle>Ethnicity: {applicantData["ethnicity"]} </InfoSubtitle>
                     <InfoSubtitle>Gender: {applicantData["gender"]} </InfoSubtitle>
-                    <DescriptionOutlinedIcon></DescriptionOutlinedIcon>
-                    <LinkedInIcon></LinkedInIcon>
+                    {/* <DescriptionOutlinedIcon></DescriptionOutlinedIcon>
+                    <LinkedInIcon></LinkedInIcon> */}
                 </Grid>
             </Grid>
 
@@ -135,5 +146,11 @@ const InfoSubtitle = styled.div`
     padding-bottom: 5px;
     color: #61486A;
 `;
+
+const BackIcon = styled.div`
+    color: #873CA2;
+    text-align: right;
+`;
+
 
 export default ApplicantInfoField;
