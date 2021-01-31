@@ -1,4 +1,5 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from './Buttons/Button'
 import MenuButton from './Buttons/MenuButton'
@@ -12,11 +13,19 @@ const Sidebar = () => {
       <Button onClick='test()' />
       <MenuSubtitle>
         Menu
-          </MenuSubtitle>
-      <MenuButton name="Dashboard" />
-      <MenuButton name="Listings" />
-      <MenuButton name="Applications" />
-      <MenuButton name="Interviews" />
+      </MenuSubtitle>
+      <Link to="/">
+        <MenuButton name="Dashboard" />
+      </Link>
+      <Link to="/listings">
+        <MenuButton name="Listings" />
+      </Link>
+      <Link to="/">
+        <MenuButton name="Applications" />
+      </Link>
+      <Link to="/">
+        <MenuButton name="Interviews" />
+      </Link>
     </Container>
   )
 }
