@@ -15,15 +15,22 @@ function App() {
   return (
       <Router>
         <div className="App">
-          <Route exact path={["/admin/listing"]} component={Listings} />
+          {/* TODO: / -> Main homepage */}
+          {/* TODO: /portal -> Page with all the listings that people can choose what they want to apply to */}
+          {/* TODO: /portal/:id -> Application page for job with :id */}
+          <Route path="/login" component={Login} />
+          <Route path="/signup" component={SignUp} />
+          <Route path="/form" component={Form} />
+          <Route path="/listing" component={Listing} />
+
+          {/* TODO: /admin -> Admin Dashboard Homepage */}
+          <Route exact path="/admin/listing" component={Listings} />
           <Route exact path="/admin/listing/:id" component={AdminListing} />
           <Route exact path="/admin/listing/:id/applicant" component={ApplicantDashboard} />
           <Route exact path="/admin/listing/:id/applicant/:applicantId" component={ApplicantInfo} />
           <Route path="/admin/create-listing" component={AdminNewListing} />
-          <Route path="/form" component={Form} />
-          <Route path="/listing" component={Listing} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={SignUp} />
+          
+          {/* TODO: /admin/console -> Admin console homepage (not a priority) to change secret keys for signup */}
         </div>
       </Router>
   );

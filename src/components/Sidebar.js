@@ -14,10 +14,10 @@ const Sidebar = () => {
       <MenuSubtitle>
         Menu
       </MenuSubtitle>
-      <Link to="/">
+      <Link to="/admin">
         <MenuButton name="Dashboard" />
       </Link>
-      <Link to="/listings">
+      <Link to="/admin/listing">
         <MenuButton name="Listings" />
       </Link>
       <Link to="/">
