@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 
 const PortalSubmission = () => {
@@ -11,23 +12,48 @@ const PortalSubmission = () => {
 
     const [listingsInfo, setListingsInfo] = useState([]);
     const [appInfo, setAppInfo] = useState({});
+    const [resumeFile, setResumeFile] = useState();
+    const [resumeName, setResumeName] = useState("");
 
     const requiredFields = [
-        ["First name", "firstName"], 
-        ["Last name", "lastName"], 
+        ["First name", "firstName"],
+        ["Last name", "lastName"],
         ["Email address", "email"],
         ["Phone number", "phone"]
     ]
 
     const optionalFields = [
-        ["LinkedIn Profile", "linkedin"], 
+        ["LinkedIn Profile", "linkedin"],
         ["Website/Portfolio", "website"]
     ]
 
     const selectFields = [
-        "Resume/CV",
-        "How did you hear about PCT?"
+        ["How did you hear about PCT?", "marketing"]
     ]
+
+    const handleResumeUpload = (event) => {
+        const data = new FormData();
+        // const filedata = event.target.files
+        data.append('file', event.target.files[0]);
+        // data.append('fileName', event.target.files[])
+        const name = event.target.files[0]["name"];
+
+        setResumeFile(data);
+        setResumeName(name);
+
+    }
+
+    const handleSubmission = () => {
+        axios.post(
+            "http://127.0.0.1:5000/upload-test",
+            resumeFile
+        ).then(
+            axios.post(
+                "http://127.0.0.1:5000/read-json",
+                appInfo
+            )
+        )
+    }
 
 
     useEffect(() => {
@@ -59,11 +85,13 @@ const PortalSubmission = () => {
                 <Title>Apply for this position</Title>
                 {requiredFields.map((text) => (
                     <TextFieldStyled>
+                        <FieldText>
+                            {text[0]}*
+                        </FieldText>
                         <TextField
                             required
                             id="outlined-full-width"
                             fullWidth
-                            label={text[0]}
                             onChange={e => {
                                 setAppInfo(prevState => {
                                     const val = e.target.value;
@@ -79,10 +107,12 @@ const PortalSubmission = () => {
                 ))}
                 {optionalFields.map((text) => (
                     <TextFieldStyled>
+                        <FieldText>
+                            {text[0]}*
+                        </FieldText>
                         <TextField
                             id="outlined-full-width"
                             fullWidth
-                            label={text[0]}
                             onChange={e => {
                                 setAppInfo(prevState => {
                                     const val = e.target.value;
@@ -96,16 +126,57 @@ const PortalSubmission = () => {
                         />
                     </TextFieldStyled>
                 ))}
+                <FieldText>
+                    Resume/CV*
+                </FieldText>
+                <ButtonLayout>
+                    <Button
+                        variant="contained"
+                        component="label"
+                        style={{
+                            "background-color": "#873CA2",
+                            "color": "#F9F6F9"
+                        }}
+                    >
+                        Upload File
+                    <input
+                            type="file"
+                            hidden
+                            onChange={handleResumeUpload}
+                        />
+                    </Button>
+                    <UploadedText>
+                        {resumeName}
+                    </UploadedText>
+                </ButtonLayout>
+
                 {selectFields.map((text) => (
                     <TextFieldStyled>
+                        <FieldText>
+                            {text[0]}
+                        </FieldText>
                         <TextField
                             id="outlined-full-width"
                             fullWidth
-                            label={text}
                             variant="outlined"
                         />
                     </TextFieldStyled>
                 ))}
+                    
+                <br></br>
+                <Button
+                    size="large"
+                    fullWidth="true"
+                    variant="contained"
+                    component="label"
+                    style={{
+                        "background-color": "#873CA2",
+                        "color": "#F9F6F9"
+                    }}
+                    onClick={handleSubmission}
+                >
+                    Submit application
+                </Button>
             </SubmissionContainer>
         </Container>
     )
@@ -123,16 +194,16 @@ const Container = styled.div`
 const ContentContainer = styled.div`
     padding-top: 80px;
     padding-bottom: 80px;
-    padding-right: 180px;
-    padding-left: 180px;
+    padding-right: 20%;
+    padding-left: 20%;
     background:#F9F6F9;
 `;
 
 const SubmissionContainer = styled.div`
     padding-top: 80px;
     padding-bottom: 80px;
-    padding-right: 180px;
-    padding-left: 180px;
+    padding-right: 20%;
+    padding-left: 20%;
     background: background: #FEFCFF;
 `;
 
@@ -172,6 +243,30 @@ const ContentText = styled.div`
 const TextFieldStyled = styled.div`
     padding-top: 10px;
     padding-bottom: 20px;
+`;
+
+const FieldText = styled.div`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 18px;
+    line-height: 21px;
+    color: #61486A;
+    padding-bottom: 10px;
+`;
+
+const ButtonLayout = styled.div`
+    padding-bottom: 10px;
+`;
+
+const UploadedText = styled.div`
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 16px;
+    color: #A8A6A8;
+    padding-top:10px;
 `;
 
 export default PortalSubmission;
