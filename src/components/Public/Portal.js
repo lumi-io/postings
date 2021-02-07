@@ -14,8 +14,9 @@ const Portal = () => {
             return res.data;
         })
         .then(data => {
-            console.log(data.allPostings);
-            setListings(data.allPostings)
+            const postings = data.allPostings;
+            const visiblePostings = postings.filter(posting => posting["isVisible"] === true);
+            setListings(visiblePostings)
             return;
         })
         .catch(err => {

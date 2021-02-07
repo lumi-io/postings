@@ -15,10 +15,12 @@ const PortalSubmission = () => {
     const [resumeFile, setResumeFile] = useState();
     const [resumeName, setResumeName] = useState("");
 
+    // [Title to be shown, id of title for database]
     const requiredFields = [
         ["First name", "firstName"],
         ["Last name", "lastName"],
-        ["Email address", "email"],
+        ["BU Email address", "email"],
+        ["Expected year of graduation", "gradYear"],
         ["Phone number", "phone"]
     ]
 
@@ -31,11 +33,10 @@ const PortalSubmission = () => {
         ["How did you hear about PCT?", "marketing"]
     ]
 
+    // Function to change state of file and filename
     const handleResumeUpload = (event) => {
         const data = new FormData();
-        // const filedata = event.target.files
         data.append('file', event.target.files[0]);
-        // data.append('fileName', event.target.files[])
         const name = event.target.files[0]["name"];
 
         setResumeFile(data);
@@ -43,6 +44,7 @@ const PortalSubmission = () => {
 
     }
 
+    // Function to submit resume, photo, video, then file
     const handleSubmission = () => {
         axios.post(
             "http://127.0.0.1:5000/upload-test",
