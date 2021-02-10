@@ -5,6 +5,7 @@ import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
+import FileUploadButton from './PortalComponents/FileUploadButton'
 
 const PortalSubmission = () => {
 
@@ -14,7 +15,11 @@ const PortalSubmission = () => {
     const [appInfo, setAppInfo] = useState({});
     const [resumeFile, setResumeFile] = useState();
     const [resumeName, setResumeName] = useState("");
-
+    const [imageFile, setImageFile] = useState();
+    const [imageName, setImageName] = useState("");
+    const [videoFile, setVideoFile] = useState();
+    const [videoName, setVideoName] = useState("");
+    
     // [Title to be shown, id of title for database]
     const requiredFields = [
         ["First name", "firstName"],
@@ -37,12 +42,50 @@ const PortalSubmission = () => {
     const handleResumeUpload = (event) => {
         const data = new FormData();
         data.append('file', event.target.files[0]);
+        
+        // Conditional to check if user cancels uploading
+        if (event.target.files[0] === null) {
+            return;
+        }
         const name = event.target.files[0]["name"];
 
         setResumeFile(data);
         setResumeName(name);
 
     }
+
+    // Function to change state of file and filename
+    const handleImageUpload = (event) => {
+        const data = new FormData();
+        data.append('file', event.target.files[0]);
+        
+        // Conditional to check if user cancels uploading
+        if (event.target.files[0] === null) {
+            return;
+        }
+        const name = event.target.files[0]["name"];
+
+        setImageFile(data);
+        setImageName(name);
+
+    }
+
+    // Function to change state of file and filename
+    const handleVideoUpload = (event) => {
+        const data = new FormData();
+        data.append('file', event.target.files[0]);
+        
+        // Conditional to check if user cancels uploading
+        if (event.target.files[0] === null) {
+            return;
+        }
+        const name = event.target.files[0]["name"];
+
+        setVideoFile(data);
+        setVideoName(name);
+
+    }
+
 
     // Function to submit resume, photo, video, then file
     const handleSubmission = () => {
@@ -131,26 +174,26 @@ const PortalSubmission = () => {
                 <FieldText>
                     Resume/CV*
                 </FieldText>
-                <ButtonLayout>
-                    <Button
-                        variant="contained"
-                        component="label"
-                        style={{
-                            "background-color": "#873CA2",
-                            "color": "#F9F6F9"
-                        }}
-                    >
-                        Upload File
-                    <input
-                            type="file"
-                            hidden
-                            onChange={handleResumeUpload}
-                        />
-                    </Button>
-                    <UploadedText>
-                        {resumeName}
-                    </UploadedText>
-                </ButtonLayout>
+                <FileUploadButton 
+                    function={handleResumeUpload}
+                    textField={resumeName}
+                />
+
+                <FieldText>
+                    Please attach a picture of yourself*
+                </FieldText>
+                <FileUploadButton 
+                    function={handleImageUpload}
+                    textField={imageName}
+                />
+
+                <FieldText>
+                    Elevator Pitch*
+                </FieldText>
+                <FileUploadButton 
+                    function={handleVideoUpload}
+                    textField={videoName}
+                />
 
                 {selectFields.map((text) => (
                     <TextFieldStyled>
