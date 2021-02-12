@@ -1,8 +1,8 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Button from './Buttons/Button'
-import MenuButton from './Buttons/MenuButton'
+import Button from './SidebarComponents/Button'
+import MenuButton from './SidebarComponents/MenuButton'
 
 const Sidebar = () => {
   return (
@@ -58,4 +58,4 @@ const Container = styled.div`
   padding-top: 100px;
 `;
 
-export default Sidebar
+export default Sidebar;

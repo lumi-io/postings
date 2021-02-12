@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
     useParams
 } from "react-router-dom";
@@ -32,7 +32,6 @@ const CreateListing = () => {
 
     const [listingInfo, setListingInfo] = useState({});
     const [isVisible, setIsVisible] = useState(false);
-    const [listingTitle, setListingTitle] = useState("");
     const [listingDesc, setListingDesc] = useState("");
     const [deadline, setDeadline] = useState("");
     const [open, setOpen] = React.useState(false);
@@ -47,11 +46,6 @@ const CreateListing = () => {
         setIsVisible(!isVisible);
     };
 
-    // Function that changes state of text
-    function textFieldHandleChange(e) {
-        setListingTitle(e.target.value)
-    }
-
     // Function that changes the state of the description text field
     function descFieldHandleChange(e) {
         setListingDesc(e.target.value)
@@ -62,25 +56,41 @@ const CreateListing = () => {
         setDeadline(e.target.value)
     }
 
+    const fields = [
+        ["About Us", "aboutUs"],
+        ["Who are we looking for", "qualifications"]
+    ]
+
     // Function that executes POST request to the backend
     function createJobListing() {
-        if (listingTitle === "" || listingDesc === "" || deadline === "") {
-            console.log("empty");
-            return;
-        }
+        // if (listingTitle === "" || listingDesc === "" || deadline === "") {
+        //     console.log("empty");
+        //     return;
+        // }
         axios.post(
             "http://127.0.0.1:5000/admin/postings/create",
             {
-                "title": listingTitle,
+                // "title": listingTitle,
                 "info": listingDesc,
                 "deadline": deadline,
                 "isVisible": isVisible,
             }
         )
-        .then(res => {
-            if (res.data.status) setOpen(true);
-        });
+            .then(res => {
+                if (res.data.status) setOpen(true);
+            });
         return;
+    }
+
+    const updateField = (e, id) => {
+        console.log(e)
+        setListingInfo(prevState => {
+            const val = e.target.value;
+            var newObj = {};
+            newObj[id] = val;
+            return Object.assign({}, prevState, newObj);
+        });
+        console.log(listingInfo);
     }
 
 
@@ -93,23 +103,26 @@ const CreateListing = () => {
                 required
                 id="outlined-required"
                 label="Title"
-                value={listingTitle}
-                onChange={textFieldHandleChange}
+                value={listingInfo["title"]}
+                onChange={e => updateField(e, "title")}
                 variant="outlined"
             />
             <br></br>
             <br></br>
-            <TextField
-                style={{ width: "500px" }}
-                required
-                id="outlined-required"
-                label="Description"
-                value={listingDesc}
-                onChange={descFieldHandleChange}
-                variant="outlined"
-                multiline
-                rows={10}
-            />
+            {fields.map((field) => (
+                <TextField
+                    style={{ width: "500px" }}
+                    required
+                    id="outlined-required"
+                    label={field[0]}
+                    value={listingInfo[field[1]]}
+                    onChange={e => updateField(e, field[1])}
+                    variant="outlined"
+                    multiline
+                    rows={10}
+                />
+            ))}
+
             <br></br>
             <br></br>
             <TextField
@@ -140,7 +153,7 @@ const CreateListing = () => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{listingTitle + " listing created!"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{listingInfo["title"] + " listing created!"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Click outside the box to go back to the main screen.
@@ -165,6 +178,10 @@ const Title = styled.div`
     font-size: 36px;
     line-height: 42px;
     color: #873CA2; /* Accent Purple */
+`;
+
+const BigTextBox = styled.div`
+
 `;
 
 export default CreateListing;

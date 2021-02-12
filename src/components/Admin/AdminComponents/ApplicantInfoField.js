@@ -4,9 +4,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 
 import Grid from '@material-ui/core/Grid';
-import EssayBox from '../Applicant/EssayBox';
-import DescriptionOutlinedIcon from '@material-ui/icons/DescriptionOutlined';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
+import EssayBox from './EssayBox';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 
 const ApplicantInfoField = () => {

@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import GridList from '@material-ui/core/GridList';
 
-import ListingCard from '../Listings/ListingCard'
+import ListingCard from './ListingCard'
 
 
 const ListingsDashboard = () => {
