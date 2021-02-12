@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import {
-    useParams
-} from "react-router-dom";
 
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
@@ -25,35 +22,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-
 const CreateListing = () => {
     const classes = useStyles();
-    let { id } = useParams();
 
-    const [listingInfo, setListingInfo] = useState({});
-    const [isVisible, setIsVisible] = useState(false);
-    const [listingDesc, setListingDesc] = useState("");
-    const [deadline, setDeadline] = useState("");
+    const [listingInfo, setListingInfo] = useState({ isVisible: false });
     const [open, setOpen] = React.useState(false);
+    const [essayQuestions, setEssayQuestions] = useState([]);
 
     // Function that changes the state of the overlay when button is clicked
     const handleClose = () => {
         setOpen(false);
     };
 
-    // Function that changes state of toggle
-    const handleChange = (event) => {
-        setIsVisible(!isVisible);
+    // Function that changes state of toggle in listingInfo object
+    const handleVisibilityToggle = (event) => {
+        setListingInfo(prevState => ({
+            ...prevState,
+            isVisible: !prevState.isVisible
+        }));
+        return;
     };
-
-    // Function that changes the state of the description text field
-    function descFieldHandleChange(e) {
-        setListingDesc(e.target.value)
-    }
 
     // Function that changes the state of the deadline date
     function deadlineFieldHandleChange(e) {
-        setDeadline(e.target.value)
+        setListingInfo(prevState => {
+            const val = e.target.value;
+            var newObj = {};
+            newObj["deadline"] = val;
+            return Object.assign({}, prevState, newObj);
+        });
     }
 
     const fields = [
@@ -62,37 +59,56 @@ const CreateListing = () => {
     ]
 
     // Function that executes POST request to the backend
-    function createJobListing() {
-        // if (listingTitle === "" || listingDesc === "" || deadline === "") {
-        //     console.log("empty");
-        //     return;
-        // }
+    const createJobListing = () => {
+        if (!('title' in listingInfo) || !('aboutUs' in listingInfo) || !('qualifications' in listingInfo)) {
+            console.log("Please fill out all necessary fields.");
+            return;
+        }
+        let listingInfoToSubmit = listingInfo;
+        if (essayQuestions.length !== 0) {
+            listingInfoToSubmit["essay"] = essayQuestions;
+        }
         axios.post(
             "http://127.0.0.1:5000/admin/postings/create",
-            {
-                // "title": listingTitle,
-                "info": listingDesc,
-                "deadline": deadline,
-                "isVisible": isVisible,
-            }
+            listingInfoToSubmit
         )
-            .then(res => {
-                if (res.data.status) setOpen(true);
-            });
+        .then(res => {
+            console.log(res);
+            if (res.data.status) setOpen(true);
+        });
         return;
     }
 
+    // Help function to update fields of listingInfo obj with id passed in as a paramter
     const updateField = (e, id) => {
-        console.log(e)
         setListingInfo(prevState => {
             const val = e.target.value;
             var newObj = {};
             newObj[id] = val;
             return Object.assign({}, prevState, newObj);
         });
-        console.log(listingInfo);
+        return;
     }
 
+    const addQuestion = () => {
+        setEssayQuestions(prevState => [...prevState, ""])
+        return;
+    }
+
+    const deleteQuestion = () => {
+        if (essayQuestions.length === 0) {
+            return;
+        }
+        setEssayQuestions(prevState => prevState.slice(0, -1))
+        return;
+    }
+
+    const updateEssayQuestion = (e, idx) => {
+        let essayQuestionsCopy = [...essayQuestions]
+        essayQuestionsCopy[idx] = e.target.value;
+        setEssayQuestions(essayQuestionsCopy)
+        return;
+    }
 
     return (
         <Container>
@@ -110,18 +126,55 @@ const CreateListing = () => {
             <br></br>
             <br></br>
             {fields.map((field) => (
-                <TextField
-                    style={{ width: "500px" }}
-                    required
-                    id="outlined-required"
-                    label={field[0]}
-                    value={listingInfo[field[1]]}
-                    onChange={e => updateField(e, field[1])}
-                    variant="outlined"
-                    multiline
-                    rows={10}
-                />
+                <BigTextContainer>
+                    <TextField
+                        style={{ width: "100%" }}
+                        required
+                        id="outlined-required"
+                        label={field[0]}
+                        value={listingInfo[field[1]]}
+                        onChange={e => updateField(e, field[1])}
+                        variant="outlined"
+                        multiline
+                        rows={7}
+                    />
+                </BigTextContainer>
             ))}
+
+            <h3>Essay Questions</h3>
+            <Button
+                variant="contained"
+                color="primary"
+                justify="flex-end"
+                onClick={addQuestion}>
+                Add
+            </Button>
+            <Button
+                variant="contained"
+                color="primary"
+                justify="flex-end"
+                onClick={deleteQuestion}>
+                Delete
+            </Button>
+
+            <br></br>
+            <br></br>
+
+            {essayQuestions.map((field, index) => (
+                <EssayQuestionContainer>
+                    <TextField
+                        style={{ width: "500px" }}
+                        required
+                        id="outlined-required"
+                        label={"Question " + index}
+                        value={essayQuestions[index]}
+                        onChange={e => updateEssayQuestion(e, index)}
+                        variant="outlined"
+                    />
+                </EssayQuestionContainer>
+
+            ))}
+
 
             <br></br>
             <br></br>
@@ -129,7 +182,7 @@ const CreateListing = () => {
                 id="datetime-local"
                 label="Deadline"
                 type="datetime-local"
-                value={deadline}
+                value={listingInfo["deadline"]}
                 className={classes.textField}
                 onChange={deadlineFieldHandleChange}
                 InputLabelProps={{
@@ -138,8 +191,8 @@ const CreateListing = () => {
             />
             <p>Is Visible</p>
             <Switch
-                checked={isVisible}
-                onChange={handleChange}
+                checked={listingInfo["isVisible"]}
+                onChange={handleVisibilityToggle}
                 name="checked"
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
@@ -180,8 +233,14 @@ const Title = styled.div`
     color: #873CA2; /* Accent Purple */
 `;
 
-const BigTextBox = styled.div`
+const BigTextContainer = styled.div`
+    padding-bottom: 10px;
+    padding-top: 10px;
+`;
 
+const EssayQuestionContainer = styled.div`
+    padding-bottom: 7.5px;
+    padding-top: 7.5px;
 `;
 
 export default CreateListing;
