@@ -7,6 +7,9 @@ import Button from '@material-ui/core/Button';
 
 import FileUploadButton from './PortalComponents/FileUploadButton'
 
+const BUCKET = 'resume-testing-ats'
+const REGION = 'us-east-2'
+
 const PortalSubmission = () => {
 
     const { id } = useParams();
@@ -19,7 +22,7 @@ const PortalSubmission = () => {
     const [imageName, setImageName] = useState("");
     const [videoFile, setVideoFile] = useState();
     const [videoName, setVideoName] = useState("");
-    
+
     // [Title to be shown, id of title for database]
     const requiredFields = [
         ["First name", "firstName"],
@@ -42,7 +45,7 @@ const PortalSubmission = () => {
     const handleResumeUpload = (event) => {
         const data = new FormData();
         data.append('file', event.target.files[0]);
-        
+
         // Conditional to check if user cancels uploading
         if (event.target.files[0] === null) {
             return;
@@ -51,14 +54,20 @@ const PortalSubmission = () => {
 
         setResumeFile(data);
         setResumeName(name);
-
+        const link = "https://" + BUCKET + ".s3." + REGION + ".amazonaws.com/" + id + "/resume/" + name
+        setAppInfo(prevState => {
+            var newObj = {};
+            newObj["resume"] = link;
+            return Object.assign({}, prevState, newObj);
+        });
+        return;
     }
 
     // Function to change state of file and filename
     const handleImageUpload = (event) => {
         const data = new FormData();
         data.append('file', event.target.files[0]);
-        
+
         // Conditional to check if user cancels uploading
         if (event.target.files[0] === null) {
             return;
@@ -67,6 +76,13 @@ const PortalSubmission = () => {
 
         setImageFile(data);
         setImageName(name);
+        const link = "https://" + BUCKET + ".s3." + REGION + ".amazonaws.com/" + id + "/profile-pic/" + name
+        setAppInfo(prevState => {
+            var newObj = {};
+            newObj["image"] = link;
+            return Object.assign({}, prevState, newObj);
+        });
+        return;
 
     }
 
@@ -74,7 +90,7 @@ const PortalSubmission = () => {
     const handleVideoUpload = (event) => {
         const data = new FormData();
         data.append('file', event.target.files[0]);
-        
+
         // Conditional to check if user cancels uploading
         if (event.target.files[0] === null) {
             return;
@@ -83,21 +99,29 @@ const PortalSubmission = () => {
 
         setVideoFile(data);
         setVideoName(name);
-
+        const link = "https://" + BUCKET + ".s3." + REGION + ".amazonaws.com/" + id + "/elevator-pitch/" + name
+        setAppInfo(prevState => {
+            var newObj = {};
+            newObj["video"] = link;
+            return Object.assign({}, prevState, newObj);
+        });
+        return;
     }
 
+    const uploadAllFiles = async () => {
+        const resumeLink = await axios.post("http://127.0.0.1:5000/user/portal/upload-resume/" + id, resumeFile);
+        const imageLink = await axios.post("http://127.0.0.1:5000/user/portal/upload-image/" + id, imageFile);
+        const videoLink = await axios.post("http://127.0.0.1:5000/user/portal/upload-video/" + id, videoFile);
+        return [resumeLink, imageLink, videoLink]
+    }
 
     // Function to submit resume, photo, video, then file
-    const handleSubmission = () => {
-        axios.post(
-            "http://127.0.0.1:5000/upload-test",
-            resumeFile
-        ).then(
-            axios.post(
-                "http://127.0.0.1:5000/read-json",
-                appInfo
-            )
-        )
+    const handleSubmission = async () => {
+        await uploadAllFiles()
+        .then (() => {
+            axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
+        })
+        return;
     }
 
 
@@ -134,7 +158,7 @@ const PortalSubmission = () => {
                             {text[0]}*
                         </FieldText>
                         <TextField
-                            required
+                            required="true"
                             id="outlined-full-width"
                             fullWidth
                             onChange={e => {
@@ -174,7 +198,7 @@ const PortalSubmission = () => {
                 <FieldText>
                     Resume/CV*
                 </FieldText>
-                <FileUploadButton 
+                <FileUploadButton
                     function={handleResumeUpload}
                     textField={resumeName}
                 />
@@ -182,7 +206,7 @@ const PortalSubmission = () => {
                 <FieldText>
                     Please attach a picture of yourself*
                 </FieldText>
-                <FileUploadButton 
+                <FileUploadButton
                     function={handleImageUpload}
                     textField={imageName}
                 />
@@ -190,7 +214,7 @@ const PortalSubmission = () => {
                 <FieldText>
                     Elevator Pitch*
                 </FieldText>
-                <FileUploadButton 
+                <FileUploadButton
                     function={handleVideoUpload}
                     textField={videoName}
                 />
@@ -207,7 +231,7 @@ const PortalSubmission = () => {
                         />
                     </TextFieldStyled>
                 ))}
-                    
+
                 <br></br>
                 <Button
                     size="large"
@@ -298,20 +322,6 @@ const FieldText = styled.div`
     line-height: 21px;
     color: #61486A;
     padding-bottom: 10px;
-`;
-
-const ButtonLayout = styled.div`
-    padding-bottom: 10px;
-`;
-
-const UploadedText = styled.div`
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 16px;
-    color: #A8A6A8;
-    padding-top:10px;
 `;
 
 export default PortalSubmission;

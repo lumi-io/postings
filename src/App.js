@@ -19,7 +19,6 @@ function App() {
           {/* TODO: / -> Main homepage */}
           <Route exact path="/portal" component={Portal} />
           <Route exact path="/portal/:id" component={PortalSubmission}/>
-
           <Route path="/login" component={Login} />
           <Route path="/signup" component={SignUp} />
 
