@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {
+    useParams
+} from "react-router-dom";
 
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
@@ -22,12 +25,41 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const CreateListing = () => {
-    const classes = useStyles();
 
-    const [listingInfo, setListingInfo] = useState({ isVisible: false });
+const EditListingField = () => {
+    const classes = useStyles();
+    let { id } = useParams();
+
+    const [listingInfo, setListingInfo] = useState({});
     const [open, setOpen] = React.useState(false);
     const [essayQuestions, setEssayQuestions] = useState([]);
+
+
+    useEffect(() => {
+        getListingInfo();
+    }, [])
+
+    // API function that gets info of a listing
+    const getListingInfo = () => {
+        axios.get("http://127.0.0.1:5000/admin/postings/" + id)
+            .then(res => {
+                return res.data;
+            })
+            .then(data => {
+                return data.postingInfo;
+            })
+            .then(postingInfo => {
+                let postingInfoToUpdate = postingInfo;
+                delete postingInfoToUpdate["_id"];
+                setListingInfo(postingInfoToUpdate);
+                setEssayQuestions(postingInfoToUpdate.essay);
+                return;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
 
     // Function that changes the state of the overlay when button is clicked
     const handleClose = () => {
@@ -58,35 +90,14 @@ const CreateListing = () => {
         ["Who are we looking for", "qualifications"]
     ]
 
-    // Function that executes POST request to the backend
-    const createJobListing = () => {
-        if (!('title' in listingInfo) || !('aboutUs' in listingInfo) || !('qualifications' in listingInfo)) {
-            console.log("Please fill out all necessary fields.");
-            return;
-        }
-        let listingInfoToSubmit = listingInfo;
-        if (essayQuestions.length !== 0) {
-            listingInfoToSubmit["essay"] = essayQuestions;
-        }
-        axios.post(
-            "http://127.0.0.1:5000/admin/postings/create",
-            listingInfoToSubmit
-        )
-        .then(res => {
-            console.log(res);
-            if (res.data.status) setOpen(true);
-        });
-        return;
-    }
 
     // Help function to update fields of listingInfo obj with id passed in as a paramter
     const updateField = (e, id) => {
-        setListingInfo(prevState => {
-            const val = e.target.value;
-            var newObj = {};
-            newObj[id] = val;
-            return Object.assign({}, prevState, newObj);
+        setListingInfo({
+            ...listingInfo,
+            [id]: e.target.value
         });
+        console.log(listingInfo);
         return;
     }
 
@@ -107,19 +118,36 @@ const CreateListing = () => {
         let essayQuestionsCopy = [...essayQuestions]
         essayQuestionsCopy[idx] = e.target.value;
         setEssayQuestions(essayQuestionsCopy)
+        console.log(essayQuestions);
         return;
     }
 
+
+    function updateJobListing() {
+        let listingInfoToSubmit = listingInfo;
+        if (essayQuestions.length !== 0) {
+            listingInfoToSubmit["essay"] = essayQuestions;
+        }
+        axios.patch(
+            "http://127.0.0.1:5000/admin/postings/" + id,
+            listingInfo
+        )
+        .then(() => {
+            setOpen(true);
+        })
+    }
+
+
     return (
         <Container>
-            <Title>Create New Listing</Title>
+            <Title>Listing Information</Title>
             <br></br>
             <TextField
                 style={{ width: "500px" }}
                 required
                 id="outlined-required"
                 label="Title"
-                value={listingInfo["title"]}
+                value={listingInfo.title}
                 onChange={e => updateField(e, "title")}
                 variant="outlined"
             />
@@ -197,8 +225,8 @@ const CreateListing = () => {
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
             <br></br>
-            <Button variant="contained" color="primary" justify="flex-end" onClick={createJobListing}>
-                Create
+            <Button variant="contained" color="primary" justify="flex-end" onClick={updateJobListing}>
+                Update
             </Button>
             <Dialog
                 open={open}
@@ -216,6 +244,7 @@ const CreateListing = () => {
         </Container>
     )
 }
+
 
 const Container = styled.div`
     width:100%;
@@ -243,4 +272,4 @@ const EssayQuestionContainer = styled.div`
     padding-top: 7.5px;
 `;
 
-export default CreateListing;
+export default EditListingField;

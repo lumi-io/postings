@@ -28,8 +28,9 @@ const PortalSubmission = () => {
         ["First name", "firstName"],
         ["Last name", "lastName"],
         ["BU Email address", "email"],
+        ["Phone number", "phone"],
         ["Expected year of graduation", "gradYear"],
-        ["Phone number", "phone"]
+        ["Major", "major"]
     ]
 
     const optionalFields = [

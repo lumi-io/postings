@@ -12,9 +12,6 @@ import TableRow from '@material-ui/core/TableRow';
 import axios from 'axios';
 
 
-
-
-
 const ApplicantDashboard = () => {
     // const classes = useStyles();
 
@@ -38,20 +35,16 @@ const ApplicantDashboard = () => {
     };
 
     const columns = [
-        { id: 'name', label: 'Name', minWidth: 170 },
+        { id: 'firstName', label: 'First Name', minWidth: 100 },
+        { id: 'lastName', label: 'Last Name', minWidth: 80 },
+        { id: 'email', label: 'Email', minWidth: 80 },
         { id: 'gradYear', label: 'Grad\u00a0Year', minWidth: 10 },
-        { id: 'gpa', label: 'GPA', minWidth: 10 },
         { id: 'college', label: 'College', minWidth: 20 },
         { id: 'major', label: 'Major', minWidth: 100 },
-      ];
-      
-      function createData(name, code, population, size) {
-        const density = population / size;
-        return { name, code, population, size, density };
-      }
+    ];
 
 
-      function getApplicantData() {
+    function getApplicantData() {
         axios.get("http://127.0.0.1:5000/admin/postings/" + id + "/applications")
             .then(res => {
                 return res.data;
@@ -59,24 +52,25 @@ const ApplicantDashboard = () => {
             .then(data => {
                 if (data["status"]) {
                     return data["application"]["applications"];
-                } 
-                
+                }
+
                 else {
                     console.log("err")
                 }
             })
             .then(applications => {
+                console.log(applications);
                 let modifiedData = applications.map(
                     app => ({
-                        name: app["name"], 
-                        gradYear: app["gradYear"], 
-                        gpa: app["gpa"], 
-                        college: app["college"], 
+                        firstName: app["firstName"],
+                        lastName: app["lastName"],
+                        email: app["email"],
+                        gradYear: app["gradYear"],
+                        college: app["college"],
                         major: app["major"],
                         applicantId: app["applicantId"]
                     })
                 )
-                console.log(modifiedData);
                 setApplicantData(modifiedData);
                 return;
             })
@@ -84,8 +78,8 @@ const ApplicantDashboard = () => {
                 console.log(err);
             })
     }
-      
-      const rows = applicantData;
+
+    const rows = applicantData;
 
     return (
         <Container>
@@ -113,7 +107,7 @@ const ApplicantDashboard = () => {
                                     {columns.map((column) => {
                                         const value = row[column.id];
                                         return (
-                                            <TableCell key={column.id} align={column.align} onClick={() => window.location.href="applicant/" + row.applicantId} >
+                                            <TableCell key={column.id} align={column.align} onClick={() => window.location.href = "applicant/" + row.applicantId} >
                                                 {column.format && typeof value === 'number' ? column.format(value) : value}
                                             </TableCell>
                                         );
