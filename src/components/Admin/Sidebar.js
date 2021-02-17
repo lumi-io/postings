@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Button from './SidebarComponents/Button'
 import MenuButton from './SidebarComponents/MenuButton'
@@ -14,17 +14,17 @@ const Sidebar = () => {
       <MenuSubtitle>
         Menu
       </MenuSubtitle>
-      <Link to="/admin">
+      <Link to="/admin" style={{ textDecoration: 'none' }}>
         <MenuButton name="Dashboard" />
       </Link>
-      <Link to="/admin/listing">
+      <Link to="/admin/listing" style={{ textDecoration: 'none' }}>
         <MenuButton name="Listings" />
       </Link>
-      <Link to="/">
-        <MenuButton name="Applications" />
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <MenuButton name="Not ready..." />
       </Link>
-      <Link to="/">
-        <MenuButton name="Interviews" />
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <MenuButton name="Also not ready..." />
       </Link>
     </Container>
   )
