@@ -44,7 +44,7 @@ const ApplicantDashboard = () => {
     ];
 
 
-    function getApplicantData() {
+    const getApplicantData = () => {
         axios.get("http://127.0.0.1:5000/admin/postings/" + id + "/applications")
             .then(res => {
                 return res.data;
