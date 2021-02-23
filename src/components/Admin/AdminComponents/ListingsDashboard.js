@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-
+import Button from '@material-ui/core/Button';
 import GridList from '@material-ui/core/GridList';
-
 import ListingCard from './ListingCard'
+import { useAuth0 } from "@auth0/auth0-react";
 
+axios.defaults.withCredentials = true;
 
 const ListingsDashboard = () => {
 
     const [listings, setListings] = useState([]);
+    // const { logout } = useAuth0();
+    const { logout, error, user, isAuthenticated, isLoading } = useAuth0();
+
 
     useEffect(() => {
         getPostings();
     }, []);
 
     function getPostings() {
-        axios.get(`http://127.0.0.1:5000/admin/postings`)
+        axios.get(`http://127.0.0.1:5000/admin/postings`, {
+        })
             .then(res => {
-                console.log(res.data);
+                console.log(res);
                 return res.data;
             })
             .then(data => {
@@ -34,25 +39,39 @@ const ListingsDashboard = () => {
                 setListings(rows);
             })
             .catch(err => {
-                console.log("API Error");
+                console.log(err);
             })
     }
 
+
     return (
-        <Container>
-            <Title>Listings</Title>
-            <GridList cols={3}>
-                {listings.map(listing => (
-                    <ListingCard
-                        name={listing.title}
-                        viewCount="2"
-                        applyCount="3"
-                        id={listing._id}
-                    >
-                    </ListingCard>
-                ))}
-            </GridList>
-        </Container>
+        (
+            <Container>
+                {/* {user.name} */}
+                {console.log(user)}
+                <Title>Listings</Title>
+                <GridList cols={3}>
+                    {listings.map(listing => (
+                        <ListingCard
+                            name={listing.title}
+                            viewCount="2"
+                            applyCount="3"
+                            id={listing._id}
+                        >
+                        </ListingCard>
+                    ))}
+                </GridList>
+                <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    color="primary"
+                    onClick={() => logout({ returnTo: window.location.origin })}
+                >
+                    Logout
+                  </Button>
+            </Container>
+        )
     )
 }
 

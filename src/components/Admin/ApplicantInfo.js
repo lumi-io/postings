@@ -3,12 +3,23 @@ import Sidebar from './Sidebar'
 import ApplicantInfoField from './AdminComponents/ApplicantInfoField'
 import styled from 'styled-components';
 
+import { useAuth0 } from "@auth0/auth0-react";
+
 const Applicant = () => {
+
+    const { isAuthenticated, isLoading, error } = useAuth0();
+
+    if (isLoading) return <div>Loading ...</div>;
+    if (error) return <div>Oops... {error.message}</div>;
+
     return (
-        <Container>
-            <Sidebar />
-            <ApplicantInfoField />
-        </Container>
+        (
+            isAuthenticated &&
+            <Container>
+                <Sidebar />
+                <ApplicantInfoField />
+            </Container>
+        )
     )
 }
 

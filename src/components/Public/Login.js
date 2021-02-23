@@ -8,38 +8,33 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import { Redirect, Route } from "react-router";
+import { useHistory } from "react-router-dom";
 
+import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
+    const history = useHistory();
     const classes = useStyles();
 
-    const [userInfo, setUserInfo] = useState({
-        email: "",
-        password: ""
-    });
+    const { loginWithRedirect } = useAuth0();
+
+    const [key, setKey] = useState("");
+
     const [error, setError] = useState("");
 
-    const handleTextChange = (e) => {
-        const { name, value } = e.target;
-        setUserInfo(prevState => ({
-            ...prevState,
-            [name]: value
-        }))
-    }
 
-    const login = () => {
-        if (userInfo["email"] === "" || userInfo["password"] === "") {
-            setError("Fields are required.")
-            return;
+    const enableLogin = () => {
+        console.log(key);
+        if (key === "") {
+            setError("Fields are required.");
+            console.log("Fields are required.")
+        } else if (key === "123") {
+            loginWithRedirect();
+        }  else {
+            setError("Incorrect key.")
+            console.log("Incorrect key.")
         }
-        axios.post(
-            'http://127.0.0.1:5000/admin/login',
-            userInfo,
-            { headers: { 'Content-Type': 'application/json' } }
-        ).then((res) => {
-            console.log(res)
-            return <Redirect to={{ pathname: '/admin/listings', state: {} }} />
-        })
+        return;
     }
 
     return (
@@ -52,26 +47,13 @@ const Login = () => {
                         margin="normal"
                         required
                         fullWidth
-                        id="emailAddress"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        value={userInfo["email"]}
-                        onChange={handleTextChange}
-                    />
-                    <CustomTextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
+                        name="key"
+                        label="Key"
                         type="password"
                         id="password"
                         autoComplete="current-password"
-                        value={userInfo["password"]}
-                        onChange={handleTextChange}
+                        value={key}
+                        onChange={(e) => {setKey(e.target.value)}}
                     />
                     <CustomButton
                         type="button"
@@ -79,24 +61,11 @@ const Login = () => {
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={login}
+                        onClick={enableLogin}
                     >
-                        Sign In
+                        Authorize
                   </CustomButton>
                 </form>
-                <br></br>
-                <Grid container>
-                    <Grid item xs>
-                        <Link href="#" variant="body2">
-                            Placeholder for forgot password...?
-                      </Link>
-                    </Grid>
-                    <Grid item>
-                        <Link href="/signup" variant="body2">
-                            {"Don't have an account? Sign Up"}
-                        </Link>
-                    </Grid>
-                </Grid>
             </CustomContainer>
         </BackgroundContainer>
     )
