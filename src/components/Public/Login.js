@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import styled from 'styled-components'
-import axios from 'axios';
 import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { Redirect, Route } from "react-router";
 import { useHistory } from "react-router-dom";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
 const Login = () => {
-    const history = useHistory();
+    // const history = useHistory();
     const classes = useStyles();
 
     const { loginWithRedirect } = useAuth0();

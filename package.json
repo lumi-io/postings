@@ -14,7 +14,6 @@
     "@testing-library/user-event": "^12.1.10",
     "antd": "^4.9.4",
     "axios": "^0.21.1",
-    "js-cookie": "^2.2.1",
     "locate-path": "^6.0.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",

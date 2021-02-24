@@ -23,11 +23,9 @@ const ListingsDashboard = () => {
         axios.get(`http://127.0.0.1:5000/admin/postings`, {
         })
             .then(res => {
-                console.log(res);
                 return res.data;
             })
             .then(data => {
-                console.log(data.allPostings);
                 return data.allPostings;
             })
             .then(data => {
@@ -47,8 +45,6 @@ const ListingsDashboard = () => {
     return (
         (
             <Container>
-                {/* {user.name} */}
-                {console.log(user)}
                 <Title>Listings</Title>
                 <GridList cols={3}>
                     {listings.map(listing => (
