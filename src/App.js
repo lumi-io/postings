@@ -1,7 +1,6 @@
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 
 import Login from './components/Public/Login';
-import SignUp from './components/Public/SignUp';
 
 import Portal from './components/Public/Portal';
 import PortalSubmission from './components/Public/PortalSubmission'
@@ -20,7 +19,6 @@ function App() {
           <Route exact path="/portal" component={Portal} />
           <Route exact path="/portal/:id" component={PortalSubmission}/>
           <Route path="/login" component={Login} />
-          <Route path="/signup" component={SignUp} />
 
           {/* TODO: /admin -> Admin Dashboard Homepage */}
           <Route exact path="/admin/listing" component={Listings} />

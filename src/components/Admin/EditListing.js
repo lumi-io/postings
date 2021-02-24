@@ -3,12 +3,27 @@ import Sidebar from './Sidebar'
 import EditListingField from './AdminComponents/EditListingField'
 import styled from 'styled-components';
 
+import { useAuth0 } from "@auth0/auth0-react";
+
 const Admin = () => {
+    const { isAuthenticated, isLoading, error } = useAuth0();
+
+    if (isLoading) {
+        return <div>Loading ...</div>;
+    }
+
+    if (error) {
+        return <div>Oops... {error.message}</div>;
+    }
     return (
-        <Container>
-            <Sidebar />
-            <EditListingField />
-        </Container>
+        (
+            isAuthenticated &&
+            <Container>
+                <Sidebar />
+                <EditListingField />
+            </Container>
+        )
+
     )
 }
 
