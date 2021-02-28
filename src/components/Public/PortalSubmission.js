@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 import FileUploadButton from './PortalComponents/FileUploadButton'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const BUCKET = 'resume-testing-ats'
 const REGION = 'us-east-2'
@@ -22,6 +22,8 @@ const PortalSubmission = () => {
     const [imageName, setImageName] = useState("");
     const [videoFile, setVideoFile] = useState();
     const [videoName, setVideoName] = useState("");
+
+    const [submission, setSubmission] = useState(false);
 
     // [Title to be shown, id of title for database]
     const requiredFields = [
@@ -117,10 +119,12 @@ const PortalSubmission = () => {
 
     // Function to submit resume, photo, video, then file
     const handleSubmission = async () => {
+        setSubmission({submission: false}); 
         await uploadAllFiles()
         .then (() => {
             axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
         })
+        setSubmission({submission: true}); 
         return;
     }
 
@@ -244,14 +248,13 @@ const PortalSubmission = () => {
                     }}
                     onClick={handleSubmission}
                 >
-                    Submit application
+                    {(!submission) ? `Submit Application` : <CircularProgress color="#000" size={26} />}
                 </Button>
             </SubmissionContainer>
         </Container>
     )
 
 }
-
 
 const Container = styled.div`
     width:100%;
