@@ -13,7 +13,6 @@ const REGION = 'us-east-2'
 const PortalSubmission = () => {
 
     const { id } = useParams();
-
     const [listingsInfo, setListingsInfo] = useState([]);
     const [appInfo, setAppInfo] = useState({});
     const [resumeFile, setResumeFile] = useState();
@@ -120,15 +119,16 @@ const PortalSubmission = () => {
 
     // Function to submit resume, photo, video, then file
     const handleSubmission = async () => {
-        setSubmission({submission: false}); 
+        setSubmission({submission: true});
         await uploadAllFiles()
         .then (() => {
             axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
         })
-        setSubmission({submission: true}); 
+        .catch((e) => {
+            console.error("handleSubmission failed\n", e);
+        })
         return;
     }
-
 
     useEffect(() => {
         axios.get(`http://127.0.0.1:5000/admin/postings/` + id)
@@ -249,7 +249,7 @@ const PortalSubmission = () => {
                     }}
                     onClick={handleSubmission}
                 >
-                    {(!submission) ? `Submit Application` : <CircularProgress color="#000" size={26} />}
+                    {(!submission) ? `Submit Application` : <CircularProgress color="inherit" size={26} />}
                 </Button>
             </SubmissionContainer>
         </Container>
