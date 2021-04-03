@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import axios from 'axios';
-import Button from '@material-ui/core/Button';
 import GridList from '@material-ui/core/GridList';
 import ListingCard from './ListingCard'
 import { useAuth0 } from "@auth0/auth0-react";
@@ -11,9 +10,6 @@ axios.defaults.withCredentials = true;
 const ListingsDashboard = () => {
 
     const [listings, setListings] = useState([]);
-    // const { logout } = useAuth0();
-    const { logout, error, user, isAuthenticated, isLoading } = useAuth0();
-
 
     useEffect(() => {
         getPostings();
@@ -57,15 +53,6 @@ const ListingsDashboard = () => {
                         </ListingCard>
                     ))}
                 </GridList>
-                <Button
-                    type="button"
-                    fullWidth
-                    variant="contained"
-                    color="primary"
-                    onClick={() => logout({ returnTo: window.location.origin })}
-                >
-                    Logout
-                  </Button>
             </Container>
         )
     )

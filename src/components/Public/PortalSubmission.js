@@ -121,18 +121,12 @@ const PortalSubmission = () => {
     const handleSubmission = async () => {
         setSubmission({submission: true});
         await uploadAllFiles()
-<<<<<<< HEAD
-            .then(() => {
-                axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
-            })
-=======
         .then (() => {
             axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
         })
         .catch((e) => {
             console.error("handleSubmission failed\n", e);
         })
->>>>>>> ccbd504295b97396c2953b368a3f2a760f97b301
         return;
     }
 
@@ -227,52 +221,6 @@ const PortalSubmission = () => {
                     <FieldText>
                         Elevator Pitch*
                 </FieldText>
-<<<<<<< HEAD
-                    <FileUploadButton
-                        function={handleVideoUpload}
-                        textField={videoName}
-                    />
-
-                    {listingsInfo["essay"].map((text) => (
-                        <TextFieldStyled>
-                            <FieldText>
-                                {text}
-                            </FieldText>
-                            <TextField
-                                id="outlined-full-width"
-                                fullWidth
-                                variant="outlined"
-                            />
-                        </TextFieldStyled>
-                    ))}
-
-                    {selectFields.map((text) => (
-                        <TextFieldStyled>
-                            <FieldText>
-                                {text[0]}
-                            </FieldText>
-                            <TextField
-                                id="outlined-full-width"
-                                fullWidth
-                                variant="outlined"
-                            />
-                        </TextFieldStyled>
-                    ))}
-
-                    <br></br>
-                    <Button
-                        size="large"
-                        fullWidth="true"
-                        variant="contained"
-                        component="label"
-                        style={{
-                            "background-color": "#873CA2",
-                            "color": "#F9F6F9"
-                        }}
-                        onClick={handleSubmission}
-                    >
-                        Submit application
-=======
                 <FileUploadButton
                     function={handleVideoUpload}
                     textField={videoName}
@@ -304,7 +252,6 @@ const PortalSubmission = () => {
                     onClick={handleSubmission}
                 >
                     {(!submission) ? `Submit Application` : <CircularProgress color="inherit" size={26} />}
->>>>>>> ccbd504295b97396c2953b368a3f2a760f97b301
                 </Button>
                 </SubmissionContainer>
             </Container>
