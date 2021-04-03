@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-
 import FileUploadButton from './PortalComponents/FileUploadButton'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const BUCKET = 'resume-testing-ats'
 const REGION = 'us-east-2'
@@ -13,7 +13,6 @@ const REGION = 'us-east-2'
 const PortalSubmission = () => {
 
     const { id } = useParams();
-
     const [listingsInfo, setListingsInfo] = useState([]);
     const [appInfo, setAppInfo] = useState({});
     const [resumeFile, setResumeFile] = useState();
@@ -22,6 +21,8 @@ const PortalSubmission = () => {
     const [imageName, setImageName] = useState("");
     const [videoFile, setVideoFile] = useState();
     const [videoName, setVideoName] = useState("");
+
+    const [submission, setSubmission] = useState(false);
 
     // [Title to be shown, id of title for database]
     const requiredFields = [
@@ -118,13 +119,22 @@ const PortalSubmission = () => {
 
     // Function to submit resume, photo, video, then file
     const handleSubmission = async () => {
+        setSubmission({submission: true});
         await uploadAllFiles()
+<<<<<<< HEAD
             .then(() => {
                 axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
             })
+=======
+        .then (() => {
+            axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
+        })
+        .catch((e) => {
+            console.error("handleSubmission failed\n", e);
+        })
+>>>>>>> ccbd504295b97396c2953b368a3f2a760f97b301
         return;
     }
-
 
     useEffect(() => {
         axios.get(`http://127.0.0.1:5000/admin/postings/` + id)
@@ -217,6 +227,7 @@ const PortalSubmission = () => {
                     <FieldText>
                         Elevator Pitch*
                 </FieldText>
+<<<<<<< HEAD
                     <FileUploadButton
                         function={handleVideoUpload}
                         textField={videoName}
@@ -261,6 +272,39 @@ const PortalSubmission = () => {
                         onClick={handleSubmission}
                     >
                         Submit application
+=======
+                <FileUploadButton
+                    function={handleVideoUpload}
+                    textField={videoName}
+                />
+
+                {selectFields.map((text) => (
+                    <TextFieldStyled>
+                        <FieldText>
+                            {text[0]}
+                        </FieldText>
+                        <TextField
+                            id="outlined-full-width"
+                            fullWidth
+                            variant="outlined"
+                        />
+                    </TextFieldStyled>
+                ))}
+
+                <br></br>
+                <Button
+                    size="large"
+                    fullWidth="true"
+                    variant="contained"
+                    component="label"
+                    style={{
+                        "background-color": "#873CA2",
+                        "color": "#F9F6F9"
+                    }}
+                    onClick={handleSubmission}
+                >
+                    {(!submission) ? `Submit Application` : <CircularProgress color="inherit" size={26} />}
+>>>>>>> ccbd504295b97396c2953b368a3f2a760f97b301
                 </Button>
                 </SubmissionContainer>
             </Container>
@@ -269,7 +313,6 @@ const PortalSubmission = () => {
     )
 
 }
-
 
 const Container = styled.div`
     width:100%;
