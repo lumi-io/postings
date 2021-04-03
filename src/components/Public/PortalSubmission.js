@@ -119,9 +119,9 @@ const PortalSubmission = () => {
     // Function to submit resume, photo, video, then file
     const handleSubmission = async () => {
         await uploadAllFiles()
-        .then (() => {
-            axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
-        })
+            .then(() => {
+                axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
+            })
         return;
     }
 
@@ -142,113 +142,130 @@ const PortalSubmission = () => {
     }, [])
 
     return (
-        <Container>
-            <ContentContainer>
-                <Title>{listingsInfo["title"]}</Title>
-                <Subtitle>Phi Chi Theta</Subtitle>
-                <Subtitle>About Us</Subtitle>
-                <ContentText>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non arcu leo lobortis commodo leo fames. In dis egestas pellentesque pretium id urna. Ultrices lacus id quam ultricies urna sem eu sit. Feugiat vel consequat, egestas et aliquam non lectus at. Erat pellentesque varius facilisi mattis vivamus arcu, amet. Convallis eget vitae pellentesque quis. Quis ornare tristique in proin mauris, gravida viverra etiam purus. Natoque consectetur pellentesque sociis pulvinar. Pulvinar pretium tortor, eleifend vitae.</ContentText>
-                <Subtitle>Who are we looking for</Subtitle>
-                <ContentText>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non arcu leo lobortis commodo leo fames. In dis egestas pellentesque pretium id urna. Ultrices lacus id quam ultricies urna sem eu sit. Feugiat vel consequat, egestas et aliquam non lectus at. Erat pellentesque varius facilisi mattis vivamus arcu, amet. Convallis eget vitae pellentesque quis. Quis ornare tristique in proin mauris, gravida viverra etiam purus. Natoque consectetur pellentesque sociis pulvinar. Pulvinar pretium tortor, eleifend vitae.</ContentText>
-            </ContentContainer>
-            <SubmissionContainer>
-                <Title>Apply for this position</Title>
-                {requiredFields.map((text) => (
-                    <TextFieldStyled>
-                        <FieldText>
-                            {text[0]}*
+        (
+            listingsInfo &&
+            <Container>
+                <ContentContainer>
+                    <Title>{listingsInfo["title"]}</Title>
+                    <Subtitle>Phi Chi Theta</Subtitle>
+                    <Subtitle>About Us</Subtitle>
+                    <ContentText>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non arcu leo lobortis commodo leo fames. In dis egestas pellentesque pretium id urna. Ultrices lacus id quam ultricies urna sem eu sit. Feugiat vel consequat, egestas et aliquam non lectus at. Erat pellentesque varius facilisi mattis vivamus arcu, amet. Convallis eget vitae pellentesque quis. Quis ornare tristique in proin mauris, gravida viverra etiam purus. Natoque consectetur pellentesque sociis pulvinar. Pulvinar pretium tortor, eleifend vitae.</ContentText>
+                    <Subtitle>Who are we looking for</Subtitle>
+                    <ContentText>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Non arcu leo lobortis commodo leo fames. In dis egestas pellentesque pretium id urna. Ultrices lacus id quam ultricies urna sem eu sit. Feugiat vel consequat, egestas et aliquam non lectus at. Erat pellentesque varius facilisi mattis vivamus arcu, amet. Convallis eget vitae pellentesque quis. Quis ornare tristique in proin mauris, gravida viverra etiam purus. Natoque consectetur pellentesque sociis pulvinar. Pulvinar pretium tortor, eleifend vitae.</ContentText>
+                </ContentContainer>
+                <SubmissionContainer>
+                    <Title>Apply for this position</Title>
+                    {requiredFields.map((text) => (
+                        <TextFieldStyled>
+                            <FieldText>
+                                {text[0]}*
                         </FieldText>
-                        <TextField
-                            required="true"
-                            id="outlined-full-width"
-                            fullWidth
-                            onChange={e => {
-                                setAppInfo(prevState => {
-                                    const val = e.target.value;
-                                    var newObj = {};
-                                    newObj[text[1]] = val;
-                                    return Object.assign({}, prevState, newObj);
-                                });
-                                console.log(appInfo);
-                            }}
-                            variant="outlined"
-                        />
-                    </TextFieldStyled>
-                ))}
-                {optionalFields.map((text) => (
-                    <TextFieldStyled>
-                        <FieldText>
-                            {text[0]}*
+                            <TextField
+                                required="true"
+                                id="outlined-full-width"
+                                fullWidth
+                                onChange={e => {
+                                    setAppInfo(prevState => {
+                                        const val = e.target.value;
+                                        var newObj = {};
+                                        newObj[text[1]] = val;
+                                        return Object.assign({}, prevState, newObj);
+                                    });
+                                    console.log(appInfo);
+                                }}
+                                variant="outlined"
+                            />
+                        </TextFieldStyled>
+                    ))}
+                    {optionalFields.map((text) => (
+                        <TextFieldStyled>
+                            <FieldText>
+                                {text[0]}*
                         </FieldText>
-                        <TextField
-                            id="outlined-full-width"
-                            fullWidth
-                            onChange={e => {
-                                setAppInfo(prevState => {
-                                    const val = e.target.value;
-                                    var newObj = {};
-                                    newObj[text[1]] = val;
-                                    return Object.assign({}, prevState, newObj);
-                                });
-                                console.log(appInfo);
-                            }}
-                            variant="outlined"
-                        />
-                    </TextFieldStyled>
-                ))}
-                <FieldText>
-                    Resume/CV*
+                            <TextField
+                                id="outlined-full-width"
+                                fullWidth
+                                onChange={e => {
+                                    setAppInfo(prevState => {
+                                        const val = e.target.value;
+                                        var newObj = {};
+                                        newObj[text[1]] = val;
+                                        return Object.assign({}, prevState, newObj);
+                                    });
+                                    console.log(appInfo);
+                                }}
+                                variant="outlined"
+                            />
+                        </TextFieldStyled>
+                    ))}
+                    <FieldText>
+                        Resume/CV*
                 </FieldText>
-                <FileUploadButton
-                    function={handleResumeUpload}
-                    textField={resumeName}
-                />
+                    <FileUploadButton
+                        function={handleResumeUpload}
+                        textField={resumeName}
+                    />
 
-                <FieldText>
-                    Please attach a picture of yourself*
+                    <FieldText>
+                        Please attach a picture of yourself*
                 </FieldText>
-                <FileUploadButton
-                    function={handleImageUpload}
-                    textField={imageName}
-                />
+                    <FileUploadButton
+                        function={handleImageUpload}
+                        textField={imageName}
+                    />
 
-                <FieldText>
-                    Elevator Pitch*
+                    <FieldText>
+                        Elevator Pitch*
                 </FieldText>
-                <FileUploadButton
-                    function={handleVideoUpload}
-                    textField={videoName}
-                />
+                    <FileUploadButton
+                        function={handleVideoUpload}
+                        textField={videoName}
+                    />
 
-                {selectFields.map((text) => (
-                    <TextFieldStyled>
-                        <FieldText>
-                            {text[0]}
-                        </FieldText>
-                        <TextField
-                            id="outlined-full-width"
-                            fullWidth
-                            variant="outlined"
-                        />
-                    </TextFieldStyled>
-                ))}
+                    {listingsInfo["essay"].map((text) => (
+                        <TextFieldStyled>
+                            <FieldText>
+                                {text}
+                            </FieldText>
+                            <TextField
+                                id="outlined-full-width"
+                                fullWidth
+                                variant="outlined"
+                            />
+                        </TextFieldStyled>
+                    ))}
 
-                <br></br>
-                <Button
-                    size="large"
-                    fullWidth="true"
-                    variant="contained"
-                    component="label"
-                    style={{
-                        "background-color": "#873CA2",
-                        "color": "#F9F6F9"
-                    }}
-                    onClick={handleSubmission}
-                >
-                    Submit application
+                    {selectFields.map((text) => (
+                        <TextFieldStyled>
+                            <FieldText>
+                                {text[0]}
+                            </FieldText>
+                            <TextField
+                                id="outlined-full-width"
+                                fullWidth
+                                variant="outlined"
+                            />
+                        </TextFieldStyled>
+                    ))}
+
+                    <br></br>
+                    <Button
+                        size="large"
+                        fullWidth="true"
+                        variant="contained"
+                        component="label"
+                        style={{
+                            "background-color": "#873CA2",
+                            "color": "#F9F6F9"
+                        }}
+                        onClick={handleSubmission}
+                    >
+                        Submit application
                 </Button>
-            </SubmissionContainer>
-        </Container>
+                </SubmissionContainer>
+            </Container>
+        )
+
     )
 
 }
