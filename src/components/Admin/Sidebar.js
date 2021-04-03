@@ -1,16 +1,18 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import Button from './SidebarComponents/Button'
 import MenuButton from './SidebarComponents/MenuButton'
 
 const Sidebar = () => {
   return (
     <Container>
       <Title>
-        lumi
-          </Title>
-      <Button onClick='test()' />
+        whyphi
+      </Title>
+      <br></br>
+      <Link to="/admin/create-listing" style={{ textDecoration: 'none' }}>
+        <MenuButton name="Create New Listing" />
+      </Link>
       <MenuSubtitle>
         Menu
       </MenuSubtitle>
@@ -57,5 +59,6 @@ const Container = styled.div`
   padding-right:40px;
   padding-top: 100px;
 `;
+
 
 export default Sidebar;

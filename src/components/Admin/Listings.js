@@ -1,4 +1,5 @@
 import React from 'react'
+import Navbar from './Navbar'
 import Sidebar from './Sidebar'
 import ListingsDashboard from './AdminComponents/ListingsDashboard'
 import styled from 'styled-components';
@@ -8,7 +9,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Listings = () => {
 
-    const { isAuthenticated, isLoading, error } = useAuth0();
+    const { user, isAuthenticated, isLoading, error } = useAuth0();
 
     if (isLoading) {
         return <div>Loading ...</div>;
@@ -22,6 +23,9 @@ const Listings = () => {
         ( 
             isAuthenticated &&
             <Container>
+                <Navbar 
+                    name={user.name}
+                />
                 <Sidebar />
                 <ListingsDashboard />
             </Container>

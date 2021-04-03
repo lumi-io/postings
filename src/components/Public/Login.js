@@ -16,19 +16,20 @@ const Login = () => {
 
     const [key, setKey] = useState("");
 
-    const [error, setError] = useState("");
+    const [error, setError] = useState(false);
+    const [errorText, setErrorText] = useState("");
 
 
-    const enableLogin = () => {
-        console.log(key);
+    const enableLogin = (event) => {
+        event.preventDefault();
         if (key === "") {
-            setError("Fields are required.");
-            console.log("Fields are required.")
+            setError(true);
+            setErrorText("Fields are required.");
         } else if (key === "123") {
             loginWithRedirect();
         }  else {
-            setError("Incorrect key.")
-            console.log("Incorrect key.")
+            setError(true);
+            setErrorText("Incorrect key.");
         }
         return;
     }
@@ -37,7 +38,7 @@ const Login = () => {
         <BackgroundContainer>
             <CustomContainer>
                 <form className={classes.form} noValidate autoComplete="off">
-                    <TitleText>lumi</TitleText>
+                    <TitleText>whyphi</TitleText>
                     <CustomTextField
                         variant="outlined"
                         margin="normal"
@@ -50,9 +51,11 @@ const Login = () => {
                         autoComplete="current-password"
                         value={key}
                         onChange={(e) => {setKey(e.target.value)}}
+                        error={error}
+                        helperText={errorText}
                     />
                     <CustomButton
-                        type="button"
+                        type="submit"
                         fullWidth
                         variant="contained"
                         color="primary"
