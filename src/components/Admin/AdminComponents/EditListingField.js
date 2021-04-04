@@ -5,12 +5,13 @@ import {
 
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { makeStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 import styled from 'styled-components';
 import axios from 'axios';
@@ -50,9 +51,13 @@ const EditListingField = () => {
             })
             .then(postingInfo => {
                 let postingInfoToUpdate = postingInfo;
-                delete postingInfoToUpdate["_id"];
-                setListingInfo(postingInfoToUpdate);
-                setEssayQuestions(postingInfoToUpdate.essay);
+                if (postingInfoToUpdate !== {}) {
+                    delete postingInfoToUpdate["_id"];
+                    setListingInfo(postingInfoToUpdate);
+                }
+                if (postingInfoToUpdate.essay.length !== 0) {
+                    setEssayQuestions(postingInfoToUpdate.essay);
+                }
                 return;
             })
             .catch(err => {
@@ -118,7 +123,6 @@ const EditListingField = () => {
         let essayQuestionsCopy = [...essayQuestions]
         essayQuestionsCopy[idx] = e.target.value;
         setEssayQuestions(essayQuestionsCopy)
-        console.log(essayQuestions);
         return;
     }
 
@@ -126,15 +130,19 @@ const EditListingField = () => {
     function updateJobListing() {
         let listingInfoToSubmit = listingInfo;
         if (essayQuestions.length !== 0) {
-            listingInfoToSubmit["essay"] = essayQuestions;
+            var essayQuestionsFiltered = essayQuestions.filter(q => q);
+            // After filtering, if length of questions is not zero, add questions to update field
+            if (essayQuestions.length !== 0) {
+                listingInfoToSubmit["essay"] = essayQuestionsFiltered;
+            }
         }
         axios.patch(
             "http://127.0.0.1:5000/admin/postings/" + id,
             listingInfo
         )
-        .then(() => {
-            setOpen(true);
-        })
+            .then(() => {
+                setOpen(true);
+            })
     }
 
 
@@ -147,7 +155,7 @@ const EditListingField = () => {
                 required
                 id="outlined-required"
                 label="Title"
-                value={listingInfo.title}
+                value={listingInfo.title || ""}
                 onChange={e => updateField(e, "title")}
                 variant="outlined"
             />
@@ -160,7 +168,7 @@ const EditListingField = () => {
                         required
                         id="outlined-required"
                         label={field[0]}
-                        value={listingInfo[field[1]]}
+                        value={listingInfo[field[1]] || ""}
                         onChange={e => updateField(e, field[1])}
                         variant="outlined"
                         multiline
@@ -169,21 +177,21 @@ const EditListingField = () => {
                 </BigTextContainer>
             ))}
 
-            <h3>Essay Questions</h3>
-            <Button
+            <h3>Essay Questions / Additional Questions</h3>
+            <CustomButton
                 variant="contained"
                 color="primary"
                 justify="flex-end"
                 onClick={addQuestion}>
                 Add
-            </Button>
-            <Button
+            </CustomButton>
+            <CustomButton
                 variant="contained"
                 color="primary"
                 justify="flex-end"
                 onClick={deleteQuestion}>
                 Delete
-            </Button>
+            </CustomButton>
 
             <br></br>
             <br></br>
@@ -225,9 +233,9 @@ const EditListingField = () => {
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
             />
             <br></br>
-            <Button variant="contained" color="primary" justify="flex-end" onClick={updateJobListing}>
+            <CustomButton variant="contained" color="primary" justify="flex-end" onClick={updateJobListing}>
                 Update
-            </Button>
+            </CustomButton>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -271,5 +279,16 @@ const EssayQuestionContainer = styled.div`
     padding-bottom: 7.5px;
     padding-top: 7.5px;
 `;
+
+const CustomButton = withStyles({
+    root: {
+        "background-color": "#8A3DA6",
+        "margin-left": "5px",
+        "margin-right": "5px",
+        "&:hover": {
+            "background-color": "#61486A"
+        }
+    }
+})(Button);
 
 export default EditListingField;
