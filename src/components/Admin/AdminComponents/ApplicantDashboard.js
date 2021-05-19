@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import styled from 'styled-components';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -16,6 +16,9 @@ const ApplicantDashboard = () => {
     // const classes = useStyles();
 
     let { id } = useParams();
+
+    const location = useLocation();
+    const {jobTitle} = location.state;
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -83,7 +86,7 @@ const ApplicantDashboard = () => {
 
     return (
         <Container>
-            <Title>Applicants Dashboard</Title>
+            <Title>Applicants for {jobTitle}</Title>
             <br></br>
             <TableContainer>
                 <Table stickyHeader aria-label="sticky table">

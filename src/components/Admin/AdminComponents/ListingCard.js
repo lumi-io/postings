@@ -43,7 +43,12 @@ export default function ListingCard(props) {
                 Edit
             </Button>
           </Link>
-          <Link to={"/admin/listing/" + props.id + "/applicant"} style={{ textDecoration: 'none' }}>
+          <Link to={{
+            pathname: "/admin/listing/" + props.id + "/applicant",
+            state: {
+              jobTitle: props.name
+            }
+          }} style={{ textDecoration: 'none' }}>
           <Button>
             View Applicants
           </Button>
