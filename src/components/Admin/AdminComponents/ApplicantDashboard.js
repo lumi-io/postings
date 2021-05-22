@@ -1,154 +1,89 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-import styled from 'styled-components';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TablePagination from '@material-ui/core/TablePagination';
-import TableRow from '@material-ui/core/TableRow';
+import Grid from "@material-ui/core/Grid";
+import styled from "styled-components";
+import { FixedSizeList as List } from "react-window";
+import "./ApplicantRow.css";
 
-import axios from 'axios';
-
+import axios from "axios";
 
 const ApplicantDashboard = () => {
-    // const classes = useStyles();
+  // const classes = useStyles();
 
-    let { id } = useParams();
+  let { id } = useParams();
 
-    const location = useLocation();
-    const {jobTitle} = location.state;
+  const location = useLocation();
+  const { jobTitle } = location.state;
 
-    const [page, setPage] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [applicantData, setApplicantData] = useState([]);
+  const [applicantData, setApplicantData] = useState([]);
 
-    useEffect(() => {
-        getApplicantData();
-    }, [])
+  useEffect(() => {
+    getApplicantData();
+  }, []);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+  function getApplicantData() {
+    axios
+      .get("http://127.0.0.1:5000/admin/postings/" + id + "/applications")
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        if (data["status"]) {
+          return data["application"]["applications"];
+        } else {
+          console.log("err");
+        }
+      })
+      .then((applications) => {
+        let modifiedData = applications.map((app) => ({
+          firstName: app["firstName"],
+          lastName: app["lastName"],
+          email: app["email"],
+          gradYear: app["gradYear"],
+          college: app["college"],
+          major: app["major"],
+          applicantId: app["applicantId"],
+        }));
+        setApplicantData(modifiedData);
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+  const Row = ({ index, style }) => (
+    <div className={index % 2 ? 'ListItemOdd' : 'ListItemEven'} style={style} onClick={() => (console.log(applicantData[index]))}>
+      {applicantData[index]["firstName"] + " " + applicantData[index]["lastName"]}
+    </div>
+  );
 
-    const columns = [
-        { id: 'firstName', label: 'First Name', minWidth: 100 },
-        { id: 'lastName', label: 'Last Name', minWidth: 80 },
-        { id: 'email', label: 'Email', minWidth: 80 },
-        { id: 'gradYear', label: 'Grad\u00a0Year', minWidth: 10 },
-        { id: 'college', label: 'College', minWidth: 20 },
-        { id: 'major', label: 'Major', minWidth: 100 },
-    ];
-
-
-    function getApplicantData() {
-        axios.get("http://127.0.0.1:5000/admin/postings/" + id + "/applications")
-            .then(res => {
-                return res.data;
-            })
-            .then(data => {
-                if (data["status"]) {
-                    return data["application"]["applications"];
-                }
-
-                else {
-                    console.log("err")
-                }
-            })
-            .then(applications => {
-                console.log(applications);
-                let modifiedData = applications.map(
-                    app => ({
-                        firstName: app["firstName"],
-                        lastName: app["lastName"],
-                        email: app["email"],
-                        gradYear: app["gradYear"],
-                        college: app["college"],
-                        major: app["major"],
-                        applicantId: app["applicantId"]
-                    })
-                )
-                setApplicantData(modifiedData);
-                return;
-            })
-            .catch(err => {
-                console.log(err);
-            })
-    }
-
-    const rows = applicantData;
-
-    return (
-        <Container>
-            <Title>Applicants for {jobTitle}</Title>
-            <br></br>
-            <TableContainer>
-                <Table stickyHeader aria-label="sticky table">
-                    <TableHead>
-                        <TableRow>
-                            {columns.map((column) => (
-                                <TableCell
-                                    key={column.id}
-                                    align={column.align}
-                                    style={{ minWidth: column.minWidth }}
-                                >
-                                    {column.label}
-                                </TableCell>
-                            ))}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                            return (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
-                                    {columns.map((column) => {
-                                        const value = row[column.id];
-                                        return (
-                                            <TableCell key={column.id} align={column.align} onClick={() => window.location.href = "applicant/" + row.applicantId} >
-                                                {column.format && typeof value === 'number' ? column.format(value) : value}
-                                            </TableCell>
-                                        );
-                                    })}
-                                </TableRow>
-                            );
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-        </Container>
-    )
-}
+  return (
+    <Container>
+      <Title>Applicants for {jobTitle}</Title>
+      <br></br>
+      <List className="List" height={500} itemCount={applicantData.length} itemSize={75} width={400}>
+        {Row}
+      </List>
+    </Container>
+  );
+};
 
 
 const Container = styled.div`
-    width:100%;
-    height:100%;
-    padding: 81px 91px 2px 91px;
-    flex-direction:container;
+  width: 100%;
+  height: 100%;
+  padding: 81px 91px 2px 91px;
+  flex-direction: container;
 `;
 
 const Title = styled.div`
-    font-family: Roboto;
-    font-style: normal;
-    font-weight: bold;
-    font-size: 36px;
-    line-height: 42px;
-    color: #873CA2; /* Accent Purple */
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 42px;
+  color: #873ca2; /* Accent Purple */
 `;
 
 export default ApplicantDashboard;
