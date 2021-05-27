@@ -16,7 +16,7 @@ const ListingsDashboard = () => {
     }, []);
 
     function getPostings() {
-        axios.get(`http://127.0.0.1:5000/admin/postings`, {
+        axios.get(process.env.REACT_APP_FLASK_SERVER + "admin/postings", {
         })
             .then(res => {
                 return res.data;

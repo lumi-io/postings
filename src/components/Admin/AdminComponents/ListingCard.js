@@ -15,7 +15,7 @@ export default function ListingCard(props) {
 
   const deleteListing = () => {
     // Calls Delete API call to delete posting based on button click
-    axios.delete("http://127.0.0.1:5000/admin/postings/" + props.id)
+    axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + props.id)
     // Force reloads page in order to re-render the listings
     window.location.reload();
     return;

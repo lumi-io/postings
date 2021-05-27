@@ -111,9 +111,9 @@ const PortalSubmission = () => {
     }
 
     const uploadAllFiles = async () => {
-        const resumeLink = await axios.post("http://127.0.0.1:5000/user/portal/upload-resume/" + id, resumeFile);
-        const imageLink = await axios.post("http://127.0.0.1:5000/user/portal/upload-image/" + id, imageFile);
-        const videoLink = await axios.post("http://127.0.0.1:5000/user/portal/upload-video/" + id, videoFile);
+        const resumeLink = await axios.post(process.env.REACT_APP_FLASK_SERVER + "user/portal/upload-resume/" + id, resumeFile);
+        const imageLink = await axios.post(process.env.REACT_APP_FLASK_SERVER + "user/portal/upload-image/" + id, imageFile);
+        const videoLink = await axios.post(process.env.REACT_APP_FLASK_SERVER + "user/portal/upload-video/" + id, videoFile);
         return [resumeLink, imageLink, videoLink]
     }
 
@@ -122,7 +122,7 @@ const PortalSubmission = () => {
         setSubmission({submission: true});
         await uploadAllFiles()
         .then (() => {
-            axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
+            axios.post(process.env.REACT_APP_FLASK_SERVER + "user/portal/submit/" + id, appInfo);
         })
         .catch((e) => {
             console.error("handleSubmission failed\n", e);
@@ -131,7 +131,7 @@ const PortalSubmission = () => {
     }
 
     useEffect(() => {
-        axios.get(`http://127.0.0.1:5000/admin/postings/` + id)
+        axios.get(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id)
             .then(res => {
                 return res.data;
             })
