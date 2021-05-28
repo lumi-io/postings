@@ -1,4 +1,4 @@
-# Postings (aka waffles&pancakes)
+# Postings (aka whyphi)
 
 ## Available Scripts
 

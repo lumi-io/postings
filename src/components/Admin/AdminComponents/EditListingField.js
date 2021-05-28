@@ -42,7 +42,7 @@ const EditListingField = () => {
 
     // API function that gets info of a listing
     const getListingInfo = () => {
-        axios.get("http://127.0.0.1:5000/admin/postings/" + id)
+        axios.get(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id)
             .then(res => {
                 return res.data;
             })
@@ -137,7 +137,7 @@ const EditListingField = () => {
             }
         }
         axios.patch(
-            "http://127.0.0.1:5000/admin/postings/" + id,
+            process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id,
             listingInfo
         )
             .then(() => {

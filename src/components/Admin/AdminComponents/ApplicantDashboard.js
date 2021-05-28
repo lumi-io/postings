@@ -144,11 +144,132 @@ const Container = styled.div`
   flex-direction: container;
 `;
 
+<<<<<<< HEAD
 const ApplicantDataGrid = styled.div`
   display: flex;
   flex-direction: row;
   height: 80%;
 `;
+=======
+const ApplicantDashboard = () => {
+    // const classes = useStyles();
+
+    let { id } = useParams();
+
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [applicantData, setApplicantData] = useState([]);
+
+    useEffect(() => {
+        getApplicantData();
+    }, [])
+
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
+    };
+
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
+    };
+
+    const columns = [
+        { id: 'firstName', label: 'First Name', minWidth: 100 },
+        { id: 'lastName', label: 'Last Name', minWidth: 80 },
+        { id: 'email', label: 'Email', minWidth: 80 },
+        { id: 'gradYear', label: 'Grad\u00a0Year', minWidth: 10 },
+        { id: 'college', label: 'College', minWidth: 20 },
+        { id: 'major', label: 'Major', minWidth: 100 },
+    ];
+
+
+    function getApplicantData() {
+        axios.get(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id + "/applications")
+            .then(res => {
+                return res.data;
+            })
+            .then(data => {
+                if (data["status"]) {
+                    return data["application"]["applications"];
+                }
+
+                else {
+                    console.log("err")
+                }
+            })
+            .then(applications => {
+                console.log(applications);
+                let modifiedData = applications.map(
+                    app => ({
+                        firstName: app["firstName"],
+                        lastName: app["lastName"],
+                        email: app["email"],
+                        gradYear: app["gradYear"],
+                        college: app["college"],
+                        major: app["major"],
+                        applicantId: app["applicantId"]
+                    })
+                )
+                setApplicantData(modifiedData);
+                return;
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const rows = applicantData;
+
+    return (
+        <Container>
+            <Title>Applicants Dashboard</Title>
+            <br></br>
+            <TableContainer>
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => (
+                                <TableCell
+                                    key={column.id}
+                                    align={column.align}
+                                    style={{ minWidth: column.minWidth }}
+                                >
+                                    {column.label}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            return (
+                                <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
+                                    {columns.map((column) => {
+                                        const value = row[column.id];
+                                        return (
+                                            <TableCell key={column.id} align={column.align} onClick={() => window.location.href = "applicant/" + row.applicantId} >
+                                                {column.format && typeof value === 'number' ? column.format(value) : value}
+                                            </TableCell>
+                                        );
+                                    })}
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+            />
+        </Container>
+    )
+}
+>>>>>>> 608a37f267249c404771b74d1f8b9a4b8a14a3b2
 
 const ApplicantScrollableField = styled.div`
   height: 80%;

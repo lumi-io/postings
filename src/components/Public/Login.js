@@ -25,7 +25,7 @@ const Login = () => {
         if (key === "") {
             setError(true);
             setErrorText("Fields are required.");
-        } else if (key === "123") {
+        } else if (key === process.env.REACT_APP_WHYPHI_PASSWORD) {
             loginWithRedirect();
         }  else {
             setError(true);

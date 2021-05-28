@@ -69,7 +69,7 @@ const CreateListing = () => {
             listingInfoToSubmit["essay"] = essayQuestions;
         }
         axios.post(
-            "http://127.0.0.1:5000/admin/postings/create",
+            process.env.REACT_APP_FLASK_SERVER + "admin/postings/create",
             listingInfoToSubmit
         )
         .then(res => {
