@@ -29,7 +29,7 @@ const ApplicantDashboard = () => {
 
   function getApplicantData() {
     axios
-      .get("http://127.0.0.1:5000/admin/postings/" + id + "/applications")
+      .get(process.env.REACT_APP_FLASK_SERVER + "/admin/postings/" + id + "/applications")
       .then((res) => {
         return res.data;
       })
