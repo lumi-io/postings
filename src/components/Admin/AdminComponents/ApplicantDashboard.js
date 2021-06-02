@@ -1,14 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
-// import Grid from "@material-ui/core/Grid";
+import { makeStyles } from "@material-ui/core/styles";
+
 import styled from "styled-components";
-import { FixedSizeList as List } from "react-window";
-import { FixedSizeGrid as Grid } from "react-window";
-import AutoSizer from "react-virtualized-auto-sizer";
-import "./ApplicantRow.css";
+// import { FixedSizeList as List } from "react-window";
+// import { FixedSizeGrid as Grid } from "react-window";
+// import AutoSizer from "react-virtualized-auto-sizer";
+// import "./ApplicantRow.css";
+
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableContainer from "@material-ui/core/TableContainer";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Avatar from "@material-ui/core/Avatar";
 
 import axios from "axios";
-import { containerSizesSelector } from "@material-ui/data-grid";
+// import { containerSizesSelector } from "@material-ui/data-grid";
 
 const ApplicantDashboard = () => {
   // const classes = useStyles();
@@ -27,9 +37,22 @@ const ApplicantDashboard = () => {
     getApplicantData();
   }, []);
 
+  const useStyles = makeStyles({
+    table: {},
+  });
+
+  const classes = useStyles();
+
+  const rows = [_createData("User 1", "imageurl")];
+
   function getApplicantData() {
     axios
-      .get(process.env.REACT_APP_FLASK_SERVER + "/admin/postings/" + id + "/applications")
+      .get(
+        process.env.REACT_APP_FLASK_SERVER +
+          "/admin/postings/" +
+          id +
+          "/applications"
+      )
       .then((res) => {
         return res.data;
       })
@@ -50,8 +73,10 @@ const ApplicantDashboard = () => {
           major: app["major"],
           applicantId: app["applicantId"],
         }));
+        console.log(modifiedData);
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
+          console.log("hit");
           setApplicantDataExists(true);
           setCurrentApplicantData(modifiedData[0]);
           setCurrentApplicantIndex(0);
@@ -63,75 +88,61 @@ const ApplicantDashboard = () => {
       });
   }
 
-  const Row = ({ index, style }) => (
-    <div
-      className={index % 2 ? "ListItemOdd" : "ListItemEven"}
-      style={style}
-      onClick={(event) => _setCurrentApplicantProperties(event, index)}
-      onMouseOver={_applicantOnHover}
-      onMouseOut={_applicantOnHoverOut}
-    >
-      {applicantData[index]["firstName"] +
-        " " +
-        applicantData[index]["lastName"]}
-    </div>
+  const applicantDataRows = applicantData.map((applicant) =>
+    _createData(applicant["firstName"] + " " + applicant["lastName"], "testUrl")
+    // console.log(applicant["firstName"])
   );
 
-  function _setCurrentApplicantProperties(event, idx) {
-    console.log(applicantData[idx]);
-    event.target.style.background = "red";
-    setCurrentApplicantData(applicantData[idx]);
-    setCurrentApplicantIndex(idx);
+  function _createData(name, image) {
+    return { name, image };
   }
 
-  function _applicantOnHover(event) {
-    event.target.style.background = "#E1DEE1";
-  }
+  // function _setCurrentApplicantProperties(event, idx) {
+  //   console.log(applicantData[idx]);
+  //   event.target.style.background = "red";
+  //   setCurrentApplicantData(applicantData[idx]);
+  //   setCurrentApplicantIndex(idx);
+  // }
 
-  function _applicantOnHoverOut(event) {
-    event.target.style.background = "";
-  }
+  // function _applicantOnHover(event) {
+  //   event.target.style.background = "#E1DEE1";
+  // }
+
+  // function _applicantOnHoverOut(event) {
+  //   event.target.style.background = "";
+  // }
 
   return (
     <Container>
       <Title>Applicants for {jobTitle}</Title>
       <br></br>
       <ApplicantDataGrid>
-        <ApplicantScrollableField>
-          {applicantDataExists ? (
-            <List
-              className="List"
-              height={600}
-              itemCount={applicantData.length}
-              itemSize={75}
-              width={500}
+        <ApplicantScrollableBorder>
+          <TableContainer style={{ maxHeight: "100%" }}>
+            <Table
+              stickyHeader
+              className={classes.table}
+              aria-label="Table for List of Applicants"
             >
-              {Row}
-            </List>
-          ) : (
-            "No Applicants"
-          )}
-        </ApplicantScrollableField>
+              <TableBody>
+                {applicantDataRows.map((row) => (
+                  <TableRow key={row.name}>
+                    <TableCell component="th" scope="row">
+                      {/* <Avatar
+                        alt="Cindy Baker"
+                        src="/static/images/avatar/3.jpg"
+                        style={{width: 35, height: 35, display: 'inline-block', "vertical-align": 'top'  }}
+                      /> */}
+                      <span>{row.name}</span>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </ApplicantScrollableBorder>
 
-        <ApplicantDataBorder>
-        {applicantDataExists ? (
-          <ApplicantDataField>
-            <ApplicantDataTitle>
-              {currentApplicantData["firstName"] +
-                " " +
-                currentApplicantData["lastName"]}
-            </ApplicantDataTitle>
-            <hr></hr>
-            <ApplicantDataInfoText>
-              Email: {currentApplicantData["email"] + "\n"}
-              <br></br>
-              Major: {currentApplicantData["major"]}
-            </ApplicantDataInfoText>
-          </ApplicantDataField>
-        ) : (
-          "Invalid"
-        )}
-        </ApplicantDataBorder>
+        <ApplicantDataBorder>test</ApplicantDataBorder>
       </ApplicantDataGrid>
     </Container>
   );
@@ -147,13 +158,10 @@ const Container = styled.div`
 const ApplicantDataGrid = styled.div`
   display: flex;
   flex-direction: row;
-  height: 80%;
+  height: 100%;
+  margin-bottom: 100px;
 `;
 
-const ApplicantScrollableField = styled.div`
-  height: 80%;
-  margin: 10px;
-`;
 const ApplicantDataBorder = styled.div`
   border: 1px solid #61486a;
   width: 100%;
@@ -161,24 +169,10 @@ const ApplicantDataBorder = styled.div`
   padding: 20px 30px 20px 30px;
 `;
 
-const ApplicantDataField = styled.div``;
-
-const ApplicantDataTitle = styled.div`
-  color: #873ca2;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 24px;
-  line-height: 28px;
-`;
-
-const ApplicantDataInfoText = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 21px;
-  color: #61486a;
+const ApplicantScrollableBorder = styled.div`
+  border: 1px solid #61486a;
+  width: 50%;
+  margin: 10px;
 `;
 
 const Title = styled.div`
