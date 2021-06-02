@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
-import SearchBar from "material-ui-search-bar";
+// import SearchBar from "material-ui-search-bar";
 
 
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -136,19 +136,16 @@ const ListingsDashboard = (props) => {
         <Container>
             <Title>Job Postings</Title>
             <br></br>
-            <Box display="flex">
-                <Box p={1} flexGrow={1}>
-                <TextField style={{ width: "500px", height: "30px", paddingBottom: "30px"}} label="Search Job" variant="filled" />
-                </Box>
-                <Box>
-
+            <Box style={{paddingBottom: "10px"}} display="flex">
+                <Box flexGrow={1}>
+                <TextField style={{ width: "500px", height: "30px", paddingBottom: "30px"}} label="Search Job" variant="outlined" />
                 </Box>
                 <Box>
                     <Select
                         labelId="demo-customized-select-label"
                         id="demo-customized-select"
                         value={option}
-                        style={{ width: "200px", paddingLeft: "50px", paddingTop: "10px"}}
+                        style={{ width: "200px", paddingLeft: "50px"}}
                         onChange={handleChange}
                         input={<BootstrapInput />}
                     >
@@ -166,7 +163,7 @@ const ListingsDashboard = (props) => {
                                 <TableCell
                                     key={column.id}
                                     align={column.align}
-                                    style={{ minWidth: column.minWidth }}
+                                    style={{ minWidth: column.minWidth, color: "#371842"}}
                                 >
                                     {column.label}
                                 </TableCell>
@@ -179,8 +176,10 @@ const ListingsDashboard = (props) => {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
                                         const value = row[column.id];
+                                        const isName = (column.id === "title")
+                                        console.log(isName)
                                         return (
-                                            <TableCell key={column.id} align={column.align} onClick={() => "/admin/listing/" + props.id} >
+                                            <TableCell style={{color: isName ? "#833A9E" : "#61486A", fontWeight: isName ? "bold" : "normal"}} key={column.id} align={column.align} onClick={() => window.location.href = "/admin/listing/" + row._id} >
                                                 {column.format && typeof value === 'number' ? column.format(value) : value}
                                             </TableCell>
                                         );
