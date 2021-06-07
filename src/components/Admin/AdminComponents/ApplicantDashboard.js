@@ -32,7 +32,7 @@ const ApplicantDashboard = () => {
 
   const [applicantData, setApplicantData] = useState([]);
   const [applicantDataExists, setApplicantDataExists] = useState(false);
-  const [currentApplicantIndex, setCurrentApplicantIndex] = useState();
+  const [selectedApplicantIndex, setSelectedApplicantIndex] = useState(null);
   const [selectedApplicantData, setSelectedApplicantData] = useState({});
 
   useEffect(() => {
@@ -46,14 +46,23 @@ const ApplicantDashboard = () => {
       "&:hover": {
         backgroundColor: "#fefcff",
       },
+      "&$selected, &$selected:hover": {
+        backgroundColor: "#fefcff",
+      },
     },
     tableCellSelected: {
       "&:hover": {
         color: "#873ca2",
         "font-weight": "bold",
-        "border-left": "4px solid #873ca2"
       },
-    }
+      "$selected &": {
+        color: "#873ca2",
+        "font-weight": "bold",
+        "border-left": "5px solid #873ca2",
+      }
+    },
+    selected: {},
+    hover: {},
   });
 
   // const styles = theme => ({
@@ -100,7 +109,7 @@ const ApplicantDashboard = () => {
           console.log("hit");
           setApplicantDataExists(true);
           setSelectedApplicantData(modifiedData[0]);
-          setCurrentApplicantIndex(0);
+          setSelectedApplicantIndex(0);
         }
         return;
       })
@@ -126,7 +135,7 @@ const ApplicantDashboard = () => {
   function _setCurrentApplicantProperties(idx) {
     console.log(applicantData[idx]);
     setSelectedApplicantData(applicantData[idx]);
-    setCurrentApplicantIndex(idx);
+    setSelectedApplicantIndex(idx);
   }
 
   // function _applicantOnHover(event) {
@@ -151,7 +160,19 @@ const ApplicantDashboard = () => {
             >
               <TableBody>
                 {applicantDataRows.map((row) => (
-                  <TableRow key={row.name} className={classes.tableRowSelected}>
+                  <TableRow
+                    hover
+                    key={row.name}
+                    onClick={() => {
+                      setSelectedApplicantIndex(row.index);
+                    }}
+                    selected={selectedApplicantIndex === row.index}
+                    classes={{
+                      hover: classes.hover,
+                      selected: classes.selected,
+                    }}
+                    className={classes.tableRowSelected}
+                  >
                     <TableCell
                       className={classes.tableCellSelected}
                       component="th"
