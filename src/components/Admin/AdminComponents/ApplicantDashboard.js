@@ -8,15 +8,10 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
 
 import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
 import axios from "axios";
@@ -61,20 +56,13 @@ const ApplicantDashboard = () => {
         "border-left": "5px solid #873ca2",
       }
     },
+    // Removes default CSS in Material UI Table Component
     selected: {},
     hover: {},
   });
-
-  // const styles = theme => ({
-  //   tableRow: {
-  //     '&&:hover': {
-  //       backgroundColor: '#0CB5F3',
-  //     }
-  //   }
-  // })
-
   const classes = useStyles();
 
+  // Function that retrieves Applicant Data
   function getApplicantData() {
     axios
       .get(
@@ -118,6 +106,7 @@ const ApplicantDashboard = () => {
       });
   }
 
+  // Mapping of all the applicants with needed data to be rendered on table rows
   const applicantDataRows = applicantData.map(
     (applicant, index) =>
       _createData(
@@ -125,26 +114,18 @@ const ApplicantDashboard = () => {
         "testUrl",
         index
       )
-    // console.log(applicant["firstName"])
   );
 
+  // Helper function to create data for rows in table
   function _createData(name, image, index) {
     return { name, image, index };
   }
 
+  // Helper function to set applicant properties to be rendered
   function _setCurrentApplicantProperties(idx) {
-    console.log(applicantData[idx]);
     setSelectedApplicantData(applicantData[idx]);
     setSelectedApplicantIndex(idx);
   }
-
-  // function _applicantOnHover(event) {
-  //   event.target.style.background = "#E1DEE1";
-  // }
-
-  // function _applicantOnHoverOut(event) {
-  //   event.target.style.background = "";
-  // }
 
   return (
     <Container>
@@ -163,9 +144,6 @@ const ApplicantDashboard = () => {
                   <TableRow
                     hover
                     key={row.name}
-                    onClick={() => {
-                      setSelectedApplicantIndex(row.index);
-                    }}
                     selected={selectedApplicantIndex === row.index}
                     classes={{
                       hover: classes.hover,
