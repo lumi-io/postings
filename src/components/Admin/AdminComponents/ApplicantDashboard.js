@@ -3,10 +3,6 @@ import { useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 
 import styled from "styled-components";
-// import { FixedSizeList as List } from "react-window";
-// import { FixedSizeGrid as Grid } from "react-window";
-// import AutoSizer from "react-virtualized-auto-sizer";
-// import "./ApplicantRow.css";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -16,6 +12,12 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
+
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import Button from "@material-ui/core/Button";
+import Typography from "@material-ui/core/Typography";
 
 import axios from "axios";
 // import { containerSizesSelector } from "@material-ui/data-grid";
@@ -31,7 +33,7 @@ const ApplicantDashboard = () => {
   const [applicantData, setApplicantData] = useState([]);
   const [applicantDataExists, setApplicantDataExists] = useState(false);
   const [currentApplicantIndex, setCurrentApplicantIndex] = useState();
-  const [currentApplicantData, setCurrentApplicantData] = useState({});
+  const [selectedApplicantData, setSelectedApplicantData] = useState({});
 
   useEffect(() => {
     getApplicantData();
@@ -39,11 +41,30 @@ const ApplicantDashboard = () => {
 
   const useStyles = makeStyles({
     table: {},
+    tableRowSelected: {
+      backgroundColor: "white",
+      "&:hover": {
+        backgroundColor: "#fefcff",
+      },
+    },
+    tableCellSelected: {
+      "&:hover": {
+        color: "#873ca2",
+        "font-weight": "bold",
+        "border-left": "4px solid #873ca2"
+      },
+    }
   });
 
-  const classes = useStyles();
+  // const styles = theme => ({
+  //   tableRow: {
+  //     '&&:hover': {
+  //       backgroundColor: '#0CB5F3',
+  //     }
+  //   }
+  // })
 
-  const rows = [_createData("User 1", "imageurl")];
+  const classes = useStyles();
 
   function getApplicantData() {
     axios
@@ -78,7 +99,7 @@ const ApplicantDashboard = () => {
         if (modifiedData.length !== 0) {
           console.log("hit");
           setApplicantDataExists(true);
-          setCurrentApplicantData(modifiedData[0]);
+          setSelectedApplicantData(modifiedData[0]);
           setCurrentApplicantIndex(0);
         }
         return;
@@ -104,7 +125,7 @@ const ApplicantDashboard = () => {
 
   function _setCurrentApplicantProperties(idx) {
     console.log(applicantData[idx]);
-    setCurrentApplicantData(applicantData[idx]);
+    setSelectedApplicantData(applicantData[idx]);
     setCurrentApplicantIndex(idx);
   }
 
@@ -130,8 +151,9 @@ const ApplicantDashboard = () => {
             >
               <TableBody>
                 {applicantDataRows.map((row) => (
-                  <TableRow key={row.name}>
+                  <TableRow key={row.name} className={classes.tableRowSelected}>
                     <TableCell
+                      className={classes.tableCellSelected}
                       component="th"
                       scope="row"
                       onClick={() => _setCurrentApplicantProperties(row.index)}
@@ -151,13 +173,20 @@ const ApplicantDashboard = () => {
         </ApplicantScrollableBorder>
 
         <ApplicantDataBorder>
-          {currentApplicantData["firstName"] +
-            " " +
-            currentApplicantData["lastName"]}
-          <br></br>
-          {currentApplicantData["email"]}
-          <br></br>
-          {currentApplicantData["gradYear"]}
+          <Card className={classes.root} variant="outlined">
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                {selectedApplicantData["firstName"] +
+                  " " +
+                  selectedApplicantData["lastName"]}
+              </Typography>
+              <Typography variant="body2" component="p">
+                well meaning and kindly.
+                <br />
+                {'"a benevolent smile"'}
+              </Typography>
+            </CardContent>
+          </Card>
         </ApplicantDataBorder>
       </ApplicantDataGrid>
     </Container>
@@ -183,6 +212,8 @@ const ApplicantDataBorder = styled.div`
   width: 100%;
   margin: 10px;
   padding: 20px 30px 20px 30px;
+  overflow-y: scroll;
+  white-space: nowrap;
 `;
 
 const ApplicantScrollableBorder = styled.div`
