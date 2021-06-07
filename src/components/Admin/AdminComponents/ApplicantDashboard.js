@@ -88,21 +88,25 @@ const ApplicantDashboard = () => {
       });
   }
 
-  const applicantDataRows = applicantData.map((applicant) =>
-    _createData(applicant["firstName"] + " " + applicant["lastName"], "testUrl")
+  const applicantDataRows = applicantData.map(
+    (applicant, index) =>
+      _createData(
+        applicant["firstName"] + " " + applicant["lastName"],
+        "testUrl",
+        index
+      )
     // console.log(applicant["firstName"])
   );
 
-  function _createData(name, image) {
-    return { name, image };
+  function _createData(name, image, index) {
+    return { name, image, index };
   }
 
-  // function _setCurrentApplicantProperties(event, idx) {
-  //   console.log(applicantData[idx]);
-  //   event.target.style.background = "red";
-  //   setCurrentApplicantData(applicantData[idx]);
-  //   setCurrentApplicantIndex(idx);
-  // }
+  function _setCurrentApplicantProperties(idx) {
+    console.log(applicantData[idx]);
+    setCurrentApplicantData(applicantData[idx]);
+    setCurrentApplicantIndex(idx);
+  }
 
   // function _applicantOnHover(event) {
   //   event.target.style.background = "#E1DEE1";
@@ -127,7 +131,11 @@ const ApplicantDashboard = () => {
               <TableBody>
                 {applicantDataRows.map((row) => (
                   <TableRow key={row.name}>
-                    <TableCell component="th" scope="row">
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      onClick={() => _setCurrentApplicantProperties(row.index)}
+                    >
                       {/* <Avatar
                         alt="Cindy Baker"
                         src="/static/images/avatar/3.jpg"
@@ -142,7 +150,15 @@ const ApplicantDashboard = () => {
           </TableContainer>
         </ApplicantScrollableBorder>
 
-        <ApplicantDataBorder>test</ApplicantDataBorder>
+        <ApplicantDataBorder>
+          {currentApplicantData["firstName"] +
+            " " +
+            currentApplicantData["lastName"]}
+          <br></br>
+          {currentApplicantData["email"]}
+          <br></br>
+          {currentApplicantData["gradYear"]}
+        </ApplicantDataBorder>
       </ApplicantDataGrid>
     </Container>
   );
@@ -170,7 +186,7 @@ const ApplicantDataBorder = styled.div`
 `;
 
 const ApplicantScrollableBorder = styled.div`
-  border: 1px solid #61486a;
+  border: 1px solid #71706e;
   width: 50%;
   margin: 10px;
 `;
