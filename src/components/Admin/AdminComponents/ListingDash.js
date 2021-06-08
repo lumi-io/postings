@@ -12,14 +12,18 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 // import SearchBar from "material-ui-search-bar";
-
-
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
 import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
+import { green } from '@material-ui/core/colors';
+import Checkbox from '@material-ui/core/Checkbox';
+
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
 
 import axios from 'axios';
 
@@ -48,9 +52,11 @@ const ListingsDashboard = (props) => {
     const columns = [
         { id: 'title', label: 'Job Name', minWidth: 100 },
         { id: '_id', label: 'Job No.', minWidth: 80 },
-        { id: 'type', label: 'Type', minWidth: 60 },
+        { id: 'type', label: 'Type', minWidth: 30 },
         { id: 'deadline', label: 'Deadline', minWidth: 60 },
         { id: 'applicants_num', label: 'Applications', minWidth: 20 },
+        { id: 'status', label: 'Public', minWidth: 20 },
+        { id: 'edit', label: 'Edit Options', minWidth: 20 },
     ];
 
     useEffect(() => {
@@ -132,6 +138,29 @@ const ListingsDashboard = (props) => {
         },
       }))(InputBase);
 
+      //checkbox color
+      const GreenCheckbox = withStyles({
+        root: {
+          color: green[400],
+          '&$checked': {
+            color: green[600],
+          },
+        },
+        checked: {},
+      })((props) => <Checkbox color="default" {...props} />);
+
+      //delete functionality
+      const deleteListing = (id) => {
+        if (window.confirm('Are you sure you wish to delete this item?')){
+          // Calls Delete API call to delete posting based on button click
+          axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id)
+          // Force reloads page in order to re-render the listings
+          window.location.reload();
+        }
+        return;
+      };
+
+
     return (
         <Container>
             <Title>Job Postings</Title>
@@ -176,11 +205,13 @@ const ListingsDashboard = (props) => {
                                 <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                     {columns.map((column) => {
                                         const value = row[column.id];
-                                        const isName = (column.id === "title")
-                                        console.log(isName)
+                                        const isName = (column.id === "title");
+                                        const isStatus = (column.id === "status");
+                                        const isEdit = (column.id === "edit");
                                         return (
-                                            <TableCell style={{color: isName ? "#833A9E" : "#61486A", fontWeight: isName ? "bold" : "normal"}} key={column.id} align={column.align} onClick={() => window.location.href = "/admin/listing/" + row._id} >
-                                                {column.format && typeof value === 'number' ? column.format(value) : value}
+                                            <TableCell style={{color: isName ? "#833A9E" : "#61486A", fontWeight: isName ? "bold" : "normal"}} key={column.id} align={column.align} >
+                                                {isStatus ? <Checkbox checked={row["isVisible"]}></Checkbox> : ((isEdit ? <div><EditIcon onClick={() => window.location.href = "/admin/listing/" + row._id}></EditIcon><DeleteIcon style={{paddingLeft: "2px"}}></DeleteIcon></div> 
+                                                : <div onClick={() => window.location.href = "/portal/" + row._id}>{value}</div>))/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>
                                         );
                                     })}
