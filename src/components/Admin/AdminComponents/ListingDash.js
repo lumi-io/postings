@@ -150,10 +150,10 @@ const ListingsDashboard = (props) => {
       })((props) => <Checkbox color="default" {...props} />);
 
       //delete functionality
-      const deleteListing = (id) => {
+      const deleteListing = (idd) => {
         if (window.confirm('Are you sure you wish to delete this item?')){
           // Calls Delete API call to delete posting based on button click
-          axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id)
+          axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + idd)
           // Force reloads page in order to re-render the listings
           window.location.reload();
         }
@@ -210,7 +210,7 @@ const ListingsDashboard = (props) => {
                                         const isEdit = (column.id === "edit");
                                         return (
                                             <TableCell style={{color: isName ? "#833A9E" : "#61486A", fontWeight: isName ? "bold" : "normal"}} key={column.id} align={column.align} >
-                                                {isStatus ? <Checkbox checked={row["isVisible"]}></Checkbox> : ((isEdit ? <div><EditIcon onClick={() => window.location.href = "/admin/listing/" + row._id}></EditIcon><DeleteIcon style={{paddingLeft: "2px"}}></DeleteIcon></div> 
+                                                {isStatus ? <GreenCheckbox checked={Boolean(row["isVisible"])}></GreenCheckbox> : ((isEdit ? <div><EditIcon onClick={() => window.location.href = "/admin/listing/" + row._id}></EditIcon><DeleteIcon onClick={()=>deleteListing(row._id)} style={{paddingLeft: "2px"}}></DeleteIcon></div> 
                                                 : <div onClick={() => window.location.href = "/portal/" + row._id}>{value}</div>))/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>
                                         );
