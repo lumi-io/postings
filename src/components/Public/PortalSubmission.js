@@ -143,7 +143,7 @@ const PortalSubmission = () => {
             .catch(err => {
                 console.log("API Error");
             })
-    }, [])
+    }, [id])
 
     return (
         (

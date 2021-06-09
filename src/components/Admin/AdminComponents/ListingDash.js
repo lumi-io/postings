@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from "react-router-dom";
 import styled from 'styled-components';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -8,13 +7,11 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 
 // import SearchBar from "material-ui-search-bar";
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField'
-import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
@@ -23,14 +20,11 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import IconButton from '@material-ui/core/IconButton';
 
 import axios from 'axios';
 
 
 const ListingsDashboard = (props) => {
-
-    let { id } = useParams();
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -87,14 +81,7 @@ const ListingsDashboard = (props) => {
     }
 
     
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            margin: theme.spacing(1),
-            width: '10ch',
-        },
-      }));
       
-    const classes = useStyles;
     const rows = listingData;
 
     //choose filter
