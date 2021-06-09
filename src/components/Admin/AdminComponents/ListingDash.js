@@ -17,6 +17,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputBase from '@material-ui/core/InputBase';
 import { green } from '@material-ui/core/colors';
 import Checkbox from '@material-ui/core/Checkbox';
+import { Link } from 'react-router-dom';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
@@ -198,7 +199,12 @@ const ListingsDashboard = (props) => {
                                         return (
                                             <TableCell style={{color: isName ? "#833A9E" : "#61486A", fontWeight: isName ? "bold" : "normal"}} key={column.id} align={column.align} >
                                                 {isStatus ? <GreenCheckbox checked={Boolean(row["isVisible"])}></GreenCheckbox> : ((isEdit ? <div><EditIcon onClick={() => window.location.href = "/admin/listing/" + row._id}></EditIcon><DeleteIcon onClick={()=>deleteListing(row._id)} style={{paddingLeft: "2px"}}></DeleteIcon></div> 
-                                                : <div onClick={() => window.location.href = "/admin/listing/" + row._id + "/applicant"}>{value}</div>))/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                                : <Link to={{
+                                                    pathname: "/admin/listing/" + row._id + "/applicant",
+                                                    state: {
+                                                      jobTitle: row.title
+                                                    }}}
+                                                    >{value}</Link>))/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>
                                         );
                                     })}
