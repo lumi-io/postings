@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+<<<<<<< HEAD
 import { withStyles } from "@material-ui/core/styles";
+=======
+>>>>>>> 82e2c4914566d49ebd0b737e01034401b9a4314e
 
 import styled from "styled-components";
 
@@ -10,6 +13,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
+<<<<<<< HEAD
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
@@ -126,6 +130,126 @@ const ApplicantDashboard = () => {
     setSelectedApplicantIndex(idx);
   }
 
+=======
+
+import Card from "@material-ui/core/Card";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
+
+import axios from "axios";
+// import { containerSizesSelector } from "@material-ui/data-grid";
+
+const ApplicantDashboard = () => {
+  // const classes = useStyles();
+
+  let { id } = useParams();
+
+  const location = useLocation();
+  const { jobTitle } = location.state;
+
+  const [applicantData, setApplicantData] = useState([]);
+  const [applicantDataExists, setApplicantDataExists] = useState(false);
+  const [selectedApplicantIndex, setSelectedApplicantIndex] = useState(null);
+  const [selectedApplicantData, setSelectedApplicantData] = useState({});
+
+  useEffect(() => {
+    getApplicantData();
+  }, []);
+
+  const useStyles = makeStyles({
+    table: {},
+    tableRowSelected: {
+      backgroundColor: "white",
+      "&:hover": {
+        backgroundColor: "#fefcff",
+      },
+      "&$selected, &$selected:hover": {
+        backgroundColor: "#fefcff",
+      },
+    },
+    tableCellSelected: {
+      "&:hover": {
+        color: "#873ca2",
+        "font-weight": "bold",
+      },
+      "$selected &": {
+        color: "#873ca2",
+        "font-weight": "bold",
+        "border-left": "5px solid #873ca2",
+      }
+    },
+    // Removes default CSS in Material UI Table Component
+    selected: {},
+    hover: {},
+  });
+  const classes = useStyles();
+
+  // Function that retrieves Applicant Data
+  function getApplicantData() {
+    axios
+      .get(
+        process.env.REACT_APP_FLASK_SERVER +
+          "/admin/postings/" +
+          id +
+          "/applications"
+      )
+      .then((res) => {
+        return res.data;
+      })
+      .then((data) => {
+        if (data["status"]) {
+          return data["application"]["applications"];
+        } else {
+          console.log("err");
+        }
+      })
+      .then((applications) => {
+        let modifiedData = applications.map((app) => ({
+          firstName: app["firstName"],
+          lastName: app["lastName"],
+          email: app["email"],
+          gradYear: app["gradYear"],
+          college: app["college"],
+          major: app["major"],
+          applicantId: app["applicantId"],
+        }));
+        console.log(modifiedData);
+        setApplicantData(modifiedData);
+        if (modifiedData.length !== 0) {
+          console.log("hit");
+          setApplicantDataExists(true);
+          setSelectedApplicantData(modifiedData[0]);
+          setSelectedApplicantIndex(0);
+        }
+        return;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  // Mapping of all the applicants with needed data to be rendered on table rows
+  const applicantDataRows = applicantData.map(
+    (applicant, index) =>
+      _createData(
+        applicant["firstName"] + " " + applicant["lastName"],
+        "testUrl",
+        index
+      )
+  );
+
+  // Helper function to create data for rows in table
+  function _createData(name, image, index) {
+    return { name, image, index };
+  }
+
+  // Helper function to set applicant properties to be rendered
+  function _setCurrentApplicantProperties(idx) {
+    setSelectedApplicantData(applicantData[idx]);
+    setSelectedApplicantIndex(idx);
+  }
+
+>>>>>>> 82e2c4914566d49ebd0b737e01034401b9a4314e
   return (
     <Container>
       <Title>Applicants for {jobTitle}</Title>
@@ -169,6 +293,30 @@ const ApplicantDashboard = () => {
             </Table>
           </TableContainer>
         </ApplicantScrollableBorder>
+<<<<<<< HEAD
+=======
+
+        <ApplicantDataBorder>
+          <Card className={classes.root} variant="outlined">
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                {selectedApplicantData["firstName"] +
+                  " " +
+                  selectedApplicantData["lastName"]}
+              </Typography>
+              <Typography variant="body2" component="p">
+                well meaning and kindly.
+                <br />
+                {'"a benevolent smile"'}
+              </Typography>
+            </CardContent>
+          </Card>
+        </ApplicantDataBorder>
+      </ApplicantDataGrid>
+    </Container>
+  );
+};
+>>>>>>> 82e2c4914566d49ebd0b737e01034401b9a4314e
 
         <ApplicantDataBorder>
           <BaseCard variant="outlined">
@@ -218,8 +366,15 @@ const ApplicantDataGrid = styled.div`
 `;
 
 const ApplicantDataBorder = styled.div`
+<<<<<<< HEAD
   width: 100%;
   margin: 10px;
+=======
+  border: 1px solid #61486a;
+  width: 100%;
+  margin: 10px;
+  padding: 20px 30px 20px 30px;
+>>>>>>> 82e2c4914566d49ebd0b737e01034401b9a4314e
   overflow-y: scroll;
   white-space: nowrap;
 `;
