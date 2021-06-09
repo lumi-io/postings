@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 
 import styled from "styled-components";
 
@@ -35,7 +36,6 @@ const ApplicantDashboard = () => {
   }, []);
 
   const useStyles = makeStyles({
-    table: {},
     tableRowSelected: {
       backgroundColor: "white",
       "&:hover": {
@@ -54,7 +54,7 @@ const ApplicantDashboard = () => {
         color: "#873ca2",
         "font-weight": "bold",
         "border-left": "5px solid #873ca2",
-      }
+      },
     },
     // Removes default CSS in Material UI Table Component
     selected: {},
@@ -107,13 +107,12 @@ const ApplicantDashboard = () => {
   }
 
   // Mapping of all the applicants with needed data to be rendered on table rows
-  const applicantDataRows = applicantData.map(
-    (applicant, index) =>
-      _createData(
-        applicant["firstName"] + " " + applicant["lastName"],
-        "testUrl",
-        index
-      )
+  const applicantDataRows = applicantData.map((applicant, index) =>
+    _createData(
+      applicant["firstName"] + " " + applicant["lastName"],
+      "testUrl",
+      index
+    )
   );
 
   // Helper function to create data for rows in table
@@ -172,26 +171,38 @@ const ApplicantDashboard = () => {
         </ApplicantScrollableBorder>
 
         <ApplicantDataBorder>
-          <Card className={classes.root} variant="outlined">
-            <CardContent>
+          <BaseCard variant="outlined">
+            <BaseCardContent>
               <Typography variant="h5" component="h2">
                 {selectedApplicantData["firstName"] +
                   " " +
                   selectedApplicantData["lastName"]}
+                  <hr></hr>
               </Typography>
-              <Typography variant="body2" component="p">
-                well meaning and kindly.
-                <br />
-                {'"a benevolent smile"'}
-              </Typography>
-            </CardContent>
-          </Card>
+              <ContentCard className={classes.root} variant="outlined">
+                <CardContent>
+                  <Typography variant="h5" component="h2">
+                    test
+                  </Typography>
+                </CardContent>
+              </ContentCard>
+              <ContentCard className={classes.root} variant="outlined">
+                <CardContent>
+                  <Typography variant="h5" component="h2">
+                    test
+                  </Typography>
+                </CardContent>
+              </ContentCard>
+            </BaseCardContent>
+          </BaseCard>
         </ApplicantDataBorder>
       </ApplicantDataGrid>
     </Container>
   );
 };
 
+
+// Styled Component CSS
 const Container = styled.div`
   width: 100%;
   height: 100%;
@@ -207,10 +218,8 @@ const ApplicantDataGrid = styled.div`
 `;
 
 const ApplicantDataBorder = styled.div`
-  border: 1px solid #61486a;
   width: 100%;
   margin: 10px;
-  padding: 20px 30px 20px 30px;
   overflow-y: scroll;
   white-space: nowrap;
 `;
@@ -229,5 +238,28 @@ const Title = styled.div`
   line-height: 42px;
   color: #873ca2; /* Accent Purple */
 `;
+
+const BaseCard = withStyles({
+  root: {
+    "background-color": "white",
+    height: "100%"
+  },
+})(Card);
+
+const BaseCardContent = withStyles({
+  root: {
+    padding: "0 0 0 0"
+  },
+})(CardContent);
+
+const ContentCard = withStyles({
+  root: {
+    "background-color": "rgba(254,252,255,255)",
+    "margin-top": "1vw",
+    "margin-bottom": "1vw",
+    "margin-right": "1vw",
+    "margin-left": "1vw"
+  },
+})(Card);
 
 export default ApplicantDashboard;
