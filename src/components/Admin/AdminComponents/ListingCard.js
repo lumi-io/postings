@@ -1,18 +1,27 @@
 import React from 'react';
+import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import { withStyles } from '@material-ui/core/styles';
 import { Link } from 'react-router-dom';
+import AlertDialog from './AlertDialog';
 
 import styled from 'styled-components';
 
 export default function ListingCard(props) {
 
+  const [isOpen, setIsOpen] = React.useState(false);
+  const handleDialogOpen = () => {
+    setIsOpen(true)
+  }
+  const handleDialogClose = () => {
+    setIsOpen(false)
+    deleteListing()
+  }
   const deleteListing = () => {
     // Calls Delete API call to delete posting based on button click
     axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + props.id)
@@ -48,9 +57,16 @@ export default function ListingCard(props) {
             View Applicants
           </Button>
           </Link>
-          <Button onClick={deleteListing}>
+          <Button onClick={handleDialogOpen}>
             Delete
          </Button>
+         <AlertDialog 
+          isOpen={isOpen}
+          handleClose={handleDialogClose}
+          title='Delete this listing?'
+          >
+            <h1> hello </h1>
+          </AlertDialog>
         </CustomCardActions>
       </Card>
     </CardBorder>
