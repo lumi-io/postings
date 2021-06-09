@@ -49,6 +49,7 @@ const ListingsDashboard = () => {
                             viewCount="2"
                             applyCount="3"
                             id={listing._id}
+                            key={listing._id}
                         >
                         </ListingCard>
                     ))}
