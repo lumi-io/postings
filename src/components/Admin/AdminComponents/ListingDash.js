@@ -211,7 +211,7 @@ const ListingsDashboard = (props) => {
                                         return (
                                             <TableCell style={{color: isName ? "#833A9E" : "#61486A", fontWeight: isName ? "bold" : "normal"}} key={column.id} align={column.align} >
                                                 {isStatus ? <GreenCheckbox checked={Boolean(row["isVisible"])}></GreenCheckbox> : ((isEdit ? <div><EditIcon onClick={() => window.location.href = "/admin/listing/" + row._id}></EditIcon><DeleteIcon onClick={()=>deleteListing(row._id)} style={{paddingLeft: "2px"}}></DeleteIcon></div> 
-                                                : <div onClick={() => window.location.href = "/portal/" + row._id}>{value}</div>))/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
+                                                : <div onClick={() => window.location.href = "/admin/listing/" + row._id + "/applicant"}>{value}</div>))/* {column.format && typeof value === 'number' ? column.format(value) : value} */}
                                             </TableCell>
                                         );
                                     })}
