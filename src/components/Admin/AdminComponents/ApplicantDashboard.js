@@ -18,6 +18,8 @@ import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 // import { containerSizesSelector } from "@material-ui/data-grid";
 
+import ContactCard from "./ApplicantDashboardComponents/ContactCard";
+
 const ApplicantDashboard = () => {
   // const classes = useStyles();
 
@@ -90,11 +92,11 @@ const ApplicantDashboard = () => {
           college: app["college"],
           major: app["major"],
           applicantId: app["applicantId"],
+          phone: app["phone"]
         }));
         console.log(modifiedData);
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
-          console.log("hit");
           setApplicantDataExists(true);
           setSelectedApplicantData(modifiedData[0]);
           setSelectedApplicantIndex(0);
@@ -173,19 +175,16 @@ const ApplicantDashboard = () => {
         <ApplicantDataBorder>
           <BaseCard variant="outlined">
             <BaseCardContent>
-              <Typography variant="h5" component="h2">
+              <ApplicantTitle>
                 {selectedApplicantData["firstName"] +
                   " " +
                   selectedApplicantData["lastName"]}
-                  <hr></hr>
-              </Typography>
-              <ContentCard className={classes.root} variant="outlined">
-                <CardContent>
-                  <Typography variant="h5" component="h2">
-                    test
-                  </Typography>
-                </CardContent>
-              </ContentCard>
+              </ApplicantTitle>
+              <hr></hr>
+              <ContactCard 
+                mail={selectedApplicantData["email"]}
+                phone={selectedApplicantData["phone"]}
+              />
               <ContentCard className={classes.root} variant="outlined">
                 <CardContent>
                   <Typography variant="h5" component="h2">
@@ -201,12 +200,11 @@ const ApplicantDashboard = () => {
   );
 };
 
-
 // Styled Component CSS
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  padding: 81px 91px 2px 91px;
+  padding: 81px 4vw 2px 4vw;
   flex-direction: container;
 `;
 
@@ -239,26 +237,37 @@ const Title = styled.div`
   color: #873ca2; /* Accent Purple */
 `;
 
+// CSS for Name of Applicant
+const ApplicantTitle = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 42px;
+  margin: 1.5vw;
+  color: #873ca2;
+`;
+
 const BaseCard = withStyles({
   root: {
-    "background-color": "white",
-    height: "100%"
+    "background-color": "#f8f6f9",
+    height: "100%",
   },
 })(Card);
 
 const BaseCardContent = withStyles({
   root: {
-    padding: "0 0 0 0"
+    padding: "0 0 0 0",
   },
 })(CardContent);
 
 const ContentCard = withStyles({
   root: {
-    "background-color": "rgba(254,252,255,255)",
+    "background-color": "white",
     "margin-top": "1vw",
     "margin-bottom": "1vw",
-    "margin-right": "1vw",
-    "margin-left": "1vw"
+    "margin-right": "2vw",
+    "margin-left": "2vw",
   },
 })(Card);
 
