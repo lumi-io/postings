@@ -3,6 +3,10 @@ import {
     useParams
 } from "react-router-dom";
 
+import DeleteIcon from '@material-ui/icons/Delete';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Divider from '@material-ui/core/Divider';
+
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -10,8 +14,7 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles } from '@material-ui/core/styles';
-import { withStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import styled from 'styled-components';
 import axios from 'axios';
@@ -111,12 +114,25 @@ const EditListingField = () => {
         return;
     }
 
-    const deleteQuestion = () => {
+    //delete all questions
+    const deleteAll = () => {
+        setEssayQuestions([])
+        return;
+    }
+
+    //delete specific question
+    const deleteQuestion = (index) => {
         if (essayQuestions.length === 0) {
             return;
         }
-        setEssayQuestions(prevState => prevState.slice(0, -1))
-        return;
+        setEssayQuestions(() => { 
+            let essayQuestionsCopy = []
+            for (let i = 0; i<essayQuestions.length; i++){
+                if (i !== index){
+                    essayQuestionsCopy.push(essayQuestions[i])
+                }
+            }
+            return essayQuestionsCopy})
     }
 
     const updateEssayQuestion = (e, idx) => {
@@ -150,6 +166,15 @@ const EditListingField = () => {
         <Container>
             <Title>Listing Information</Title>
             <br></br>
+            <FormControlLabel
+                control={<Switch checked={listingInfo["isVisible"]}
+                onChange={handleVisibilityToggle}
+                name="checked"
+                inputProps={{ 'aria-label': 'secondary checkbox' }} />}
+                label="Visible"
+            />
+            <br></br>
+            <br></br>
             <TextField
                 style={{ width: "500px" }}
                 required
@@ -177,11 +202,12 @@ const EditListingField = () => {
                 </BigTextContainer>
             ))}
 
-            <h3>Essay Questions / Additional Questions</h3>
+            <br></br>
+            <p>Essay Questions / Additional Questions</p>
             <CustomButton
                 variant="contained"
                 color="primary"
-                justify="flex-end"
+                justifyContent="flex-end"
                 onClick={addQuestion}>
                 Add
             </CustomButton>
@@ -189,11 +215,10 @@ const EditListingField = () => {
                 variant="contained"
                 color="primary"
                 justify="flex-end"
-                onClick={deleteQuestion}>
-                Delete
+                onClick={deleteAll}>
+                Delete All
             </CustomButton>
-
-            <br></br>
+        
             <br></br>
 
             {essayQuestions.map((field, index) => (
@@ -207,16 +232,22 @@ const EditListingField = () => {
                         onChange={e => updateEssayQuestion(e, index)}
                         variant="outlined"
                     />
+                    <DeleteIcon style={{paddingLeft: "10px"}}
+                        variant="contained"
+                        color="primary"
+                        justify="flex-end"
+                        onClick={e => deleteQuestion(index)}>
+                        Delete
+                    </DeleteIcon>
                 </EssayQuestionContainer>
 
             ))}
-
-
             <br></br>
+            <Divider></Divider>
             <br></br>
+            <p>Deadline</p>
             <TextField
                 id="datetime-local"
-                label="Deadline"
                 type="datetime-local"
                 value={listingInfo["deadline"]}
                 className={classes.textField}
@@ -225,17 +256,20 @@ const EditListingField = () => {
                     shrink: true,
                 }}
             />
-            <p>Is Visible</p>
-            <Switch
-                checked={listingInfo["isVisible"]}
-                onChange={handleVisibilityToggle}
-                name="checked"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-            />
+            <br></br>
+            <Divider></Divider>
             <br></br>
             <CustomButton variant="contained" color="primary" justify="flex-end" onClick={updateJobListing}>
                 Update
             </CustomButton>
+            <CustomCancel variant="contained" color="primary" justify="flex-end" onClick={() =>
+                                    (window.location.href =
+                                      "/admin/listing")
+                                  }>
+                Cancel
+            </CustomCancel>
+            <br></br>
+            <br></br>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -259,6 +293,7 @@ const Container = styled.div`
     height:100%;
     padding: 81px 91px 2px 91px;
     flex-direction:container;
+    padding-bottom: 10px;
 `;
 
 const Title = styled.div`
@@ -283,6 +318,17 @@ const EssayQuestionContainer = styled.div`
 const CustomButton = withStyles({
     root: {
         "background-color": "#8A3DA6",
+        "margin-left": "5px",
+        "margin-right": "5px",
+        "&:hover": {
+            "background-color": "#61486A"
+        }
+    }
+})(Button);
+
+const CustomCancel = withStyles({
+    root: {
+        "background-color": "#BEBEBE",
         "margin-left": "5px",
         "margin-right": "5px",
         "&:hover": {
