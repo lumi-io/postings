@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     useParams
 } from "react-router-dom";
+import { purple } from '@material-ui/core/colors';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -167,7 +168,7 @@ const EditListingField = () => {
             <Title>Listing Information</Title>
             <br></br>
             <FormControlLabel
-                control={<Switch checked={listingInfo["isVisible"]}
+                control={<PurpleSwitch checked={listingInfo["isVisible"]}
                 onChange={handleVisibilityToggle}
                 name="checked"
                 inputProps={{ 'aria-label': 'secondary checkbox' }} />}
@@ -175,8 +176,8 @@ const EditListingField = () => {
             />
             <br></br>
             <br></br>
-            <TextField
-                style={{ width: "500px" }}
+            <CustmomTextfield
+                style={{ width: "500px",}}
                 required
                 id="outlined-required"
                 label="Title"
@@ -188,7 +189,7 @@ const EditListingField = () => {
             <br></br>
             {fields.map((field) => (
                 <BigTextContainer>
-                    <TextField
+                    <CustmomTextfield
                         style={{ width: "100%" }}
                         required
                         id="outlined-required"
@@ -205,6 +206,7 @@ const EditListingField = () => {
             <br></br>
             <p>Essay Questions / Additional Questions</p>
             <CustomButton
+                style={{marginRight: "10px", marginBottom: "10px"}}
                 variant="contained"
                 color="primary"
                 justifyContent="flex-end"
@@ -212,6 +214,7 @@ const EditListingField = () => {
                 Add
             </CustomButton>
             <CustomButton
+                style={{marginRight: "10px", marginBottom: "10px"}}
                 variant="contained"
                 color="primary"
                 justify="flex-end"
@@ -223,7 +226,7 @@ const EditListingField = () => {
 
             {essayQuestions.map((field, index) => (
                 <EssayQuestionContainer>
-                    <TextField
+                    <CustmomTextfield
                         style={{ width: "500px" }}
                         required
                         id="outlined-required"
@@ -232,7 +235,7 @@ const EditListingField = () => {
                         onChange={e => updateEssayQuestion(e, index)}
                         variant="outlined"
                     />
-                    <DeleteIcon style={{paddingLeft: "10px"}}
+                    <DeleteIcon style={{color: purple[300], marginTop: "15px", paddingLeft: "10px"}}
                         variant="contained"
                         color="primary"
                         justify="flex-end"
@@ -243,10 +246,11 @@ const EditListingField = () => {
 
             ))}
             <br></br>
+            <br></br>
             <Divider></Divider>
             <br></br>
             <p>Deadline</p>
-            <TextField
+            <CustmomTextfield
                 id="datetime-local"
                 type="datetime-local"
                 value={listingInfo["deadline"]}
@@ -257,12 +261,11 @@ const EditListingField = () => {
                 }}
             />
             <br></br>
-            <Divider></Divider>
             <br></br>
-            <CustomButton variant="contained" color="primary" justify="flex-end" onClick={updateJobListing}>
+            <CustomButton style={{marginTop: "20px", marginRight: "20px"}} variant="contained" color="primary" justify="flex-end" onClick={updateJobListing}>
                 Update
             </CustomButton>
-            <CustomCancel variant="contained" color="primary" justify="flex-end" onClick={() =>
+            <CustomCancel style={{marginTop: "20px"}} variant="contained" color="primary" justify="flex-end" onClick={() =>
                                     (window.location.href =
                                       "/admin/listing")
                                   }>
@@ -318,13 +321,49 @@ const EssayQuestionContainer = styled.div`
 const CustomButton = withStyles({
     root: {
         "background-color": "#8A3DA6",
-        "margin-left": "5px",
         "margin-right": "5px",
         "&:hover": {
             "background-color": "#61486A"
         }
     }
 })(Button);
+
+const CustmomTextfield = withStyles({
+    root: {
+      '& label.Mui-focused': {
+        color: '#61486A',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: '#8A3DA6',
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#BEBEBE',
+        },
+        '&:hover fieldset': {
+          borderColor: '#8A3DA6',
+          borderWidth: 2
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#8A3DA6',
+        },
+      },
+    },
+  })(TextField);
+
+
+const PurpleSwitch = withStyles({
+    switchBase: {
+      '&$checked': {
+        color: purple[500],
+      },
+      '&$checked + $track': {
+        backgroundColor: purple[500],
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch);
 
 const CustomCancel = withStyles({
     root: {
