@@ -6,9 +6,7 @@ import Grid from "@material-ui/core/Grid";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
-// const feather = require('feather-icons')
 
-import { Link } from "react-router-dom";
 import { Mail, Phone, Linkedin, FileText } from "react-feather";
 
 import styled from "styled-components";
