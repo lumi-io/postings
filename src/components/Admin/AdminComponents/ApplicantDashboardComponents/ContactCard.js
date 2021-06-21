@@ -1,7 +1,6 @@
 import React from "react";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 
 import Grid from "@material-ui/core/Grid";
 
@@ -9,6 +8,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from "@material-ui/core/styles";
 // const feather = require('feather-icons')
 
+import { Link } from "react-router-dom";
 import { Mail, Phone, Linkedin, FileText } from "react-feather";
 
 import styled from "styled-components";
@@ -37,8 +37,16 @@ export default function ContactCard(props) {
         <hr></hr>
         <IconInline>
           <LinkText>Links</LinkText>
-          <Linkedin color="#61486a" style={{ flexDirection: "row" }} />
-          <FileText color="#61486a" style={{ flexDirection: "row" }} />
+          <IconSpacing>
+            <a href={props.linkedinUrl} target="_blank">
+              <Linkedin color="#61486a" style={{ flexDirection: "row" }} />
+            </a>
+          </IconSpacing>
+          <IconSpacing>
+            <a href={props.resumeUrl} target="_blank">
+              <FileText color="#61486a" style={{ flexDirection: "row" }} />
+            </a>
+          </IconSpacing>
         </IconInline>
       </CardContent>
     </ContentCard>
@@ -65,6 +73,10 @@ const IconInline = styled.div`
   margin-bottom: 0.5vw;
 `;
 
+const IconSpacing = styled.div`
+  margin-right: 0.2vw;
+  margin-left: 0.2vw;
+`;
 // CSS for Email and Phone No Text
 const ContactText = styled.div`
   margin-left: 0.7vw;
@@ -77,7 +89,6 @@ const ContactText = styled.div`
 `;
 
 // CSS for Links Text
-
 const LinkText = styled.div`
   margin-right: 0.7vw;
   font-family: Roboto;

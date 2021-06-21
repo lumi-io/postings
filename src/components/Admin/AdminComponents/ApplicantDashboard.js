@@ -84,15 +84,20 @@ const ApplicantDashboard = () => {
         }
       })
       .then((applications) => {
+        console.log(applications);
         let modifiedData = applications.map((app) => ({
+          applicantId: app["applicantId"],
+          college: app["college"],
+          email: app["email"],
           firstName: app["firstName"],
           lastName: app["lastName"],
-          email: app["email"],
           gradYear: app["gradYear"],
-          college: app["college"],
           major: app["major"],
-          applicantId: app["applicantId"],
-          phone: app["phone"]
+          phone: app["phone"],
+          linkedin: app["linkedin"],
+          resume: app["resume"],
+          timeApplied: app["timeApplied"]
+
         }));
         console.log(modifiedData);
         setApplicantData(modifiedData);
@@ -184,6 +189,8 @@ const ApplicantDashboard = () => {
               <ContactCard 
                 mail={selectedApplicantData["email"]}
                 phone={selectedApplicantData["phone"]}
+                linkedinUrl={selectedApplicantData["linkedin"]}
+                resumeUrl={selectedApplicantData["resume"]}
               />
               <ContentCard className={classes.root} variant="outlined">
                 <CardContent>
