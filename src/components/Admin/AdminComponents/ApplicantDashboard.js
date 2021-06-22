@@ -96,8 +96,7 @@ const ApplicantDashboard = () => {
           phone: app["phone"],
           linkedin: app["linkedin"],
           resume: app["resume"],
-          timeApplied: app["timeApplied"]
-
+          timeApplied: app["timeApplied"],
         }));
         console.log(modifiedData);
         setApplicantData(modifiedData);
@@ -180,13 +179,20 @@ const ApplicantDashboard = () => {
         <ApplicantDataBorder>
           <BaseCard variant="outlined">
             <BaseCardContent>
-              <ApplicantTitle>
-                {selectedApplicantData["firstName"] +
-                  " " +
-                  selectedApplicantData["lastName"]}
-              </ApplicantTitle>
+              <ApplicantHeaderBox>
+                <ApplicantTitle>
+                  {selectedApplicantData["firstName"] +
+                    " " +
+                    selectedApplicantData["lastName"]}
+                </ApplicantTitle>
+                <ApplicantSubtitle>
+                  {selectedApplicantData["college"] +
+                    ", Class of " +
+                    selectedApplicantData["gradYear"]}
+                </ApplicantSubtitle>
+              </ApplicantHeaderBox>
               <hr></hr>
-              <ContactCard 
+              <ContactCard
                 mail={selectedApplicantData["email"]}
                 phone={selectedApplicantData["phone"]}
                 linkedinUrl={selectedApplicantData["linkedin"]}
@@ -244,6 +250,10 @@ const Title = styled.div`
   color: #873ca2; /* Accent Purple */
 `;
 
+const ApplicantHeaderBox = styled.div`
+  margin: 1.5vw;
+`;
+
 // CSS for Name of Applicant
 const ApplicantTitle = styled.div`
   font-family: Roboto;
@@ -251,8 +261,17 @@ const ApplicantTitle = styled.div`
   font-weight: bold;
   font-size: 36px;
   line-height: 42px;
-  margin: 1.5vw;
   color: #873ca2;
+`;
+
+const ApplicantSubtitle = styled.div`
+  margin-top: 0.5vw;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  color: #61486A;
 `;
 
 const BaseCard = withStyles({
