@@ -23,10 +23,12 @@ export default function ListingCard(props) {
     deleteListing()
   }
   const deleteListing = () => {
-    // Calls Delete API call to delete posting based on button click
-    axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + props.id)
-    // Force reloads page in order to re-render the listings
-    window.location.reload();
+    if (window.confirm('Are you sure you wish to delete this item?')){
+      // Calls Delete API call to delete posting based on button click
+      axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + props.id)
+      // Force reloads page in order to re-render the listings
+      window.location.reload();
+    }
     return;
   };
 
@@ -52,7 +54,12 @@ export default function ListingCard(props) {
                 Edit
             </Button>
           </Link>
-          <Link to={"/admin/listing/" + props.id + "/applicant"} style={{ textDecoration: 'none' }}>
+          <Link to={{
+            pathname: "/admin/listing/" + props.id + "/applicant",
+            state: {
+              jobTitle: props.name
+            }
+          }} style={{ textDecoration: 'none' }}>
           <Button>
             View Applicants
           </Button>
