@@ -27,7 +27,8 @@ const Portal = () => {
     return (
         <Container>
             <ContentContainer>
-                <Title>Current Openings at Phi Chi Theta</Title>
+                <Title style={{paddingLeft: "18px"}}>Current Openings at Phi Chi Theta</Title>
+                <p style={{fontFamily: "Roboto", paddingBottom: "20px", paddingLeft: "20px"}}>Total Results ({listings.length})</p>
                 {console.log(listings)}
                 {listings.map(listing => (
                     <ListingCardStyled>
@@ -54,14 +55,13 @@ const Container = styled.div`
 
 const ContentContainer = styled.div`
     padding-top: 80px;
-    padding-bottom: 80px;
+    padding-bottom: 300px;
     padding-right: 120px;
     padding-left: 120px;
 `;
 
 const ListingCardStyled = styled.div`
     padding-top: 20px;
-    padding-bottom: 20px;
     padding-right: 20px;
     padding-left: 20px;
 `;
