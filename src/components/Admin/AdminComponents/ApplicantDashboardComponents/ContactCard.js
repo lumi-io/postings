@@ -11,7 +11,7 @@ import { Mail, Phone, Linkedin, FileText } from "react-feather";
 
 import styled from "styled-components";
 
-export default function ContactCard(props) {
+export default function EssayCardPrompts(props) {
   const useStyles = makeStyles({});
   const classes = useStyles();
 

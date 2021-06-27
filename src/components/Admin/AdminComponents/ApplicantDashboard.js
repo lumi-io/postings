@@ -19,6 +19,7 @@ import axios from "axios";
 // import { containerSizesSelector } from "@material-ui/data-grid";
 
 import ContactCard from "./ApplicantDashboardComponents/ContactCard";
+import EssayCard from "./ApplicantDashboardComponents/EssayCard";
 
 const ApplicantDashboard = () => {
   // const classes = useStyles();
@@ -97,6 +98,7 @@ const ApplicantDashboard = () => {
           linkedin: app["linkedin"],
           resume: app["resume"],
           timeApplied: app["timeApplied"],
+          prompts: app["prompts"]
         }));
         console.log(modifiedData);
         setApplicantData(modifiedData);
@@ -198,13 +200,9 @@ const ApplicantDashboard = () => {
                 linkedinUrl={selectedApplicantData["linkedin"]}
                 resumeUrl={selectedApplicantData["resume"]}
               />
-              <ContentCard className={classes.root} variant="outlined">
-                <CardContent>
-                  <Typography variant="h5" component="h2">
-                    test
-                  </Typography>
-                </CardContent>
-              </ContentCard>
+              <EssayCard 
+                prompts={selectedApplicantData["prompts"]}
+              />
             </BaseCardContent>
           </BaseCard>
         </ApplicantDataBorder>
@@ -232,7 +230,7 @@ const ApplicantDataBorder = styled.div`
   width: 100%;
   margin: 10px;
   overflow-y: scroll;
-  white-space: nowrap;
+  white-space: normal;
 `;
 
 const ApplicantScrollableBorder = styled.div`
@@ -278,6 +276,7 @@ const BaseCard = withStyles({
   root: {
     "background-color": "#f8f6f9",
     height: "100%",
+    overflow: "scroll"
   },
 })(Card);
 
