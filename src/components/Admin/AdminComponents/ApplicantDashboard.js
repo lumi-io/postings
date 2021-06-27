@@ -10,10 +10,10 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
+import Avatar from "@material-ui/core/Avatar";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 
 import axios from "axios";
 // import { containerSizesSelector } from "@material-ui/data-grid";
@@ -98,7 +98,8 @@ const ApplicantDashboard = () => {
           linkedin: app["linkedin"],
           resume: app["resume"],
           timeApplied: app["timeApplied"],
-          prompts: app["prompts"]
+          prompts: app["prompts"],
+          image: app["image"]
         }));
         console.log(modifiedData);
         setApplicantData(modifiedData);
@@ -164,11 +165,6 @@ const ApplicantDashboard = () => {
                       scope="row"
                       onClick={() => _setCurrentApplicantProperties(row.index)}
                     >
-                      {/* <Avatar
-                        alt="Cindy Baker"
-                        src="/static/images/avatar/3.jpg"
-                        style={{width: 35, height: 35, display: 'inline-block', "vertical-align": 'top'  }}
-                      /> */}
                       <span>{row.name}</span>
                     </TableCell>
                   </TableRow>
@@ -182,16 +178,27 @@ const ApplicantDashboard = () => {
           <BaseCard variant="outlined">
             <BaseCardContent>
               <ApplicantHeaderBox>
-                <ApplicantTitle>
-                  {selectedApplicantData["firstName"] +
-                    " " +
-                    selectedApplicantData["lastName"]}
-                </ApplicantTitle>
-                <ApplicantSubtitle>
-                  {selectedApplicantData["college"] +
-                    ", Class of " +
-                    selectedApplicantData["gradYear"]}
-                </ApplicantSubtitle>
+                <AvatarBorder>
+                  <AvatarImage
+                    alt={selectedApplicantData["firstName"] +
+                      " " +
+                      selectedApplicantData["lastName"]}
+                    src={selectedApplicantData["image"]}
+                    onClick={() => window.open(selectedApplicantData["image"])}
+                  />
+                </AvatarBorder>
+                <div>
+                  <ApplicantTitle>
+                    {selectedApplicantData["firstName"] +
+                      " " +
+                      selectedApplicantData["lastName"]}
+                  </ApplicantTitle>
+                  <ApplicantSubtitle>
+                    {selectedApplicantData["college"] +
+                      ", Class of " +
+                      selectedApplicantData["gradYear"]}
+                  </ApplicantSubtitle>
+                </div>
               </ApplicantHeaderBox>
               <hr></hr>
               <ContactCard
@@ -200,9 +207,7 @@ const ApplicantDashboard = () => {
                 linkedinUrl={selectedApplicantData["linkedin"]}
                 resumeUrl={selectedApplicantData["resume"]}
               />
-              <EssayCard 
-                prompts={selectedApplicantData["prompts"]}
-              />
+              <EssayCard prompts={selectedApplicantData["prompts"]} />
             </BaseCardContent>
           </BaseCard>
         </ApplicantDataBorder>
@@ -250,6 +255,13 @@ const Title = styled.div`
 
 const ApplicantHeaderBox = styled.div`
   margin: 1.5vw;
+  flex-direction: row;
+  display: flex;
+`;
+
+const AvatarBorder = styled.div`
+  margin-right: 1vw;
+  align-self: center;
 `;
 
 // CSS for Name of Applicant
@@ -269,14 +281,21 @@ const ApplicantSubtitle = styled.div`
   font-weight: bold;
   font-size: 14px;
   line-height: 16px;
-  color: #61486A;
+  color: #61486a;
 `;
+
+const AvatarImage = withStyles({
+  root: {
+    height: "5vw",
+    width: "5vw"
+  }
+})(Avatar);
 
 const BaseCard = withStyles({
   root: {
     "background-color": "#f8f6f9",
     height: "100%",
-    overflow: "scroll"
+    overflow: "scroll",
   },
 })(Card);
 
@@ -285,15 +304,5 @@ const BaseCardContent = withStyles({
     padding: "0 0 0 0",
   },
 })(CardContent);
-
-const ContentCard = withStyles({
-  root: {
-    "background-color": "white",
-    "margin-top": "1vw",
-    "margin-bottom": "1vw",
-    "margin-right": "2vw",
-    "margin-left": "2vw",
-  },
-})(Card);
 
 export default ApplicantDashboard;
