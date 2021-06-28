@@ -37,6 +37,7 @@ const CreateListing = () => {
     // Function that changes the state of the overlay when button is clicked
     const handleClose = () => {
         setOpen(false);
+        window.location.href = "http://localhost:3000/admin/listing";
     };
 
     // Function that changes state of toggle in listingInfo object

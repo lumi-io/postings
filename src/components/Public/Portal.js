@@ -15,7 +15,7 @@ const Portal = () => {
         })
         .then(data => {
             const postings = data.allPostings;
-            const visiblePostings = postings.filter(posting => posting["isVisible"] === true);
+            const visiblePostings = postings.filter(posting => (posting["isVisible"] === true && posting["deadline"] == true));
             setListings(visiblePostings)
             return;
         })
@@ -55,7 +55,7 @@ const Container = styled.div`
 
 const ContentContainer = styled.div`
     padding-top: 80px;
-    padding-bottom: 300px;
+    padding-bottom: 600px;
     padding-right: 120px;
     padding-left: 120px;
 `;
