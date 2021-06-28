@@ -22,7 +22,7 @@ const TitleText = styled.div`
   font-weight: bold;
   font-size: 18px;
   color: #61486a;
-  margin-bottom: 0.2vw;
+  margin-bottom: 10px;
 `;
 
 const AnswerText = styled.div`
@@ -30,7 +30,7 @@ const AnswerText = styled.div`
   font-style: normal;
   font-size: 14px;
   color: #61486a;
-  margin-bottom: 2vw;
+  margin-bottom: 30px;
   display: inline-block;
   flex-direction: column;
 `;

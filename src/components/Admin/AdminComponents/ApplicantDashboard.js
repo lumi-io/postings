@@ -286,8 +286,8 @@ const ApplicantSubtitle = styled.div`
 
 const AvatarImage = withStyles({
   root: {
-    height: "5vw",
-    width: "5vw"
+    height: "70px",
+    width: "70px"
   }
 })(Avatar);
 
