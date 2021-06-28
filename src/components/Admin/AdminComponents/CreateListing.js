@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+
+import { purple } from '@material-ui/core/colors';
+import DeleteIcon from '@material-ui/icons/Delete';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Divider from '@material-ui/core/Divider';
 
 import styled from 'styled-components';
 import axios from 'axios';
@@ -95,12 +100,25 @@ const CreateListing = () => {
         return;
     }
 
-    const deleteQuestion = () => {
+    //delete all questions
+    const deleteAll = () => {
+        setEssayQuestions([])
+        return;
+    }
+
+    //delete specific question
+    const deleteQuestion = (index) => {
         if (essayQuestions.length === 0) {
             return;
         }
-        setEssayQuestions(prevState => prevState.slice(0, -1))
-        return;
+        setEssayQuestions(() => { 
+            let essayQuestionsCopy = []
+            for (let i = 0; i<essayQuestions.length; i++){
+                if (i !== index){
+                    essayQuestionsCopy.push(essayQuestions[i])
+                }
+            }
+            return essayQuestionsCopy})
     }
 
     const updateEssayQuestion = (e, idx) => {
@@ -114,12 +132,21 @@ const CreateListing = () => {
         <Container>
             <Title>Create New Listing</Title>
             <br></br>
-            <TextField
-                style={{ width: "500px" }}
+            <FormControlLabel
+                control={<PurpleSwitch checked={listingInfo["isVisible"]}
+                onChange={handleVisibilityToggle}
+                name="checked"
+                inputProps={{ 'aria-label': 'secondary checkbox' }} />}
+                label="Visible"
+            />
+            <br></br>
+            <br></br>
+            <CustmomTextfield
+                style={{ width: "500px"}}
                 required
                 id="outlined-required"
                 label="Title"
-                value={listingInfo["title"]}
+                value={listingInfo.title || ""}
                 onChange={e => updateField(e, "title")}
                 variant="outlined"
             />
@@ -127,12 +154,12 @@ const CreateListing = () => {
             <br></br>
             {fields.map((field) => (
                 <BigTextContainer>
-                    <TextField
+                    <CustmomTextfield
                         style={{ width: "100%" }}
                         required
                         id="outlined-required"
                         label={field[0]}
-                        value={listingInfo[field[1]]}
+                        value={listingInfo[field[1]] || ""}
                         onChange={e => updateField(e, field[1])}
                         variant="outlined"
                         multiline
@@ -141,28 +168,30 @@ const CreateListing = () => {
                 </BigTextContainer>
             ))}
 
-            <h3>Essay Questions</h3>
-            <Button
+            <br></br>
+            <p>Essay Questions / Additional Questions</p>
+            <CustomButton
+                style={{marginRight: "10px", marginBottom: "10px"}}
                 variant="contained"
                 color="primary"
-                justify="flex-end"
+                justifyContent="flex-end"
                 onClick={addQuestion}>
                 Add
-            </Button>
-            <Button
+            </CustomButton>
+            <CustomButton
+                style={{marginRight: "10px", marginBottom: "10px"}}
                 variant="contained"
                 color="primary"
                 justify="flex-end"
-                onClick={deleteQuestion}>
-                Delete
-            </Button>
-
-            <br></br>
+                onClick={deleteAll}>
+                Delete All
+            </CustomButton>
+        
             <br></br>
 
             {essayQuestions.map((field, index) => (
                 <EssayQuestionContainer>
-                    <TextField
+                    <CustmomTextfield
                         style={{ width: "500px" }}
                         required
                         id="outlined-required"
@@ -171,16 +200,23 @@ const CreateListing = () => {
                         onChange={e => updateEssayQuestion(e, index)}
                         variant="outlined"
                     />
+                    <DeleteIcon style={{color: purple[300], marginTop: "15px", paddingLeft: "10px"}}
+                        variant="contained"
+                        color="primary"
+                        justify="flex-end"
+                        onClick={e => deleteQuestion(index)}>
+                        Delete
+                    </DeleteIcon>
                 </EssayQuestionContainer>
 
             ))}
-
-
             <br></br>
             <br></br>
-            <TextField
+            <Divider></Divider>
+            <br></br>
+            <p>Deadline</p>
+            <CustmomTextfield
                 id="datetime-local"
-                label="Deadline"
                 type="datetime-local"
                 value={listingInfo["deadline"]}
                 className={classes.textField}
@@ -189,17 +225,20 @@ const CreateListing = () => {
                     shrink: true,
                 }}
             />
-            <p>Is Visible</p>
-            <Switch
-                checked={listingInfo["isVisible"]}
-                onChange={handleVisibilityToggle}
-                name="checked"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-            />
             <br></br>
-            <Button variant="contained" color="primary" justify="flex-end" onClick={createJobListing}>
+            <br></br>
+            <CustomButton style={{marginTop: "20px", marginRight: "20px"}} variant="contained" color="primary" justify="flex-end" onClick={createJobListing}>
                 Create
-            </Button>
+            </CustomButton>
+            <CustomCancel style={{marginTop: "20px"}} variant="contained" color="primary" justify="flex-end" onClick={() =>
+                                    (window.location.href =
+                                      "/admin/listing")
+                                  }>
+                Cancel
+            </CustomCancel>
+
+            <br></br>
+            <br></br>
             <Dialog
                 open={open}
                 onClose={handleClose}
@@ -242,5 +281,63 @@ const EssayQuestionContainer = styled.div`
     padding-bottom: 7.5px;
     padding-top: 7.5px;
 `;
+
+const CustomButton = withStyles({
+    root: {
+        "background-color": "#8A3DA6",
+        "margin-right": "5px",
+        "&:hover": {
+            "background-color": "#61486A"
+        }
+    }
+})(Button);
+
+const CustmomTextfield = withStyles({
+    root: {
+      '& label.Mui-focused': {
+        color: '#61486A',
+      },
+      '& .MuiInput-underline:after': {
+        borderBottomColor: '#8A3DA6',
+      },
+      '& .MuiOutlinedInput-root': {
+        '& fieldset': {
+          borderColor: '#BEBEBE',
+        },
+        '&:hover fieldset': {
+          borderColor: '#8A3DA6',
+          borderWidth: 2
+        },
+        '&.Mui-focused fieldset': {
+          borderColor: '#8A3DA6',
+        },
+      },
+    },
+  })(TextField);
+
+
+const PurpleSwitch = withStyles({
+    switchBase: {
+      '&$checked': {
+        color: purple[500],
+      },
+      '&$checked + $track': {
+        backgroundColor: purple[500],
+      },
+    },
+    checked: {},
+    track: {},
+  })(Switch);
+
+const CustomCancel = withStyles({
+    root: {
+        "background-color": "#BEBEBE",
+        "margin-left": "5px",
+        "margin-right": "5px",
+        "&:hover": {
+            "background-color": "#61486A"
+        }
+    }
+})(Button);
 
 export default CreateListing;
