@@ -7,6 +7,10 @@ import axios from 'axios';
 const Portal = () => {
 
     const [listings, setListings] = useState([]);
+    
+    const dateTime = (date) => {
+        return date.substring(0,10);
+    };
 
     useEffect(() => {
         axios.get(process.env.REACT_APP_FLASK_SERVER + `admin/postings`)
@@ -15,7 +19,10 @@ const Portal = () => {
         })
         .then(data => {
             const postings = data.allPostings;
-            const visiblePostings = postings.filter(posting => (posting["isVisible"] === true && posting["deadline"] == true));
+            //convert the time
+            var d = new Date();
+            var formattedDate = d.getFullYear() + "-0" + (d.getMonth() + 1) + "-" + d.getDate();
+            const visiblePostings = postings.filter(posting => (posting["isVisible"] === true && dateTime(posting["deadline"]) > formattedDate));
             setListings(visiblePostings)
             return;
         })
@@ -28,7 +35,7 @@ const Portal = () => {
         <Container>
             <ContentContainer>
                 <Title style={{paddingLeft: "18px"}}>Current Openings at Phi Chi Theta</Title>
-                <p style={{fontFamily: "Roboto", paddingBottom: "20px", paddingLeft: "20px"}}>Total Results ({listings.length})</p>
+                <p style={{fontFamily: "Arial", paddingBottom: "20px", paddingLeft: "20px"}}>Total Results ({listings.length})</p>
                 {console.log(listings)}
                 {listings.map(listing => (
                     <ListingCardStyled>
@@ -69,7 +76,7 @@ const ListingCardStyled = styled.div`
 
 const Title = styled.div`
     padding-right: 20px;
-    font-family: Roboto;
+    font-family: Arial;
     font-style: normal;
     font-weight: bold;
     font-size: 36px;

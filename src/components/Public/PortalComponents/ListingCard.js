@@ -34,16 +34,16 @@ export default function OutlinedCard(props) {
 
 const CustomText = withStyles({
   root: {
-      "font-family": "Roboto",
+      "font-family": "Arial",
       "background-color": "#F9F6F9",
       "color": "#9370DB",
-      "margin-right": "5px",
+      "margin-right": "8px",
       "margin-top": "2px",
       "&:hover": {
         "cursor": "pointer",
         "margin-right": "5px",
         "font-weight": "bold",
-        "font-size": "30px",
+        "font-size": "25px",
       },
       "transition": "all .5s",
   }
