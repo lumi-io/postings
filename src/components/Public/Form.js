@@ -92,6 +92,7 @@ function useQuery() {
 export default function Form() {
 
   const classes = useStyles();
+
   const [post, setPost] = useState([]);
 
   let query = useQuery();
@@ -132,6 +133,7 @@ export default function Form() {
                     id="outlined-full-width"
                     fullWidth
                     label={text}
+                    error={text === ""}
                     variant="outlined"/>
                 </div>
               ))}
@@ -156,7 +158,9 @@ export default function Form() {
             </form>
             <Button>Submit Application</Button>
         </div>
-        <Divider
+
+        {/* Similar Job suggestion feature is on hold for now */}
+        {/* <Divider
           style={{marginLeft: '1%', marginRight: '1%'}}
           orientation="vertical" 
           flexItem />
@@ -170,7 +174,8 @@ export default function Form() {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
+
       </div>
     </div>
   )

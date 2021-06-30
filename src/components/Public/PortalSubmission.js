@@ -23,25 +23,95 @@ const PortalSubmission = () => {
     const [videoName, setVideoName] = useState("");
 
     const [submission, setSubmission] = useState(false);
+    const [validEmail, setValidEmail] = useState(false);
 
     // [Title to be shown, id of title for database]
     const requiredFields = [
-        ["First name", "firstName"],
-        ["Last name", "lastName"],
-        ["BU Email address", "email"],
-        ["Phone number", "phone"],
-        ["Expected year of graduation", "gradYear"],
-        ["Major", "major"]
+        {
+            label: 'First name',
+            name: 'firstName',
+            type: 'text'
+        },
+        {
+            label: 'Last name',
+            name: 'lastName',
+            type: 'text'
+        },
+        {
+            label: 'Major',
+            name: 'major',
+            type: 'text'
+        },
+        {
+            label: 'Expected graduation date',
+            name: 'gradYear',
+            type: 'date'
+        },
+        // {
+        //     label: 'Email address',
+        //     name: 'email',
+        //     type: 'email'
+        // },
+        // {
+        //     label: 'Phone number',
+        //     name: 'phone',
+        //     type: 'tel'
+        // },
     ]
 
     const optionalFields = [
-        ["LinkedIn Profile", "linkedin"],
-        ["Website/Portfolio", "website"]
+        {
+            label: 'LinkedIn Profile',
+            name: 'linkedin',
+            type: 'url'
+        },
+        {
+            label: 'Website / Portfolio',
+            name: 'website',
+            type: 'url'
+        }
     ]
 
     const selectFields = [
         ["How did you hear about PCT?", "marketing"]
     ]
+
+    function validateEmail(event) {
+        const regexp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        console.log(regexp.test(event.target.value))
+        setValidEmail(regexp.test(event.target.value))
+    }
+
+    function emailForm() {
+        
+        return (
+            <TextFieldStyled>
+                <FieldText>
+                    Email address*
+                </FieldText>
+                <TextField
+                    required
+                    variant='outlined'
+                    fullWidth
+                    name='email'
+                    type='email'
+                    error={appInfo['email']==="" || !validEmail}
+                    helperText={(appInfo['email']==="" || !validEmail) ? "This field is empty or email is not valid." : ""}
+                    onChange={e => {
+                            setAppInfo(prevState => {
+                                validateEmail(e)
+                                const val = e.target.value;
+                                var newObj = {};
+                                newObj['email'] = val;
+                                return Object.assign({}, prevState, newObj);
+                            });
+                            console.log(appInfo);
+                        }
+                    }
+                />
+            </TextFieldStyled>
+        )
+    }
 
     // Function to change state of file and filename
     const handleResumeUpload = (event) => {
@@ -119,16 +189,16 @@ const PortalSubmission = () => {
 
     // Function to submit resume, photo, video, then file
     const handleSubmission = async () => {
-        setSubmission({submission: true});
+        setSubmission(true);
         await uploadAllFiles()
         .then (() => {
             axios.post("http://127.0.0.1:5000/user/portal/submit/" + id, appInfo);
         })
         .catch((e) => {
-            console.error("handleSubmission failed\n", e);
+            setSubmission(false);
+            alert("Failed to send application. Please check your forms again.")
         })
-        return;
-    }
+    }      
 
     useEffect(() => {
         axios.get(`http://127.0.0.1:5000/admin/postings/` + id)
@@ -162,33 +232,40 @@ const PortalSubmission = () => {
                     {requiredFields.map((text) => (
                         <TextFieldStyled>
                             <FieldText>
-                                {text[0]}*
-                        </FieldText>
+                                {text.label}*
+                            </FieldText>
                             <TextField
-                                required="true"
-                                id="outlined-full-width"
+                                required
+                                variant='outlined'
                                 fullWidth
+                                name={text.name}
+                                type={text.type}
+                                error={appInfo[text.name]===""}
+                                helperText={appInfo[text.name]==="" ? "This field cannot be empty." : ""}
                                 onChange={e => {
-                                    setAppInfo(prevState => {
-                                        const val = e.target.value;
-                                        var newObj = {};
-                                        newObj[text[1]] = val;
-                                        return Object.assign({}, prevState, newObj);
-                                    });
-                                    console.log(appInfo);
-                                }}
-                                variant="outlined"
+                                        setAppInfo(prevState => {
+                                            const val = e.target.value;
+                                            var newObj = {};
+                                            newObj[text.name] = val;
+                                            return Object.assign({}, prevState, newObj);
+                                        });
+                                        console.log(appInfo);
+                                    }
+                                }
                             />
                         </TextFieldStyled>
                     ))}
+                    {emailForm()}
                     {optionalFields.map((text) => (
                         <TextFieldStyled>
                             <FieldText>
-                                {text[0]}*
+                                {text.label}
                         </FieldText>
                             <TextField
-                                id="outlined-full-width"
+                                variant="outlined"
                                 fullWidth
+                                id={text.name}
+                                type={text.type}
                                 onChange={e => {
                                     setAppInfo(prevState => {
                                         const val = e.target.value;
@@ -198,7 +275,6 @@ const PortalSubmission = () => {
                                     });
                                     console.log(appInfo);
                                 }}
-                                variant="outlined"
                             />
                         </TextFieldStyled>
                     ))}

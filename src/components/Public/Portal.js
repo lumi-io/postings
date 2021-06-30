@@ -66,7 +66,6 @@ const ListingCardStyled = styled.div`
     padding-left: 20px;
 `;
 
-
 const Title = styled.div`
     padding-right: 20px;
     font-family: Roboto;
