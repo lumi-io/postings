@@ -4,7 +4,6 @@ import Container from '@material-ui/core/Container';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
-import { useHistory } from "react-router-dom";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
@@ -25,7 +24,7 @@ const Login = () => {
         if (key === "") {
             setError(true);
             setErrorText("Fields are required.");
-        } else if (key === "123") {
+        } else if (key === process.env.REACT_APP_WHYPHI_PASSWORD) {
             loginWithRedirect();
         }  else {
             setError(true);

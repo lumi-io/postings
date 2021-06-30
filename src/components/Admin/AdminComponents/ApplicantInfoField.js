@@ -20,7 +20,7 @@ const ApplicantInfoField = () => {
     }, [])
 
     function getApplicantData() {
-        axios.get("http://127.0.0.1:5000/admin/postings/" + id + "/applications/" + applicantId)
+        axios.get(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id + "/applications/" + applicantId)
             .then(res => {
                 console.log(res);
                 return res.data;
