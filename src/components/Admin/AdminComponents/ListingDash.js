@@ -143,14 +143,15 @@ const ListingsDashboard = (props) => {
   const handleDialogConfirm = (idd) => {
     deleteListing(idd);
     setIsOpen(false);
-    // Force reloads page in order to re-render the listings
-    window.location.reload();
   };
 
   //delete functionality
   const deleteListing = (idd) => {
     // Calls Delete API call to delete posting based on button click
-    axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + idd);
+    axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + idd).then(
+      // Force reloads page in order to re-render the listings
+      () => window.location.reload()
+    );
     return;
   };
 
