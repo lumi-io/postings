@@ -23,12 +23,11 @@ export default function ListingCard(props) {
     deleteListing()
   }
   const deleteListing = () => {
-    if (window.confirm('Are you sure you wish to delete this item?')){
-      // Calls Delete API call to delete posting based on button click
-      axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + props.id)
-      // Force reloads page in order to re-render the listings
-      window.location.reload();
-    }
+    // if (window.confirm('Are you sure you wish to delete this item?')){
+    // Calls Delete API call to delete posting based on button click
+    axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + props.id)
+    // Force reloads page in order to re-render the listings
+    window.location.reload();
     return;
   };
 
@@ -71,6 +70,8 @@ export default function ListingCard(props) {
           isOpen={isOpen}
           handleClose={handleDialogClose}
           title='Delete this listing?'
+          subtitle='Are you sure?'
+          children='Confirmed'
           >
             <h1> hello </h1>
           </AlertDialog>

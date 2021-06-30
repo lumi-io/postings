@@ -22,6 +22,8 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
+import AlertDialog from './AlertDialog';
+
 import axios from "axios";
 
 const ListingsDashboard = (props) => {
@@ -51,10 +53,6 @@ const ListingsDashboard = (props) => {
     { id: "status", label: "Public", minWidth: 20 },
     { id: "edit", label: "Edit Options", minWidth: 20 },
   ];
-
-  useEffect(() => {
-    getPostings();
-  }, []);
 
   //get postings data
   function getPostings() {
@@ -133,16 +131,31 @@ const ListingsDashboard = (props) => {
     checked: {},
   })((props) => <Checkbox color="default" {...props} />);
 
+  const [isOpen, setIsOpen] = React.useState(false);
+  const handleDialogOpen = (id) => {
+    setIsOpen(true)
+  }
+  const handleDialogCancel = () => {
+    setIsOpen(false)
+  }
+  const handleDialogConfirm = (idd) => {
+    console.log(idd);
+    // setIsOpen(false);
+    // deleteListing(idd);
+    // window.location.reload();
+  }
+
   //delete functionality
   const deleteListing = (idd) => {
-    if (window.confirm("Are you sure you wish to delete this item?")) {
+    // if (window.confirm("Are you sure you wish to delete this item?")) {
       // Calls Delete API call to delete posting based on button click
+      console.log("idd"+idd)
       axios.delete(
         process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + idd
       );
+      console.log("axios delete")
       // Force reloads page in order to re-render the listings
-      window.location.reload();
-    }
+    // }
     return;
   };
 
@@ -222,9 +235,19 @@ const ListingsDashboard = (props) => {
                                   }
                                 ></EditIcon>
                                 <DeleteIcon
-                                  onClick={() => deleteListing(row._id)}
+                                  // onClick={() => deleteListing(row._id)}
+                                  onClick={handleDialogOpen}
                                   style={{ paddingLeft: "2px" }}
                                 ></DeleteIcon>
+                                <AlertDialog 
+                                  isOpen={isOpen}
+                                  handleOpen={handleDialogOpen}
+                                  handleCancel={handleDialogCancel}
+                                  handleConfirm={() => handleDialogConfirm(row._id)}
+                                  title='Delete this listing?'
+                                  children='Confirm'
+                                  >
+                                  </AlertDialog>
                               </div>
                             ) : (
                               <Link
