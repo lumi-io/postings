@@ -83,7 +83,6 @@ const PortalSubmission = () => {
     }
 
     function emailForm() {
-        
         return (
             <TextFieldStyled>
                 <FieldText>
@@ -112,6 +111,36 @@ const PortalSubmission = () => {
             </TextFieldStyled>
         )
     }
+
+    function phoneForm() {
+        return (
+            <TextFieldStyled>
+                <FieldText>
+                    Phone number*
+                </FieldText>
+                <TextField
+                    required
+                    variant='outlined'
+                    fullWidth
+                    name='phone'
+                    type='tel'
+                    error={appInfo['phone']==="" || !validEmail}
+                    helperText={(appInfo['phone']==="" || !validEmail) ? "This field is empty or email is not valid." : ""}
+                    onChange={e => {
+                            setAppInfo(prevState => {
+                                validateEmail(e)
+                                const val = e.target.value;
+                                var newObj = {};
+                                newObj['phone'] = val;
+                                return Object.assign({}, prevState, newObj);
+                            });
+                            console.log(appInfo);
+                        }
+                    }
+                />
+            </TextFieldStyled>
+        )
+    }    
 
     // Function to change state of file and filename
     const handleResumeUpload = (event) => {
