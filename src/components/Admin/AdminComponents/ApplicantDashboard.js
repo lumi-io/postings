@@ -10,13 +10,16 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
+import Avatar from "@material-ui/core/Avatar";
 
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 
 import axios from "axios";
 // import { containerSizesSelector } from "@material-ui/data-grid";
+
+import ContactCard from "./ApplicantDashboardComponents/ContactCard";
+import EssayCard from "./ApplicantDashboardComponents/EssayCard";
 
 const ApplicantDashboard = () => {
   // const classes = useStyles();
@@ -82,19 +85,25 @@ const ApplicantDashboard = () => {
         }
       })
       .then((applications) => {
+        console.log(applications);
         let modifiedData = applications.map((app) => ({
+          applicantId: app["applicantId"],
+          college: app["college"],
+          email: app["email"],
           firstName: app["firstName"],
           lastName: app["lastName"],
-          email: app["email"],
           gradYear: app["gradYear"],
-          college: app["college"],
           major: app["major"],
-          applicantId: app["applicantId"],
+          phone: app["phone"],
+          linkedin: app["linkedin"],
+          resume: app["resume"],
+          timeApplied: app["timeApplied"],
+          prompts: app["prompts"],
+          image: app["image"]
         }));
         console.log(modifiedData);
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
-          console.log("hit");
           setApplicantDataExists(true);
           setSelectedApplicantData(modifiedData[0]);
           setSelectedApplicantIndex(0);
@@ -156,11 +165,6 @@ const ApplicantDashboard = () => {
                       scope="row"
                       onClick={() => _setCurrentApplicantProperties(row.index)}
                     >
-                      {/* <Avatar
-                        alt="Cindy Baker"
-                        src="/static/images/avatar/3.jpg"
-                        style={{width: 35, height: 35, display: 'inline-block', "vertical-align": 'top'  }}
-                      /> */}
                       <span>{row.name}</span>
                     </TableCell>
                   </TableRow>
@@ -173,26 +177,37 @@ const ApplicantDashboard = () => {
         <ApplicantDataBorder>
           <BaseCard variant="outlined">
             <BaseCardContent>
-              <Typography variant="h5" component="h2">
-                {selectedApplicantData["firstName"] +
-                  " " +
-                  selectedApplicantData["lastName"]}
-                  <hr></hr>
-              </Typography>
-              <ContentCard className={classes.root} variant="outlined">
-                <CardContent>
-                  <Typography variant="h5" component="h2">
-                    test
-                  </Typography>
-                </CardContent>
-              </ContentCard>
-              <ContentCard className={classes.root} variant="outlined">
-                <CardContent>
-                  <Typography variant="h5" component="h2">
-                    test
-                  </Typography>
-                </CardContent>
-              </ContentCard>
+              <ApplicantHeaderBox>
+                <AvatarBorder>
+                  <AvatarImage
+                    alt={selectedApplicantData["firstName"] +
+                      " " +
+                      selectedApplicantData["lastName"]}
+                    src={selectedApplicantData["image"]}
+                    onClick={() => window.open(selectedApplicantData["image"])}
+                  />
+                </AvatarBorder>
+                <div>
+                  <ApplicantTitle>
+                    {selectedApplicantData["firstName"] +
+                      " " +
+                      selectedApplicantData["lastName"]}
+                  </ApplicantTitle>
+                  <ApplicantSubtitle>
+                    {selectedApplicantData["college"] +
+                      ", Class of " +
+                      selectedApplicantData["gradYear"]}
+                  </ApplicantSubtitle>
+                </div>
+              </ApplicantHeaderBox>
+              <hr></hr>
+              <ContactCard
+                mail={selectedApplicantData["email"]}
+                phone={selectedApplicantData["phone"]}
+                linkedinUrl={selectedApplicantData["linkedin"]}
+                resumeUrl={selectedApplicantData["resume"]}
+              />
+              <EssayCard prompts={selectedApplicantData["prompts"]} />
             </BaseCardContent>
           </BaseCard>
         </ApplicantDataBorder>
@@ -201,12 +216,11 @@ const ApplicantDashboard = () => {
   );
 };
 
-
 // Styled Component CSS
 const Container = styled.div`
   width: 100%;
   height: 100%;
-  padding: 81px 91px 2px 91px;
+  padding: 81px 4vw 2px 4vw;
   flex-direction: container;
 `;
 
@@ -221,7 +235,7 @@ const ApplicantDataBorder = styled.div`
   width: 100%;
   margin: 10px;
   overflow-y: scroll;
-  white-space: nowrap;
+  white-space: normal;
 `;
 
 const ApplicantScrollableBorder = styled.div`
@@ -239,27 +253,56 @@ const Title = styled.div`
   color: #873ca2; /* Accent Purple */
 `;
 
+const ApplicantHeaderBox = styled.div`
+  margin: 1.5vw;
+  flex-direction: row;
+  display: flex;
+`;
+
+const AvatarBorder = styled.div`
+  margin-right: 1vw;
+  align-self: center;
+`;
+
+// CSS for Name of Applicant
+const ApplicantTitle = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 36px;
+  line-height: 42px;
+  color: #873ca2;
+`;
+
+const ApplicantSubtitle = styled.div`
+  margin-top: 0.5vw;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 16px;
+  color: #61486a;
+`;
+
+const AvatarImage = withStyles({
+  root: {
+    height: "70px",
+    width: "70px"
+  }
+})(Avatar);
+
 const BaseCard = withStyles({
   root: {
-    "background-color": "white",
-    height: "100%"
+    "background-color": "#f8f6f9",
+    height: "100%",
+    overflow: "scroll",
   },
 })(Card);
 
 const BaseCardContent = withStyles({
   root: {
-    padding: "0 0 0 0"
+    padding: "0 0 0 0",
   },
 })(CardContent);
-
-const ContentCard = withStyles({
-  root: {
-    "background-color": "rgba(254,252,255,255)",
-    "margin-top": "1vw",
-    "margin-bottom": "1vw",
-    "margin-right": "1vw",
-    "margin-left": "1vw"
-  },
-})(Card);
 
 export default ApplicantDashboard;
