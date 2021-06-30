@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 
-import AlertDialog from './AlertDialog';
+import AlertDialog from "./AlertDialog";
 
 import axios from "axios";
 
@@ -30,6 +30,7 @@ const ListingsDashboard = (props) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [listingData, setListingData] = useState([]);
+  const [toDeleteRowId, setToDeleteRowId] = useState("");
 
   useEffect(() => {
     getPostings();
@@ -133,29 +134,23 @@ const ListingsDashboard = (props) => {
 
   const [isOpen, setIsOpen] = React.useState(false);
   const handleDialogOpen = (id) => {
-    setIsOpen(true)
-  }
+    setToDeleteRowId(id);
+    setIsOpen(true);
+  };
   const handleDialogCancel = () => {
-    setIsOpen(false)
-  }
+    setIsOpen(false);
+  };
   const handleDialogConfirm = (idd) => {
-    console.log(idd);
-    // setIsOpen(false);
-    // deleteListing(idd);
-    // window.location.reload();
-  }
+    deleteListing(idd);
+    setIsOpen(false);
+    // Force reloads page in order to re-render the listings
+    window.location.reload();
+  };
 
   //delete functionality
   const deleteListing = (idd) => {
-    // if (window.confirm("Are you sure you wish to delete this item?")) {
-      // Calls Delete API call to delete posting based on button click
-      console.log("idd"+idd)
-      axios.delete(
-        process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + idd
-      );
-      console.log("axios delete")
-      // Force reloads page in order to re-render the listings
-    // }
+    // Calls Delete API call to delete posting based on button click
+    axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + idd);
     return;
   };
 
@@ -235,19 +230,17 @@ const ListingsDashboard = (props) => {
                                   }
                                 ></EditIcon>
                                 <DeleteIcon
-                                  // onClick={() => deleteListing(row._id)}
-                                  onClick={handleDialogOpen}
+                                  onClick={() => handleDialogOpen(row._id)}
                                   style={{ paddingLeft: "2px" }}
                                 ></DeleteIcon>
-                                <AlertDialog 
+                                <AlertDialog
                                   isOpen={isOpen}
-                                  handleOpen={handleDialogOpen}
                                   handleCancel={handleDialogCancel}
-                                  handleConfirm={() => handleDialogConfirm(row._id)}
-                                  title='Delete this listing?'
-                                  children='Confirm'
-                                  >
-                                  </AlertDialog>
+                                  handleConfirm={() =>
+                                    handleDialogConfirm(toDeleteRowId)
+                                  }
+                                  title="Delete this listing?"
+                                ></AlertDialog>
                               </div>
                             ) : (
                               <Link
