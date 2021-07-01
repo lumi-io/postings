@@ -10,7 +10,7 @@ ReactDOM.render(
   <Auth0Provider
     domain="dev-01def6kd.us.auth0.com"
     clientId="1JKZ7Od7hC81LUOSiifzWI3RF2laZPAV"
-    redirectUri={process.env.AUTH0_REDIRECT_URI}
+    redirectUri={process.env.REACT_APP_AUTH0_REDIRECT_URI}
     audience="https://dev-01def6kd.us.auth0.com/api/v2/"
     scope="read:current_user update:current_user_metadata"
   >
