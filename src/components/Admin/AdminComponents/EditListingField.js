@@ -74,7 +74,7 @@ const EditListingField = () => {
     // Function that changes the state of the overlay when button is clicked
     const handleClose = () => {
         setOpen(false);
-        window.location.href = "http://localhost:3000/admin/listing";
+        window.location.href = process.env.REACT_APP_AUTH0_REDIRECT_URI;
     };
 
     // Function that changes state of toggle in listingInfo object

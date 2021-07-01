@@ -62,7 +62,7 @@ const Container = styled.div`
 
 const ContentContainer = styled.div`
     padding-top: 80px;
-    padding-bottom: 600px;
+    padding-bottom: 1000px;
     padding-right: 120px;
     padding-left: 120px;
 `;
