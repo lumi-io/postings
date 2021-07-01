@@ -21,7 +21,6 @@ import { Link } from "react-router-dom";
 
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-
 import AlertDialog from "./AlertDialog";
 
 import axios from "axios";
@@ -133,13 +132,16 @@ const ListingsDashboard = (props) => {
   })((props) => <Checkbox color="default" {...props} />);
 
   const [isOpen, setIsOpen] = React.useState(false);
+  // Open alert dialog
   const handleDialogOpen = (id) => {
     setToDeleteRowId(id);
     setIsOpen(true);
   };
+  // Close alert dialog only
   const handleDialogCancel = () => {
     setIsOpen(false);
   };
+  // Close alert dialog and delete listing
   const handleDialogConfirm = (idd) => {
     deleteListing(idd);
     setIsOpen(false);

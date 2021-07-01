@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { withStyles } from "@material-ui/core/styles";
 
 const AlertDialog = props => {
   return (
@@ -10,10 +11,10 @@ const AlertDialog = props => {
       <Dialog
         open={props.isOpen}
         onClose={props.handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby="max-width-dialog-title"
+        aria-describedby="max-width-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">{props.title}</DialogTitle>
+        <DialogTitle id="max-width-dialog-title">{props.title}</DialogTitle>
         <DialogActions>
           <Button onClick={props.handleCancel} color="primary">
             Cancel
@@ -27,4 +28,10 @@ const AlertDialog = props => {
   );
 };
 
-export default AlertDialog
+const CustomDialog = withStyles({
+  paperWidthSm: {
+    "width": '500px'
+  }
+})
+
+export default AlertDialog;
