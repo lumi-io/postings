@@ -21,7 +21,7 @@ export default function OutlinedCard(props) {
         <CustomText onClick={() =>(window.location.href="/portal/" + props.id)} variant="h5" component="h2">
         {props.title}
         <p style={{fontSize:"13px", marginTop: "2px"}}>Boston</p>
-        <Divider style={{marginTop: "20px"}}></Divider>
+        <Divider style={{marginTop: "10px"}}></Divider>
         </CustomText>
     </div>
   );

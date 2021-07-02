@@ -21,8 +21,9 @@ const Portal = () => {
             const postings = data.allPostings;
             //convert the time
             var d = new Date();
-            var formattedDate = d.getFullYear() + "-0" + (d.getMonth() + 1) + "-" + d.getDate();
-            const visiblePostings = postings.filter(posting => (posting["isVisible"] === true && dateTime(posting["deadline"]) > formattedDate));
+            var formattedDate = d.getFullYear() + "-0" + (d.getMonth() + 1)  + "-0" + d.getDate();
+            console.log(formattedDate);
+            const visiblePostings = postings.filter(posting => (posting["isVisible"] === true && dateTime(posting["deadline"]) >= formattedDate));
             setListings(visiblePostings)
             return;
         })
@@ -68,7 +69,7 @@ const ContentContainer = styled.div`
 `;
 
 const ListingCardStyled = styled.div`
-    padding-top: 20px;
+    padding-top: 10px;
     padding-right: 20px;
     padding-left: 20px;
 `;
