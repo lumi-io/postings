@@ -83,7 +83,6 @@ const ApplicantDashboard = () => {
         }
       })
       .then((applications) => {
-        console.log(applications);
         let modifiedData = applications.map((app) => ({
           applicantId: app["applicantId"],
           college: app["college"],
@@ -99,7 +98,6 @@ const ApplicantDashboard = () => {
           prompts: app["prompts"],
           image: app["image"],
         }));
-        console.log(modifiedData);
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
           setApplicantDataExists(true);
@@ -111,7 +109,7 @@ const ApplicantDashboard = () => {
         return;
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Error: please check ApplicantDashboard.");
       });
   }
 
