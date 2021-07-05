@@ -10,6 +10,7 @@ import EditListing from './components/Admin/EditListing'
 import AdminNewListing from './components/Admin/AdminNewListing'
 import ApplicantDashboard from './components/Admin/ApplicantDashboard'
 import ApplicantInfo from './components/Admin/ApplicantInfo'
+import ListingsStatistics from './components/Admin/ListingsStatistics';
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route exact path="/admin/listing/:id" component={EditListing} />
           <Route exact path="/admin/listing/:id/applicant" component={ApplicantDashboard} />
           <Route exact path="/admin/listing/:id/applicant/:applicantId" component={ApplicantInfo} />
+          <Route exact path="/admin/listing/:id/statistics" component={ListingsStatistics} />
           <Route path="/admin/create-listing" component={AdminNewListing} />
           
           {/* TODO: /admin/console -> Admin console homepage (not a priority) to change secret keys for signup */}
