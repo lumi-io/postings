@@ -96,7 +96,7 @@ const ApplicantDashboard = () => {
           resume: app["resume"],
           timeApplied: app["timeApplied"],
           prompts: app["prompts"],
-          image: app["image"],
+          image: app["image"]
         }));
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
