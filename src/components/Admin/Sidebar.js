@@ -2,19 +2,28 @@ import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import MenuButton from './SidebarComponents/MenuButton'
+import Button from '@material-ui/core/Button';
+import { useAuth0 } from "@auth0/auth0-react";
+import { GridLeftEmptyCell } from '@material-ui/data-grid';
+import Login from '../Public/Login';
+
 
 const Sidebar = () => {
+  const { logout } = useAuth0();
   return (
-    <Container>
+    <StickyBox>
       <Title>
-        whyphi
+        lumi
       </Title>
       <br></br>
       <Link to="/admin/create-listing" style={{ textDecoration: 'none' }}>
-        <MenuButton name="Create New Listing" />
+        &nbsp;
+        <MenuButton name="+ New Listing" />
       </Link>
+      &nbsp;
+
       <MenuSubtitle>
-        Menu
+        <font>Menu</font> 
       </MenuSubtitle>
       <Link to="/admin" style={{ textDecoration: 'none' }}>
         <MenuButton name="Dashboard" />
@@ -23,12 +32,23 @@ const Sidebar = () => {
         <MenuButton name="Listings" />
       </Link>
       <Link to="/" style={{ textDecoration: 'none' }}>
-        <MenuButton name="Not ready..." />
+        <MenuButton name="Applications" />
       </Link>
       <Link to="/" style={{ textDecoration: 'none' }}>
-        <MenuButton name="Also not ready..." />
+        <MenuButton name="Interviews" />
       </Link>
-    </Container>
+      <Link to="/" style={{ textDecoration: 'none' }}>
+        <MenuButton name="Offers" />
+      </Link>
+
+      &nbsp;
+      <Button
+            onClick={() => logout({ returnTo: Login})}
+          >
+            Logout
+          </Button>
+    </StickyBox>  
+
   )
 }
 
@@ -51,7 +71,7 @@ const MenuSubtitle = styled.div`
   color: #A8A6A8;  /* Dark Gray */
 `;
 
-const Container = styled.div`
+const StickyBox = styled.div`
   min-width: 225px;
   background-color: #E1DEE1;
   height: 100%;
