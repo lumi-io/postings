@@ -8,10 +8,10 @@ import { Auth0Provider } from "@auth0/auth0-react";
 ReactDOM.render(
   <React.StrictMode>
   <Auth0Provider
-    domain="dev-01def6kd.us.auth0.com"
-    clientId="1JKZ7Od7hC81LUOSiifzWI3RF2laZPAV"
+    domain={process.env.REACT_APP_AUTH0_DOMAIN}
+    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
     redirectUri={process.env.REACT_APP_AUTH0_REDIRECT_URI}
-    audience="https://dev-01def6kd.us.auth0.com/api/v2/"
+    audience={process.env.REACT_APP_AUTH0_AUDIENCE}
     scope="read:current_user update:current_user_metadata"
   >
     <App />
