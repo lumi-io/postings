@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { withStyles, makeStyles } from '@material-ui/core/styles';
 import ListingCard from './PortalComponents/ListingCard'
 import axios from 'axios';
 
@@ -21,8 +22,15 @@ const Portal = () => {
             const postings = data.allPostings;
             //convert the time
             var d = new Date();
-            var formattedDate = d.getFullYear() + "-0" + (d.getMonth() + 1)  + "-0" + d.getDate();
-            console.log(formattedDate);
+            var month = "-0" + (d.getMonth() + 1);
+            var date = "-0" + d.getDate();
+            if (d.getMonth() > 8) {
+                month = "-" + (d.getMonth() + 1);
+            }
+            if (d.getDate() > 9){
+                date = "-" + d.getDate()
+            }
+            var formattedDate = d.getFullYear() + month + date;
             const visiblePostings = postings.filter(posting => (posting["isVisible"] === true && dateTime(posting["deadline"]) >= formattedDate));
             setListings(visiblePostings)
             return;
@@ -63,7 +71,7 @@ const Container = styled.div`
 
 const ContentContainer = styled.div`
     padding-top: 80px;
-    padding-bottom: 1000px;
+    padding-bottom: 30%;
     padding-right: 120px;
     padding-left: 120px;
 `;
