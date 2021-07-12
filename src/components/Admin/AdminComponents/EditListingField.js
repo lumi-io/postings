@@ -19,7 +19,6 @@ import { makeStyles, withStyles } from '@material-ui/core/styles';
 
 import styled from 'styled-components';
 import axios from 'axios';
-import { WbIncandescentOutlined } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     root: {

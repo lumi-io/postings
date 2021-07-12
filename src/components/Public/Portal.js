@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { withStyles, makeStyles } from '@material-ui/core/styles';
 import ListingCard from './PortalComponents/ListingCard'
 import axios from 'axios';
 
