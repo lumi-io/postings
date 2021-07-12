@@ -19,7 +19,6 @@
     "axios": "^0.21.1",
     "date-fns": "^2.22.1",
     "locate-path": "^6.0.0",
-    "moment": "^2.29.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-feather": "^2.0.9",
