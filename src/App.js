@@ -4,6 +4,7 @@ import Login from './components/Public/Login';
 
 import Portal from './components/Public/Portal';
 import PortalSubmission from './components/Public/PortalSubmission'
+import ThankYou from './components/Public/ThankYou/ThankYou'
 
 import Listings from './components/Admin/Listings'
 import EditListing from './components/Admin/EditListing'
@@ -18,6 +19,7 @@ function App() {
           {/* TODO: / -> Main homepage */}
           <Route exact path="/portal" component={Portal} />
           <Route exact path="/portal/:id" component={PortalSubmission}/>
+          <Route exact path="/thank-you" component={ThankYou} />
           <Route path="/login" component={Login} />
 
           {/* TODO: /admin -> Admin Dashboard Homepage */}
