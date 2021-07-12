@@ -73,6 +73,7 @@ const EditListingField = () => {
     // Function that changes the state of the overlay when button is clicked
     const handleClose = () => {
         setOpen(false);
+        window.location.href = process.env.REACT_APP_AUTH0_REDIRECT_URI;
     };
 
     // Function that changes state of toggle in listingInfo object
@@ -279,7 +280,7 @@ const EditListingField = () => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">{listingInfo["title"] + " listing created!"}</DialogTitle>
+                <DialogTitle id="alert-dialog-title">{listingInfo["title"] + " listing updated!"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         Click outside the box to go back to the main screen.
@@ -289,7 +290,6 @@ const EditListingField = () => {
         </Container>
     )
 }
-
 
 const Container = styled.div`
     width:100%;

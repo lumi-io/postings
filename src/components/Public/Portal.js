@@ -7,6 +7,10 @@ import axios from 'axios';
 const Portal = () => {
 
     const [listings, setListings] = useState([]);
+    
+    const dateTime = (date) => {
+        return date.substring(0,10);
+    };
 
     useEffect(() => {
         axios.get(process.env.REACT_APP_FLASK_SERVER + `admin/postings`)
@@ -15,7 +19,18 @@ const Portal = () => {
         })
         .then(data => {
             const postings = data.allPostings;
-            const visiblePostings = postings.filter(posting => posting["isVisible"] === true);
+            //convert the time
+            var d = new Date();
+            var month = "-0" + (d.getMonth() + 1);
+            var date = "-0" + d.getDate();
+            if (d.getMonth() > 8) {
+                month = "-" + (d.getMonth() + 1);
+            }
+            if (d.getDate() > 9){
+                date = "-" + d.getDate()
+            }
+            var formattedDate = d.getFullYear() + month + date;
+            const visiblePostings = postings.filter(posting => (posting["isVisible"] === true && dateTime(posting["deadline"]) >= formattedDate));
             setListings(visiblePostings)
             return;
         })
@@ -27,7 +42,8 @@ const Portal = () => {
     return (
         <Container>
             <ContentContainer>
-                <Title>Current Openings at Phi Chi Theta</Title>
+                <Title style={{paddingLeft: "18px"}}>Current Openings at Phi Chi Theta</Title>
+                <p style={{fontFamily: "Arial", paddingBottom: "20px", paddingLeft: "20px"}}>Total Results ({listings.length})</p>
                 {console.log(listings)}
                 {listings.map(listing => (
                     <ListingCardStyled>
@@ -54,14 +70,13 @@ const Container = styled.div`
 
 const ContentContainer = styled.div`
     padding-top: 80px;
-    padding-bottom: 80px;
+    padding-bottom: 30%;
     padding-right: 120px;
     padding-left: 120px;
 `;
 
 const ListingCardStyled = styled.div`
-    padding-top: 20px;
-    padding-bottom: 20px;
+    padding-top: 10px;
     padding-right: 20px;
     padding-left: 20px;
 `;
@@ -69,7 +84,7 @@ const ListingCardStyled = styled.div`
 
 const Title = styled.div`
     padding-right: 20px;
-    font-family: Roboto;
+    font-family: Arial;
     font-style: normal;
     font-weight: bold;
     font-size: 36px;

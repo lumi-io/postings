@@ -216,6 +216,7 @@ const ListingsDashboard = (props) => {
                             ) : isEdit ? (
                               <div>
                                 <EditIcon
+                                  style={{cursor: "pointer"}}
                                   onClick={() =>
                                     (window.location.href =
                                       "/admin/listing/" + row._id)
@@ -223,7 +224,7 @@ const ListingsDashboard = (props) => {
                                 ></EditIcon>
                                 <DeleteIcon
                                   onClick={() => deleteListing(row._id)}
-                                  style={{ paddingLeft: "2px" }}
+                                  style={{ paddingLeft: "2px", cursor: "pointer"}}
                                 ></DeleteIcon>
                               </div>
                             ) : (
