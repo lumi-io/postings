@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import ListingCard from './PortalComponents/ListingCard'
 import axios from 'axios';
 
-
 const Portal = () => {
 
     const [listings, setListings] = useState([]);
