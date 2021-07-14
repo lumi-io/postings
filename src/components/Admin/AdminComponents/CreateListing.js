@@ -67,7 +67,7 @@ const CreateListing = () => {
     // Function that executes POST request to the backend
     const createJobListing = () => {
         if (!('title' in listingInfo) || !('aboutUs' in listingInfo) || !('qualifications' in listingInfo)) {
-            console.log("Please fill out all necessary fields.");
+            window.alert("Please fill out all necessary fields.");
             return;
         }
         let listingInfoToSubmit = listingInfo;
@@ -81,6 +81,9 @@ const CreateListing = () => {
         .then(res => {
             console.log(res);
             if (res.data.status) setOpen(true);
+        })
+        .catch((e) => {
+            window.alert(e);
         });
         return;
     }
