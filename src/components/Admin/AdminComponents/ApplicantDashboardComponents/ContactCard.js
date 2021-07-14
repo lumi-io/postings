@@ -36,12 +36,12 @@ export default function EssayCardPrompts(props) {
         <IconInline>
           <LinkText>Links</LinkText>
           <IconSpacing>
-            <a href={props.linkedinUrl} target="_blank">
+            <a href={props.linkedinUrl} target="_blank" rel="noopener noreferrer">
               <Linkedin color="#61486a" style={{ flexDirection: "row" }} />
             </a>
           </IconSpacing>
           <IconSpacing>
-            <a href={props.resumeUrl} target="_blank">
+            <a href={props.resumeUrl} target="_blank" rel="noopener noreferrer">
               <FileText color="#61486a" style={{ flexDirection: "row" }} />
             </a>
           </IconSpacing>

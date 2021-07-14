@@ -1,20 +1,9 @@
 import React from 'react';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import {Container} from '@material-ui/core'
 import Divider from '@material-ui/core/Divider';
 
-const useStyles = makeStyles({
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-});
-
 export default function OutlinedCard(props) {
-  const classes = useStyles();
 
   return (
     <div>
