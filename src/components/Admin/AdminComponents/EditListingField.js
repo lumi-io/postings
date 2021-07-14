@@ -42,6 +42,8 @@ const EditListingField = () => {
 
     useEffect(() => {
         getListingInfo();
+        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // API function that gets info of a listing

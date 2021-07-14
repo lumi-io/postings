@@ -17,6 +17,7 @@ const ApplicantInfoField = () => {
 
     useEffect(() => {
         getApplicantData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     function getApplicantData() {
