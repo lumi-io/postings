@@ -24,8 +24,12 @@
     "react-helmet": "^6.1.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
+<<<<<<< HEAD
+    "styled-components": "^5.3.0",
+=======
     "styled-components": "^5.2.1",
     "typeface-roboto": "^1.1.13",
+>>>>>>> 98e3adecdf406bd4f8caf426805bca9223f61ee3
     "web-vitals": "^0.2.4"
   },
   "scripts": {
