@@ -36,6 +36,7 @@ const ApplicantDashboard = () => {
 
   useEffect(() => {
     getApplicantData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const useStyles = makeStyles({
@@ -80,12 +81,9 @@ const ApplicantDashboard = () => {
       .then((data) => {
         if (data["status"]) {
           return data["application"]["applications"];
-        } else {
-          console.log("err");
         }
       })
       .then((applications) => {
-        console.log(applications);
         let modifiedData = applications.map((app) => ({
           applicantId: app["applicantId"],
           college: app["college"],
@@ -101,17 +99,18 @@ const ApplicantDashboard = () => {
           prompts: app["prompts"],
           image: app["image"]
         }));
-        console.log(modifiedData);
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
           setApplicantDataExists(true);
           setSelectedApplicantData(modifiedData[0]);
           setSelectedApplicantIndex(0);
+        } else {
+          setApplicantDataExists(false);
         }
         return;
       })
       .catch((err) => {
-        console.log(err);
+        console.log("Error: please check ApplicantDashboard.");
       });
   }
 
@@ -175,41 +174,49 @@ const ApplicantDashboard = () => {
         </ApplicantScrollableBorder>
 
         <ApplicantDataBorder>
-          <BaseCard variant="outlined">
-            <BaseCardContent>
-              <ApplicantHeaderBox>
-                <AvatarBorder>
-                  <AvatarImage
-                    alt={selectedApplicantData["firstName"] +
-                      " " +
-                      selectedApplicantData["lastName"]}
-                    src={selectedApplicantData["image"]}
-                    onClick={() => window.open(selectedApplicantData["image"])}
-                  />
-                </AvatarBorder>
-                <div>
-                  <ApplicantTitle>
-                    {selectedApplicantData["firstName"] +
-                      " " +
-                      selectedApplicantData["lastName"]}
-                  </ApplicantTitle>
-                  <ApplicantSubtitle>
-                    {selectedApplicantData["college"] +
-                      ", Class of " +
-                      selectedApplicantData["gradYear"]}
-                  </ApplicantSubtitle>
-                </div>
-              </ApplicantHeaderBox>
-              <hr></hr>
-              <ContactCard
-                mail={selectedApplicantData["email"]}
-                phone={selectedApplicantData["phone"]}
-                linkedinUrl={selectedApplicantData["linkedin"]}
-                resumeUrl={selectedApplicantData["resume"]}
-              />
-              <EssayCard prompts={selectedApplicantData["prompts"]} />
-            </BaseCardContent>
-          </BaseCard>
+          {applicantDataExists ? (
+            <BaseCard variant="outlined">
+              <BaseCardContent>
+                <ApplicantHeaderBox>
+                  <AvatarBorder>
+                    <AvatarImage
+                      alt={
+                        selectedApplicantData["firstName"] +
+                        " " +
+                        selectedApplicantData["lastName"]
+                      }
+                      src={selectedApplicantData["image"]}
+                      onClick={() =>
+                        window.open(selectedApplicantData["image"])
+                      }
+                    />
+                  </AvatarBorder>
+                  <div>
+                    <ApplicantTitle>
+                      {selectedApplicantData["firstName"] +
+                        " " +
+                        selectedApplicantData["lastName"]}
+                    </ApplicantTitle>
+                    <ApplicantSubtitle>
+                      {selectedApplicantData["college"] +
+                        ", Class of " +
+                        selectedApplicantData["gradYear"]}
+                    </ApplicantSubtitle>
+                  </div>
+                </ApplicantHeaderBox>
+                <hr></hr>
+                <ContactCard
+                  mail={selectedApplicantData["email"]}
+                  phone={selectedApplicantData["phone"]}
+                  linkedinUrl={selectedApplicantData["linkedin"]}
+                  resumeUrl={selectedApplicantData["resume"]}
+                />
+                <EssayCard prompts={selectedApplicantData["prompts"]} />
+              </BaseCardContent>
+            </BaseCard>
+          ) : (
+            <NonExistingMessage>No Applicants :(</NonExistingMessage>
+          )}
         </ApplicantDataBorder>
       </ApplicantDataGrid>
     </Container>
@@ -284,11 +291,22 @@ const ApplicantSubtitle = styled.div`
   color: #61486a;
 `;
 
+const NonExistingMessage = styled.div`
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 42px;
+  line-height: 16px;
+  color: #61486a;
+  padding: 4vw 4vw 4vw 4vw;
+  text-align: center;
+`;
+
 const AvatarImage = withStyles({
   root: {
     height: "70px",
-    width: "70px"
-  }
+    width: "70px",
+  },
 })(Avatar);
 
 const BaseCard = withStyles({
