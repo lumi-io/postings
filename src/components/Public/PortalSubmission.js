@@ -4,14 +4,15 @@ import styled from "styled-components";
 import axios from "axios";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import FileUploadButton from "./PortalComponents/FileUploadButton";
+import FileUploadButton from "./PortalSubmissionComponents/FileUploadButton";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import DateFnsUtils from "@date-io/date-fns";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Checkbox from "@material-ui/core/Checkbox";
-
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+
+import { withStyles } from "@material-ui/core/styles";
 
 import ContentContainer from "./PortalSubmissionComponents/ContentContainer";
 import {
@@ -20,7 +21,7 @@ import {
 } from "./PortalSubimssionHelperFunctions";
 
 const PortalSubmission = () => {
-  const history = useHistory()
+  const history = useHistory();
 
   const { id } = useParams();
   const [listingsInfo, setListingsInfo] = useState([]);
@@ -90,7 +91,7 @@ const PortalSubmission = () => {
     return (
       <TextFieldStyled>
         <FieldText>Email address*</FieldText>
-        <TextField
+        <CustomTextField
           required
           variant="outlined"
           fullWidth
@@ -120,7 +121,7 @@ const PortalSubmission = () => {
     return (
       <TextFieldStyled>
         <FieldText>Phone number*</FieldText>
-        <TextField
+        <CustomTextField
           required
           variant="outlined"
           fullWidth
@@ -133,7 +134,6 @@ const PortalSubmission = () => {
               newObj["phone"] = val;
               return Object.assign({}, prevState, newObj);
             });
-            console.log(appInfo);
           }}
         />
       </TextFieldStyled>
@@ -224,7 +224,7 @@ const PortalSubmission = () => {
       })
       .then(() => {
         setSubmission(false);
-        history.push("/thank-you") 
+        history.push("/thank-you");
       })
       .catch((e) => {
         setSubmission(false);
@@ -353,6 +353,17 @@ const PortalSubmission = () => {
         return res.data;
       })
       .then((data) => {
+        if (data.postingInfo["essay"].length !== 0) {
+          setAppInfo((prevState) => {
+            var newObj = {};
+            let essayObjects = data.postingInfo["essay"].map((question) => ({
+              question: question,
+              answer: "",
+            }));
+            newObj["essay"] = essayObjects;
+            return Object.assign({}, prevState, newObj);
+          });
+        }
         setListingsInfo(data.postingInfo);
         return;
       })
@@ -365,6 +376,7 @@ const PortalSubmission = () => {
   return (
     listingsInfo && (
       <Container>
+        {/* Container showing information of listing */}
         <ContentContainer
           title={listingsInfo["title"]}
           aboutUs={listingsInfo["aboutUs"]}
@@ -376,7 +388,7 @@ const PortalSubmission = () => {
           {requiredFields.map((text) => (
             <TextFieldStyled>
               <FieldText>{text.label}*</FieldText>
-              <TextField
+              <CustomTextField
                 required
                 variant="outlined"
                 fullWidth
@@ -399,7 +411,7 @@ const PortalSubmission = () => {
           ))}
           <TextFieldStyled>
             <FieldText>Minor</FieldText>
-            <TextField
+            <CustomTextField
               variant="outlined"
               fullWidth
               id="minor"
@@ -441,7 +453,7 @@ const PortalSubmission = () => {
           {optionalFields.map((text) => (
             <TextFieldStyled>
               <FieldText>{text.label}</FieldText>
-              <TextField
+              <CustomTextField
                 variant="outlined"
                 fullWidth
                 id={text.name}
@@ -450,7 +462,7 @@ const PortalSubmission = () => {
                   setAppInfo((prevState) => {
                     const val = e.target.value;
                     var newObj = {};
-                    newObj[text[1]] = val;
+                    newObj[text.name] = val;
                     return Object.assign({}, prevState, newObj);
                   });
                 }}
@@ -469,10 +481,34 @@ const PortalSubmission = () => {
             textField={imageName}
           />
 
+          {/* Component for Essay Fields */}
+          {listingsInfo.essay &&
+            listingsInfo.essay.map((question, idx) => (
+              <TextFieldStyled>
+                <FieldText>{question}</FieldText>
+                <CustomTextField
+                  variant="outlined"
+                  fullWidth
+                  rows={7}
+                  multiline
+                  id={question}
+                  type="text"
+                  onChange={(e) => {
+                    setAppInfo((prevState) => {
+                      const val = e.target.value;
+                      var essayArr = prevState["essay"];
+                      essayArr[idx]["answer"] = val;
+                      return Object.assign({}, prevState, {"essay": essayArr});
+                    });
+                  }}
+                />
+              </TextFieldStyled>
+            ))}
+
           {selectFields.map((text) => (
             <TextFieldStyled>
               <FieldText>{text[0]}</FieldText>
-              <TextField
+              <CustomTextField
                 id="outlined-full-width"
                 fullWidth
                 variant="outlined"
@@ -544,5 +580,28 @@ const FieldText = styled.div`
   color: #61486a;
   padding-bottom: 10px;
 `;
+
+const CustomTextField = withStyles({
+  root: {
+    "& label.Mui-focused": {
+      color: "#61486A",
+    },
+    "& .MuiInput-underline:after": {
+      borderBottomColor: "#8A3DA6",
+    },
+    "& .MuiOutlinedInput-root": {
+      "& fieldset": {
+        borderColor: "#BEBEBE",
+      },
+      "&:hover fieldset": {
+        borderColor: "#8A3DA6",
+        borderWidth: 1,
+      },
+      "&.Mui-focused fieldset": {
+        borderColor: "#8A3DA6",
+      },
+    },
+  },
+})(TextField);
 
 export default PortalSubmission;

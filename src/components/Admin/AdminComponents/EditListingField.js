@@ -179,7 +179,7 @@ const EditListingField = () => {
             />
             <br></br>
             <br></br>
-            <CustmomTextfield
+            <CustomTextfield
                 style={{ width: "500px",}}
                 required
                 id="outlined-required"
@@ -192,7 +192,7 @@ const EditListingField = () => {
             <br></br>
             {fields.map((field) => (
                 <BigTextContainer>
-                    <CustmomTextfield
+                    <CustomTextfield
                         style={{ width: "100%" }}
                         required
                         id="outlined-required"
@@ -229,7 +229,7 @@ const EditListingField = () => {
 
             {essayQuestions.map((field, index) => (
                 <EssayQuestionContainer>
-                    <CustmomTextfield
+                    <CustomTextfield
                         style={{ width: "500px" }}
                         required
                         id="outlined-required"
@@ -253,7 +253,7 @@ const EditListingField = () => {
             <Divider></Divider>
             <br></br>
             <p>Deadline</p>
-            <CustmomTextfield
+            <CustomTextfield
                 id="datetime-local"
                 type="datetime-local"
                 value={listingInfo["deadline"]}
@@ -330,7 +330,7 @@ const CustomButton = withStyles({
     }
 })(Button);
 
-const CustmomTextfield = withStyles({
+const CustomTextfield = withStyles({
     root: {
       '& label.Mui-focused': {
         color: '#61486A',
