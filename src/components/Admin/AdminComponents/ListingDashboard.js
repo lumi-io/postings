@@ -234,7 +234,7 @@ const ListingsDashboard = (props) => {
                                   }
                                 ></EditIcon>
                                 <DeleteIcon
-                                  onClick={() => deleteListing(row._id)}
+                                  onClick={() => handleDialogOpen(row._id)}
                                   style={{ paddingLeft: "2px", cursor: "pointer"}}
                                 ></DeleteIcon>
                                 <AlertDialog

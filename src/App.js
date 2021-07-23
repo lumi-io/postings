@@ -9,7 +9,7 @@ import ThankYou from './components/Public/ThankYou/ThankYou'
 import Listings from './components/Admin/Listings'
 import EditListing from './components/Admin/EditListing'
 import AdminNewListing from './components/Admin/AdminNewListing'
-import ApplicantDashboard from './components/Admin/ApplicantDashboard'
+import ApplicantDashboard from './components/Admin/ApplicantDashboard/ApplicantDashboard'
 import ApplicantInfo from './components/Admin/ApplicantInfo'
 
 import NotFoundPage from './components/Public/PageNotFound/PageNotFound';

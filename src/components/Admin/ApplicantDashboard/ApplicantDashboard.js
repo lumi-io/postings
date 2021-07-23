@@ -1,11 +1,11 @@
 import React from 'react'
-import Sidebar from './Sidebar'
-import ApplicantDashboard from './AdminComponents/ApplicantDashboard'
+import Sidebar from '../Sidebar'
+import Dashboard from './components/Dashboard'
 import styled from 'styled-components';
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-const Applicant = () => {
+const ApplicantDashboard = () => {
 
     const { isAuthenticated, isLoading, error } = useAuth0();
 
@@ -23,7 +23,7 @@ const Applicant = () => {
             isAuthenticated &&
             <Container>
                 <Sidebar />
-                <ApplicantDashboard />
+                <Dashboard />
             </Container>
         )
     )
@@ -41,4 +41,4 @@ const Container = styled.div`
   position: absolute;
 `;
 
-export default Applicant;
+export default ApplicantDashboard;

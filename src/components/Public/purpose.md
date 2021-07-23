@@ -1,1 +1,0 @@
-This folder contains components that are visible to the public.

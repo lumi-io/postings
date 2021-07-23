@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-import ListingsDashboard from './AdminComponents/ListingDash'
+import ListingsDashboard from './AdminComponents/ListingDashboard'
 import styled from 'styled-components';
 
 import { useAuth0 } from "@auth0/auth0-react";
