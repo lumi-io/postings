@@ -1,29 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { withStyles } from "@material-ui/core/styles";
-
-import styled from "styled-components";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
-import Avatar from "@material-ui/core/Avatar";
-
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
 
 import axios from "axios";
-// import { containerSizesSelector } from "@material-ui/data-grid";
 
-import ContactCard from "./ApplicantDashboardComponents/ContactCard";
-import EssayCard from "./ApplicantDashboardComponents/EssayCard";
+import ContactCard from "./ContactCard";
+import EssayCard from "./EssayCard";
 
-const ApplicantDashboard = () => {
-  // const classes = useStyles();
+import {
+  Container,
+  ApplicantDataGrid,
+  ApplicantDataBorder,
+  ApplicantScrollableBorder,
+  Title,
+  ApplicantHeaderBox,
+  AvatarBorder,
+  ApplicantTitle,
+  ApplicantSubtitle,
+  NonExistingMessage,
+  AvatarImage,
+  BaseCard,
+  BaseCardContent,
+} from "../helpers/Style";
 
+import { parseAndConvertCollegesArr } from "../helpers/Functions";
+
+const Dashboard = () => {
   let { id } = useParams();
 
   const location = useLocation();
@@ -86,7 +94,7 @@ const ApplicantDashboard = () => {
       .then((applications) => {
         let modifiedData = applications.map((app) => ({
           applicantId: app["applicantId"],
-          college: app["college"],
+          colleges: app["colleges"],
           email: app["email"],
           firstName: app["firstName"],
           lastName: app["lastName"],
@@ -97,11 +105,12 @@ const ApplicantDashboard = () => {
           resume: app["resume"],
           timeApplied: app["timeApplied"],
           prompts: app["prompts"],
-          image: app["image"]
+          image: app["image"],
         }));
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
           setApplicantDataExists(true);
+          console.log(modifiedData[0]);
           setSelectedApplicantData(modifiedData[0]);
           setSelectedApplicantIndex(0);
         } else {
@@ -198,9 +207,12 @@ const ApplicantDashboard = () => {
                         selectedApplicantData["lastName"]}
                     </ApplicantTitle>
                     <ApplicantSubtitle>
-                      {selectedApplicantData["college"] +
-                        ", Class of " +
-                        selectedApplicantData["gradYear"]}
+                      {selectedApplicantData["colleges"] &&
+                        parseAndConvertCollegesArr(
+                          selectedApplicantData["colleges"]
+                        ) +
+                          ", Class of " +
+                          selectedApplicantData["gradYear"]}
                     </ApplicantSubtitle>
                   </div>
                 </ApplicantHeaderBox>
@@ -223,104 +235,4 @@ const ApplicantDashboard = () => {
   );
 };
 
-// Styled Component CSS
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  padding: 81px 4vw 2px 4vw;
-  flex-direction: container;
-`;
-
-const ApplicantDataGrid = styled.div`
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  margin-bottom: 100px;
-`;
-
-const ApplicantDataBorder = styled.div`
-  width: 100%;
-  margin: 10px;
-  overflow-y: scroll;
-  white-space: normal;
-`;
-
-const ApplicantScrollableBorder = styled.div`
-  border: 1px solid #71706e;
-  width: 50%;
-  margin: 10px;
-`;
-
-const Title = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 36px;
-  line-height: 42px;
-  color: #873ca2; /* Accent Purple */
-`;
-
-const ApplicantHeaderBox = styled.div`
-  margin: 1.5vw;
-  flex-direction: row;
-  display: flex;
-`;
-
-const AvatarBorder = styled.div`
-  margin-right: 1vw;
-  align-self: center;
-`;
-
-// CSS for Name of Applicant
-const ApplicantTitle = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 36px;
-  line-height: 42px;
-  color: #873ca2;
-`;
-
-const ApplicantSubtitle = styled.div`
-  margin-top: 0.5vw;
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 14px;
-  line-height: 16px;
-  color: #61486a;
-`;
-
-const NonExistingMessage = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 42px;
-  line-height: 16px;
-  color: #61486a;
-  padding: 4vw 4vw 4vw 4vw;
-  text-align: center;
-`;
-
-const AvatarImage = withStyles({
-  root: {
-    height: "70px",
-    width: "70px",
-  },
-})(Avatar);
-
-const BaseCard = withStyles({
-  root: {
-    "background-color": "#f8f6f9",
-    height: "100%",
-    overflow: "scroll",
-  },
-})(Card);
-
-const BaseCardContent = withStyles({
-  root: {
-    padding: "0 0 0 0",
-  },
-})(CardContent);
-
-export default ApplicantDashboard;
+export default Dashboard;

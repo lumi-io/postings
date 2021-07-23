@@ -1,18 +1,18 @@
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 
-import Login from './components/Public/Login';
+import Login from './components/Public/Login/Login';
 
-import Portal from './components/Public/Portal';
-import PortalSubmission from './components/Public/PortalSubmission'
+import Portal from './components/Public/Portal/Portal';
+import PortalSubmission from './components/Public/PortalSubmission/PortalSubmission'
 import ThankYou from './components/Public/ThankYou/ThankYou'
 
 import Listings from './components/Admin/Listings'
 import EditListing from './components/Admin/EditListing'
 import AdminNewListing from './components/Admin/AdminNewListing'
-import ApplicantDashboard from './components/Admin/ApplicantDashboard'
+import ApplicantDashboard from './components/Admin/ApplicantDashboard/ApplicantDashboard'
 import ApplicantInfo from './components/Admin/ApplicantInfo'
 
-import NotFoundPage from './components/Public/PageNotFound';
+import NotFoundPage from './components/Public/PageNotFound/PageNotFound';
 function App() {
   return (
       <Router>

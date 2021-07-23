@@ -1,34 +1,40 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
-import styled from "styled-components";
+
 import axios from "axios";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import FileUploadButton from "./PortalComponents/FileUploadButton";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
 import DateFnsUtils from "@date-io/date-fns";
+import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import Checkbox from "@material-ui/core/Checkbox";
-
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 
-import ContentContainer from "./PortalSubmissionComponents/ContentContainer";
+import FileUploadButton from "./components/FileUploadButton";
+import ContentContainer from "./components/ContentContainer";
+
+import { Container, SubmissionContainer, Title, TextFieldStyled, FieldText, CustomTextField } from "./helpers/Style";
+
 import {
   parseOutColleges,
   requiredFieldsExist,
-} from "./PortalSubimssionHelperFunctions";
+  convertBase64,
+} from "./helpers/Functions";
+
+import { requiredFields, optionalFields } from "./helpers/Constants";
 
 const PortalSubmission = () => {
-  const history = useHistory()
-
+  const history = useHistory();
   const { id } = useParams();
+
+
   const [listingsInfo, setListingsInfo] = useState([]);
-  const [appInfo, setAppInfo] = useState({
-    gradYear: null,
-  });
+  const [appInfo, setAppInfo] = useState({ gradYear: null });
   const [resumeName, setResumeName] = useState("");
   const [imageName, setImageName] = useState("");
+  const [submission, setSubmission] = useState(false);
+  const [validEmail, setValidEmail] = useState(false);
 
   const [colleges, setColleges] = useState({
     CAS: false,
@@ -43,41 +49,6 @@ const PortalSubmission = () => {
     Wheelock: false,
   });
 
-  const [submission, setSubmission] = useState(false);
-  const [validEmail, setValidEmail] = useState(false);
-
-  // [Title to be shown, id of title for database]
-  const requiredFields = [
-    {
-      label: "First name",
-      name: "firstName",
-      type: "text",
-    },
-    {
-      label: "Last name",
-      name: "lastName",
-      type: "text",
-    },
-    {
-      label: "Major",
-      name: "major",
-      type: "text",
-    },
-  ];
-
-  const optionalFields = [
-    {
-      label: "LinkedIn Profile",
-      name: "linkedin",
-      type: "url",
-    },
-    {
-      label: "Website / Portfolio",
-      name: "website",
-      type: "url",
-    },
-  ];
-
   const selectFields = [["How did you hear about PCT?", "marketing"]];
 
   function validateEmail(event) {
@@ -90,7 +61,7 @@ const PortalSubmission = () => {
     return (
       <TextFieldStyled>
         <FieldText>Email address*</FieldText>
-        <TextField
+        <CustomTextField
           required
           variant="outlined"
           fullWidth
@@ -120,7 +91,7 @@ const PortalSubmission = () => {
     return (
       <TextFieldStyled>
         <FieldText>Phone number*</FieldText>
-        <TextField
+        <CustomTextField
           required
           variant="outlined"
           fullWidth
@@ -133,7 +104,6 @@ const PortalSubmission = () => {
               newObj["phone"] = val;
               return Object.assign({}, prevState, newObj);
             });
-            console.log(appInfo);
           }}
         />
       </TextFieldStyled>
@@ -163,20 +133,6 @@ const PortalSubmission = () => {
       var newObj = {};
       newObj["image"] = val;
       return Object.assign({}, prevState, newObj);
-    });
-  };
-
-  // Converts file to Base64 Format
-  const convertBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      const fileReader = new FileReader();
-      fileReader.readAsDataURL(file);
-      fileReader.onload = () => {
-        resolve(fileReader.result);
-      };
-      fileReader.onerror = (error) => {
-        reject(error);
-      };
     });
   };
 
@@ -224,7 +180,7 @@ const PortalSubmission = () => {
       })
       .then(() => {
         setSubmission(false);
-        history.push("/thank-you") 
+        history.push("/thank-you");
       })
       .catch((e) => {
         setSubmission(false);
@@ -353,6 +309,17 @@ const PortalSubmission = () => {
         return res.data;
       })
       .then((data) => {
+        if (data.postingInfo["essay"].length !== 0) {
+          setAppInfo((prevState) => {
+            var newObj = {};
+            let essayObjects = data.postingInfo["essay"].map((question) => ({
+              question: question,
+              answer: "",
+            }));
+            newObj["essay"] = essayObjects;
+            return Object.assign({}, prevState, newObj);
+          });
+        }
         setListingsInfo(data.postingInfo);
         return;
       })
@@ -365,6 +332,7 @@ const PortalSubmission = () => {
   return (
     listingsInfo && (
       <Container>
+        {/* Container showing information of listing */}
         <ContentContainer
           title={listingsInfo["title"]}
           aboutUs={listingsInfo["aboutUs"]}
@@ -376,7 +344,7 @@ const PortalSubmission = () => {
           {requiredFields.map((text) => (
             <TextFieldStyled>
               <FieldText>{text.label}*</FieldText>
-              <TextField
+              <CustomTextField
                 required
                 variant="outlined"
                 fullWidth
@@ -399,7 +367,7 @@ const PortalSubmission = () => {
           ))}
           <TextFieldStyled>
             <FieldText>Minor</FieldText>
-            <TextField
+            <CustomTextField
               variant="outlined"
               fullWidth
               id="minor"
@@ -441,7 +409,7 @@ const PortalSubmission = () => {
           {optionalFields.map((text) => (
             <TextFieldStyled>
               <FieldText>{text.label}</FieldText>
-              <TextField
+              <CustomTextField
                 variant="outlined"
                 fullWidth
                 id={text.name}
@@ -450,7 +418,7 @@ const PortalSubmission = () => {
                   setAppInfo((prevState) => {
                     const val = e.target.value;
                     var newObj = {};
-                    newObj[text[1]] = val;
+                    newObj[text.name] = val;
                     return Object.assign({}, prevState, newObj);
                   });
                 }}
@@ -469,10 +437,34 @@ const PortalSubmission = () => {
             textField={imageName}
           />
 
+          {/* Component for Essay Fields */}
+          {listingsInfo.essay &&
+            listingsInfo.essay.map((question, idx) => (
+              <TextFieldStyled>
+                <FieldText>{question + "*"}</FieldText>
+                <CustomTextField
+                  variant="outlined"
+                  fullWidth
+                  rows={7}
+                  multiline
+                  id={question}
+                  type="text"
+                  onChange={(e) => {
+                    setAppInfo((prevState) => {
+                      const val = e.target.value;
+                      var essayArr = prevState["essay"];
+                      essayArr[idx]["answer"] = val;
+                      return Object.assign({}, prevState, { essay: essayArr });
+                    });
+                  }}
+                />
+              </TextFieldStyled>
+            ))}
+
           {selectFields.map((text) => (
             <TextFieldStyled>
               <FieldText>{text[0]}</FieldText>
-              <TextField
+              <CustomTextField
                 id="outlined-full-width"
                 fullWidth
                 variant="outlined"
@@ -504,45 +496,5 @@ const PortalSubmission = () => {
     )
   );
 };
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  flex-direction: container;
-  margin: 0 auto;
-`;
-
-const SubmissionContainer = styled.div`
-    padding-top: 80px;
-    padding-bottom: 80px;
-    padding-right: 20%;
-    padding-left: 20%;
-    background: background: #FEFCFF;
-`;
-
-const Title = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 36px;
-  line-height: 42px;
-  color: #873ca2; /* Accent Purple */
-  padding-bottom: 20px;
-`;
-
-const TextFieldStyled = styled.div`
-  padding-top: 10px;
-  padding-bottom: 20px;
-`;
-
-const FieldText = styled.div`
-  font-family: Roboto;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 18px;
-  line-height: 21px;
-  color: #61486a;
-  padding-bottom: 10px;
-`;
 
 export default PortalSubmission;

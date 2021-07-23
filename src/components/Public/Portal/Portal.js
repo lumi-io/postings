@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
-import ListingCard from "./PortalComponents/ListingCard";
+import ListingCard from "./components/ListingCard";
 import axios from "axios";
+
+import { Container, ContentContainer, ListingCardStyled, Title } from "./helpers/Style";
 
 const Portal = () => {
   const [listings, setListings] = useState([]);
@@ -67,36 +68,5 @@ const Portal = () => {
     </Container>
   );
 };
-
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  background-color: #f9f6f9;
-  flex-direction: container;
-  margin: 0 auto;
-`;
-
-const ContentContainer = styled.div`
-  padding-top: 80px;
-  padding-bottom: 30%;
-  padding-right: 120px;
-  padding-left: 120px;
-`;
-
-const ListingCardStyled = styled.div`
-  padding-top: 10px;
-  padding-right: 20px;
-  padding-left: 20px;
-`;
-
-const Title = styled.div`
-  padding-right: 20px;
-  font-family: Arial;
-  font-style: normal;
-  font-weight: bold;
-  font-size: 36px;
-  line-height: 42px;
-  color: #873ca2; /* Accent Purple */
-`;
 
 export default Portal;
