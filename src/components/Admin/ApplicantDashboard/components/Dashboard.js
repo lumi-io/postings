@@ -104,8 +104,8 @@ const Dashboard = () => {
           linkedin: app["linkedin"],
           resume: app["resume"],
           timeApplied: app["timeApplied"],
-          prompts: app["prompts"],
-          image: app["image"],
+          prompts: app["essay"],
+          image: app["image"]
         }));
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {

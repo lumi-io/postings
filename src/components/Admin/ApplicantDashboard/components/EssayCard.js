@@ -11,13 +11,12 @@ export default function EssayCard(props) {
   const useStyles = makeStyles({});
   const classes = useStyles();
   const prompts = props.prompts;
-  console.log(prompts);
 
   return (
     <ContentCard className={classes.root} variant="outlined">
       <CardContent>
         {prompts && (prompts.map((prompt) => (
-          <EssayCardPrompts question={prompt["q"]} answer={prompt["a"]} />
+          <EssayCardPrompts question={prompt["question"]} answer={prompt["answer"]} />
         )))}
       </CardContent>
     </ContentCard>
