@@ -12,6 +12,7 @@ import axios from "axios";
 
 import ContactCard from "./ContactCard";
 import EssayCard from "./EssayCard";
+import BasicInformationCard from "./BasicInforrmationCard";
 
 import {
   Container,
@@ -100,6 +101,7 @@ const Dashboard = () => {
           lastName: app["lastName"],
           gradYear: app["gradYear"],
           major: app["major"],
+          minor: app["minor"],
           phone: app["phone"],
           linkedin: app["linkedin"],
           resume: app["resume"],
@@ -223,6 +225,10 @@ const Dashboard = () => {
                   linkedinUrl={selectedApplicantData["linkedin"]}
                   resumeUrl={selectedApplicantData["resume"]}
                 />
+                <BasicInformationCard 
+                  major={selectedApplicantData["major"]}
+                  minor={selectedApplicantData["minor"]} 
+                  />
                 <EssayCard prompts={selectedApplicantData["prompts"]} />
               </BaseCardContent>
             </BaseCard>
