@@ -20,7 +20,8 @@ export function requiredFieldsExist(applicantInfo){
     "email",
     "phone",
     "resume",
-    "image"
+    "image",
+    "essay"
   ]
 
   for (let i = 0; i < requiredFields.length; i++) {
@@ -30,4 +31,17 @@ export function requiredFieldsExist(applicantInfo){
   }
   
   return true;
+};
+
+export const convertBase64 = (file) => {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader();
+    fileReader.readAsDataURL(file);
+    fileReader.onload = () => {
+      resolve(fileReader.result);
+    };
+    fileReader.onerror = (error) => {
+      reject(error);
+    };
+  });
 };
