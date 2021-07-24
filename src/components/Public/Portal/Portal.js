@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from "react";
 import ListingCard from "./components/ListingCard";
 import axios from "axios";
+import Helmet from "react-helmet";
 
-import { Container, ContentContainer, ListingCardStyled, Title } from "./helpers/Style";
+import {
+  Container,
+  ContentContainer,
+  ListingCardStyled,
+  Title,
+} from "./helpers/Style";
 
 const Portal = () => {
   const [listings, setListings] = useState([]);
@@ -45,6 +51,9 @@ const Portal = () => {
 
   return (
     <Container>
+      <Helmet>
+        <style>{"body { background-color: #F9F6F9; height: 100%; }"}</style>
+      </Helmet>
       <ContentContainer>
         <Title style={{ paddingLeft: "18px" }}>
           Current Openings at Phi Chi Theta
