@@ -13,8 +13,16 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import FileUploadButton from "./components/FileUploadButton";
 import ContentContainer from "./components/ContentContainer";
+import ErrorPopup from "./components/ErrorPopup";
 
-import { Container, SubmissionContainer, Title, TextFieldStyled, FieldText, CustomTextField } from "./helpers/Style";
+import {
+  Container,
+  SubmissionContainer,
+  Title,
+  TextFieldStyled,
+  FieldText,
+  CustomTextField,
+} from "./helpers/Style";
 
 import {
   parseOutColleges,
@@ -28,13 +36,14 @@ const PortalSubmission = () => {
   const history = useHistory();
   const { id } = useParams();
 
-
   const [listingsInfo, setListingsInfo] = useState([]);
   const [appInfo, setAppInfo] = useState({ gradYear: null });
   const [resumeName, setResumeName] = useState("");
   const [imageName, setImageName] = useState("");
   const [submission, setSubmission] = useState(false);
   const [validEmail, setValidEmail] = useState(false);
+  const [openError, setOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [colleges, setColleges] = useState({
     CAS: false,
@@ -149,9 +158,10 @@ const PortalSubmission = () => {
     // Check if required fields are existing in the applicant's info data
     if (!requiredFieldsExist(appInfoToSubmit)) {
       setSubmission(false);
-      alert(
+      setErrorMessage(
         "Failed to send application. Please fill out all necessary fields."
       );
+      setOpenError(true);
       return;
     }
 
@@ -184,9 +194,10 @@ const PortalSubmission = () => {
       })
       .catch((e) => {
         setSubmission(false);
-        alert(
+        setErrorMessage(
           e.toString() + ", please contact the admin or PCT Recruitment Team."
         );
+        setOpenError(true);
       });
   };
 
@@ -324,14 +335,23 @@ const PortalSubmission = () => {
         return;
       })
       .catch((err) => {
-        console.log(err);
-        console.log("API Error");
+        setErrorMessage(
+          err.toString() + ", please contact the admin or PCT Recruitment Team."
+        );
+        setOpenError(true);
       });
   }, [id]);
 
   return (
     listingsInfo && (
       <Container>
+        <ErrorPopup
+          message={errorMessage}
+          open={openError}
+          closeOpen={setOpenError}
+          setErrorMessage={setErrorMessage}
+        />
+
         {/* Container showing information of listing */}
         <ContentContainer
           title={listingsInfo["title"]}
@@ -377,6 +397,23 @@ const PortalSubmission = () => {
                   const val = e.target.value;
                   var newObj = {};
                   newObj["minor"] = val;
+                  return Object.assign({}, prevState, newObj);
+                });
+              }}
+            />
+          </TextFieldStyled>
+
+          <TextFieldStyled>
+            <FieldText>GPA* (n/a if Not Applicable)</FieldText>
+            <CustomTextField
+              variant="outlined"
+              id="minor"
+              type="text"
+              onChange={(e) => {
+                setAppInfo((prevState) => {
+                  const val = e.target.value;
+                  var newObj = {};
+                  newObj["gpa"] = val;
                   return Object.assign({}, prevState, newObj);
                 });
               }}

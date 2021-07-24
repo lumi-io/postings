@@ -13,7 +13,7 @@ export const requiredFields = [
     label: "Major",
     name: "major",
     type: "text",
-  },
+  }
 ];
 
 export const optionalFields = [
