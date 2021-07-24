@@ -16,15 +16,21 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ErrorPopup(props) {
+export default function PopupDisplay(props) {
+  // Props:
+  // - open: Handles if popup should be displayed or not
+  // - message: The message the error popup should display
+  // - setOpen: The parent setOpen useState function to inherit
+  // - setErrorMessage: The parent setMessage useState function to inherit
+  // - severity: Type of popup to be displayed: {error, warning, info, success}
+
   const classes = useStyles();
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-
-    props.closeOpen(false);
+    props.setOpen(false);
     props.setErrorMessage("");
   };
 
@@ -36,7 +42,7 @@ export default function ErrorPopup(props) {
         autoHideDuration={6000}
         onClose={handleClose}
       >
-        <Alert onClose={handleClose} severity="error">
+        <Alert onClose={handleClose} severity={props.severity}>
           {props.message}
         </Alert>
       </Snackbar>

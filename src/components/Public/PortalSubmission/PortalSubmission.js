@@ -7,13 +7,15 @@ import DateFnsUtils from "@date-io/date-fns";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
-import Checkbox from "@material-ui/core/Checkbox";
-import FormGroup from "@material-ui/core/FormGroup";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import FileUploadButton from "./components/FileUploadButton";
 import ContentContainer from "./components/ContentContainer";
-import ErrorPopup from "./components/ErrorPopup";
+import PopupDisplay from "../../Popups/PopupDisplay";
+import CollegesCheckbox from "./components/CollegesCheckbox";
+import EmailForm from "./components/EmailForm";
+import PhoneForm from "./components/PhoneForm";
+
+import { getPostingData } from "./helpers/Data";
 
 import {
   Container,
@@ -27,7 +29,8 @@ import {
 import {
   parseOutColleges,
   requiredFieldsExist,
-  convertBase64,
+  handleResumeUpload,
+  handleImageUpload
 } from "./helpers/Functions";
 
 import { requiredFields, optionalFields } from "./helpers/Constants";
@@ -65,85 +68,6 @@ const PortalSubmission = () => {
       /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     setValidEmail(regexp.test(event.target.value));
   }
-
-  function emailForm() {
-    return (
-      <TextFieldStyled>
-        <FieldText>Email address*</FieldText>
-        <CustomTextField
-          required
-          variant="outlined"
-          fullWidth
-          name="email"
-          type="email"
-          error={appInfo["email"] === "" || !validEmail}
-          helperText={
-            appInfo["email"] === "" || !validEmail
-              ? "This field is empty or email is not valid."
-              : ""
-          }
-          onChange={(e) => {
-            setAppInfo((prevState) => {
-              validateEmail(e);
-              const val = e.target.value;
-              var newObj = {};
-              newObj["email"] = val;
-              return Object.assign({}, prevState, newObj);
-            });
-          }}
-        />
-      </TextFieldStyled>
-    );
-  }
-
-  function phoneForm() {
-    return (
-      <TextFieldStyled>
-        <FieldText>Phone number*</FieldText>
-        <CustomTextField
-          required
-          variant="outlined"
-          fullWidth
-          name="phone"
-          type="tel"
-          onChange={(e) => {
-            setAppInfo((prevState) => {
-              const val = e.target.value;
-              var newObj = {};
-              newObj["phone"] = val;
-              return Object.assign({}, prevState, newObj);
-            });
-          }}
-        />
-      </TextFieldStyled>
-    );
-  }
-
-  // Resume uploader helper function
-  const handleResumeUpload = async (event) => {
-    const file = event.target.files[0];
-    setResumeName(file["name"]);
-    const base64 = await convertBase64(file);
-    setAppInfo((prevState) => {
-      const val = base64;
-      var newObj = {};
-      newObj["resume"] = val;
-      return Object.assign({}, prevState, newObj);
-    });
-  };
-
-  // Image uploader helper function
-  const handleImageUpload = async (event) => {
-    const file = event.target.files[0];
-    setImageName(file["name"]);
-    const base64 = await convertBase64(file);
-    setAppInfo((prevState) => {
-      const val = base64;
-      var newObj = {};
-      newObj["image"] = val;
-      return Object.assign({}, prevState, newObj);
-    });
-  };
 
   // POSTs final user data to backend
   const handleSubmission = async () => {
@@ -201,155 +125,30 @@ const PortalSubmission = () => {
       });
   };
 
-  const CollegesCheckbox = () => {
-    return (
-      <FormGroup>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["CAS"]}
-              onChange={handleCollegesCheckboxChange}
-              name="CAS"
-            />
-          }
-          label="CAS"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["QST"]}
-              onChange={handleCollegesCheckboxChange}
-              name="QST"
-            />
-          }
-          label="QST"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["COM"]}
-              onChange={handleCollegesCheckboxChange}
-              name="COM"
-            />
-          }
-          label="COM"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["ENG"]}
-              onChange={handleCollegesCheckboxChange}
-              name="ENG"
-            />
-          }
-          label="ENG"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["CFA"]}
-              onChange={handleCollegesCheckboxChange}
-              name="CFA"
-            />
-          }
-          label="CFA"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["CGS"]}
-              onChange={handleCollegesCheckboxChange}
-              name="CGS"
-            />
-          }
-          label="CGS"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["SHA"]}
-              onChange={handleCollegesCheckboxChange}
-              name="SHA"
-            />
-          }
-          label="SHA"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["Pardee"]}
-              onChange={handleCollegesCheckboxChange}
-              name="Pardee"
-            />
-          }
-          label="Pardee"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["Sargent"]}
-              onChange={handleCollegesCheckboxChange}
-              name="Sargent"
-            />
-          }
-          label="Sargent"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={colleges["Wheelock"]}
-              onChange={handleCollegesCheckboxChange}
-              name="Wheelock"
-            />
-          }
-          label="Wheelock"
-        />
-      </FormGroup>
-    );
-  };
-
   // Handles colleges checkbox changes in boolean value
   const handleCollegesCheckboxChange = (event) => {
     setColleges({ ...colleges, [event.target.name]: event.target.checked });
   };
 
   useEffect(() => {
-    axios
-      .get(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id)
-      .then((res) => {
-        return res.data;
-      })
-      .then((data) => {
-        if (data.postingInfo["essay"].length !== 0) {
-          setAppInfo((prevState) => {
-            var newObj = {};
-            let essayObjects = data.postingInfo["essay"].map((question) => ({
-              question: question,
-              answer: "",
-            }));
-            newObj["essay"] = essayObjects;
-            return Object.assign({}, prevState, newObj);
-          });
-        }
-        setListingsInfo(data.postingInfo);
-        return;
-      })
-      .catch((err) => {
-        setErrorMessage(
-          err.toString() + ", please contact the admin or PCT Recruitment Team."
-        );
-        setOpenError(true);
-      });
+    getPostingData(
+      id,
+      setAppInfo,
+      setListingsInfo,
+      setErrorMessage,
+      setOpenError
+    );
   }, [id]);
 
   return (
     listingsInfo && (
       <Container>
-        <ErrorPopup
+        <PopupDisplay
           message={errorMessage}
           open={openError}
-          closeOpen={setOpenError}
+          setOpen={setOpenError}
           setErrorMessage={setErrorMessage}
+          severity="error"
         />
 
         {/* Container showing information of listing */}
@@ -440,9 +239,20 @@ const PortalSubmission = () => {
             </TextFieldStyled>
           </MuiPickersUtilsProvider>
           <FieldText>College(s)*</FieldText>
-          <CollegesCheckbox />
-          {emailForm()}
-          {phoneForm()}
+          <CollegesCheckbox
+            colleges={colleges}
+            handleCollegesCheckboxChange={handleCollegesCheckboxChange}
+          />
+
+          <EmailForm
+            appInfo={appInfo}
+            validEmail={validEmail}
+            setAppInfo={setAppInfo}
+            validateEmail={validateEmail}
+          />
+
+          <PhoneForm setAppInfo={setAppInfo} />
+
           {optionalFields.map((text) => (
             <TextFieldStyled>
               <FieldText>{text.label}</FieldText>
@@ -464,13 +274,13 @@ const PortalSubmission = () => {
           ))}
           <FieldText>Resume/CV*</FieldText>
           <FileUploadButton
-            function={handleResumeUpload}
+            function={(event) => handleResumeUpload(event, setResumeName, setAppInfo)}
             textField={resumeName}
           />
 
           <FieldText>Please attach a picture of yourself*</FieldText>
           <FileUploadButton
-            function={handleImageUpload}
+            function={(event) => handleImageUpload(event, setImageName, setAppInfo)}
             textField={imageName}
           />
 
