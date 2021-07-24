@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { Helmet } from "react-helmet";
 
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -12,7 +13,7 @@ import axios from "axios";
 
 import ContactCard from "./ContactCard";
 import EssayCard from "./EssayCard";
-import BasicInformationCard from "./BasicInforrmationCard";
+import BasicInformationCard from "./BasicInformationCard";
 
 import {
   Container,
@@ -107,7 +108,7 @@ const Dashboard = () => {
           resume: app["resume"],
           timeApplied: app["timeApplied"],
           prompts: app["essay"],
-          image: app["image"]
+          image: app["image"],
         }));
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
@@ -147,6 +148,9 @@ const Dashboard = () => {
 
   return (
     <Container>
+      <Helmet>
+        <style>{"body { background-color: #FEFCFF; }"}</style>
+      </Helmet>
       <Title>Applicants for {jobTitle}</Title>
       <br></br>
       <ApplicantDataGrid>
@@ -225,10 +229,10 @@ const Dashboard = () => {
                   linkedinUrl={selectedApplicantData["linkedin"]}
                   resumeUrl={selectedApplicantData["resume"]}
                 />
-                <BasicInformationCard 
+                <BasicInformationCard
                   major={selectedApplicantData["major"]}
-                  minor={selectedApplicantData["minor"]} 
-                  />
+                  minor={selectedApplicantData["minor"]}
+                />
                 <EssayCard prompts={selectedApplicantData["prompts"]} />
               </BaseCardContent>
             </BaseCard>

@@ -15,8 +15,8 @@ export const Container = styled.div`
 export const ApplicantDataGrid = styled.div`
   display: flex;
   flex-direction: row;
-  height: 100%;
-  margin-bottom: 100px;
+  height: 90%;
+  margin-bottom: -100px;
 `;
 
 export const ApplicantDataBorder = styled.div`

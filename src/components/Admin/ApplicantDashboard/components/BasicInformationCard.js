@@ -9,7 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 export default function BasicInformationCard(props) {
   const useStyles = makeStyles({});
   const classes = useStyles();
-  
+
   return (
     <ContentCard className={classes.root} variant="outlined">
       <CardContent>
