@@ -14,6 +14,7 @@ import axios from "axios";
 import ContactCard from "./ContactCard";
 import EssayCard from "./EssayCard";
 import BasicInformationCard from "./BasicInformationCard";
+import CriticalCard from "./CriticalCard";
 
 import {
   Container,
@@ -223,6 +224,7 @@ const Dashboard = () => {
                   </div>
                 </ApplicantHeaderBox>
                 <hr></hr>
+                <CriticalCard timeApplied={selectedApplicantData["timeApplied"]} />
                 <ContactCard
                   mail={selectedApplicantData["email"]}
                   phone={selectedApplicantData["phone"]}
