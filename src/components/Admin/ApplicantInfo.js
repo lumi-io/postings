@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const Applicant = () => {
 
-    const { isAuthenticated, isLoading, error } = useAuth0();
+    const { user, isAuthenticated, isLoading, error } = useAuth0();
 
     if (isLoading) return <div>Loading ...</div>;
     if (error) return <div>Oops... {error.message}</div>;
@@ -16,7 +16,7 @@ const Applicant = () => {
         (
             isAuthenticated &&
             <Container>
-                <Sidebar />
+                <Sidebar name={user.name}/>
                 <ApplicantInfoField />
             </Container>
         )
