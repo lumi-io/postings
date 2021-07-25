@@ -1,5 +1,5 @@
 import React from 'react'
-import Sidebar from '../Sidebar'
+import Sidebar from '../Sidebar/Sidebar'
 import CreateListingView from './components/CreateListingView'
 import styled from 'styled-components';
 

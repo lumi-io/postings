@@ -1,5 +1,5 @@
 import React from 'react'
-import Sidebar from './Sidebar'
+import Sidebar from './Sidebar/Sidebar'
 import EditListingField from './AdminComponents/EditListingField'
 import styled from 'styled-components';
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import MenuButton from './SidebarComponents/MenuButton'
+import MenuButton from './components/MenuButton'
 
 const Sidebar = () => {
   return (
@@ -16,7 +16,7 @@ const Sidebar = () => {
       <MenuSubtitle>
         Menu
       </MenuSubtitle>
-      <Link to="/admin" style={{ textDecoration: 'none' }}>
+      <Link to="/admin/listing" style={{ textDecoration: 'none' }}>
         <MenuButton name="Dashboard" />
       </Link>
       <Link to="/admin/listing" style={{ textDecoration: 'none' }}>
