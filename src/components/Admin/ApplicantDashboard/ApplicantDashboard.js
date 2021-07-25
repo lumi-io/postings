@@ -1,5 +1,5 @@
 import React from 'react'
-import Sidebar from '../Sidebar'
+import Sidebar from '../Sidebar/Sidebar'
 import Dashboard from './components/Dashboard'
 import styled from 'styled-components';
 
@@ -7,7 +7,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 
 const ApplicantDashboard = () => {
 
-    const { isAuthenticated, isLoading, error } = useAuth0();
+    const { user, isAuthenticated, isLoading, error } = useAuth0();
 
     if (isLoading) {
         return <div>Loading ...</div>;
@@ -22,7 +22,7 @@ const ApplicantDashboard = () => {
         (
             isAuthenticated &&
             <Container>
-                <Sidebar />
+                <Sidebar name={user.name}/>
                 <Dashboard />
             </Container>
         )
