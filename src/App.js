@@ -8,7 +8,7 @@ import ThankYou from './components/Public/ThankYou/ThankYou'
 
 import Listings from './components/Admin/Listings'
 import EditListing from './components/Admin/EditListing'
-import AdminNewListing from './components/Admin/AdminNewListing'
+import CreateListing from './components/Admin/CreateListing/CreateListing'
 import ApplicantDashboard from './components/Admin/ApplicantDashboard/ApplicantDashboard'
 import ApplicantInfo from './components/Admin/ApplicantInfo'
 
@@ -30,7 +30,7 @@ function App() {
           <Route exact path="/admin/listing/:id" component={EditListing} />
           <Route exact path="/admin/listing/:id/applicant" component={ApplicantDashboard} />
           <Route exact path="/admin/listing/:id/applicant/:applicantId" component={ApplicantInfo} />
-          <Route path="/admin/create-listing" component={AdminNewListing} />
+          <Route path="/admin/create-listing" component={CreateListing} />
 
           {/* TODO: / -> Error Page */}
           <Route component={NotFoundPage} />

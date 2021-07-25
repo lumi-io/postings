@@ -13,6 +13,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 import FileUploadButton from "./components/FileUploadButton";
 import ContentContainer from "./components/ContentContainer";
+import BackgroundOverlay from "../../BackgroundOverlay";
 
 import { Container, SubmissionContainer, Title, TextFieldStyled, FieldText, CustomTextField } from "./helpers/Style";
 
@@ -60,6 +61,7 @@ const PortalSubmission = () => {
   function emailForm() {
     return (
       <TextFieldStyled>
+        <BackgroundOverlay color="#FEFCFF"/>
         <FieldText>Email address*</FieldText>
         <CustomTextField
           required

@@ -9,7 +9,6 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import Box from "@material-ui/core/Box";
 
-// import SearchBar from "material-ui-search-bar";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Select from "@material-ui/core/Select";
@@ -21,6 +20,8 @@ import { Link } from "react-router-dom";
 
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+
+import BackgroundOverlay from "../../BackgroundOverlay";
 import AlertDialog from "./AlertDialog";
 
 import axios from "axios";
@@ -30,6 +31,8 @@ const ListingsDashboard = (props) => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [listingData, setListingData] = useState([]);
   const [toDeleteRowId, setToDeleteRowId] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [option, setOption] = React.useState("");
 
   useEffect(() => {
     getPostings();
@@ -80,7 +83,6 @@ const ListingsDashboard = (props) => {
   const rows = listingData;
 
   //choose filter
-  const [option, setOption] = React.useState("");
   const handleChange = (event) => {
     setOption(event.target.value);
   };
@@ -131,7 +133,6 @@ const ListingsDashboard = (props) => {
     checked: {},
   })((props) => <Checkbox color="default" {...props} />);
 
-  const [isOpen, setIsOpen] = React.useState(false);
   // Open alert dialog
   const handleDialogOpen = (id) => {
     setToDeleteRowId(id);
@@ -150,15 +151,18 @@ const ListingsDashboard = (props) => {
   //delete functionality
   const deleteListing = (idd) => {
     // Calls Delete API call to delete posting based on button click
-    axios.delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + idd).then(
-      // Force reloads page in order to re-render the listings
-      () => window.location.reload()
-    );
+    axios
+      .delete(process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + idd)
+      .then(
+        // Force reloads page in order to re-render the listings
+        () => window.location.reload()
+      );
     return;
   };
 
   return (
     <Container>
+      <BackgroundOverlay color="#FEFCFF"/>
       <Title>Job Postings</Title>
       <br></br>
       <Box style={{ paddingBottom: "10px" }} display="flex">
@@ -227,7 +231,7 @@ const ListingsDashboard = (props) => {
                             ) : isEdit ? (
                               <div>
                                 <EditIcon
-                                  style={{cursor: "pointer"}}
+                                  style={{ cursor: "pointer" }}
                                   onClick={() =>
                                     (window.location.href =
                                       "/admin/listing/" + row._id)
@@ -235,7 +239,10 @@ const ListingsDashboard = (props) => {
                                 ></EditIcon>
                                 <DeleteIcon
                                   onClick={() => handleDialogOpen(row._id)}
-                                  style={{ paddingLeft: "2px", cursor: "pointer"}}
+                                  style={{
+                                    paddingLeft: "2px",
+                                    cursor: "pointer",
+                                  }}
                                 ></DeleteIcon>
                                 <AlertDialog
                                   isOpen={isOpen}
