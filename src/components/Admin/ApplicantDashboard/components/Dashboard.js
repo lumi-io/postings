@@ -110,6 +110,7 @@ const Dashboard = () => {
           timeApplied: app["timeApplied"],
           prompts: app["essay"],
           image: app["image"],
+          gpa: app["gpa"]
         }));
         setApplicantData(modifiedData);
         if (modifiedData.length !== 0) {
@@ -234,6 +235,7 @@ const Dashboard = () => {
                 <BasicInformationCard
                   major={selectedApplicantData["major"]}
                   minor={selectedApplicantData["minor"]}
+                  gpa={selectedApplicantData["gpa"]}
                 />
                 <EssayCard prompts={selectedApplicantData["prompts"]} />
               </BaseCardContent>
