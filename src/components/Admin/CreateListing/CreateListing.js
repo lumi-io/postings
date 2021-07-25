@@ -1,11 +1,11 @@
 import React from 'react'
-import Sidebar from './Sidebar'
-import CreateListing from './AdminComponents/CreateListing'
+import Sidebar from '../Sidebar'
+import CreateListingView from './components/CreateListingView'
 import styled from 'styled-components';
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-const Admin = () => {
+const CreateListing = () => {
 
     const { isAuthenticated, isLoading, error } = useAuth0();
 
@@ -22,7 +22,7 @@ const Admin = () => {
             isAuthenticated &&
             <Container>
                 <Sidebar />
-                <CreateListing />
+                <CreateListingView />
             </Container>
         )
 
@@ -41,4 +41,4 @@ const Container = styled.div`
   position: absolute;
 `;
 
-export default Admin;
+export default CreateListing;

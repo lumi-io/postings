@@ -1,5 +1,5 @@
 // Converts dictionary of colleges to a list only with True values
-export function parseOutColleges(colleges){
+export function parseOutColleges(colleges) {
   var collegesToSubmit = [];
   for (const [key, checked] of Object.entries(colleges)) {
     if (checked) {
@@ -7,10 +7,10 @@ export function parseOutColleges(colleges){
     }
   }
   return collegesToSubmit;
-};
+}
 
 // Checks if all the required fields exist in applicant's info
-export function requiredFieldsExist(applicantInfo){
+export function requiredFieldsExist(applicantInfo) {
   const requiredFields = [
     "firstName",
     "lastName",
@@ -21,17 +21,17 @@ export function requiredFieldsExist(applicantInfo){
     "phone",
     "resume",
     "image",
-    "essay"
-  ]
+    "essay",
+  ];
 
   for (let i = 0; i < requiredFields.length; i++) {
     if (!(requiredFields[i] in applicantInfo)) {
       return false;
     }
   }
-  
+
   return true;
-};
+}
 
 export const convertBase64 = (file) => {
   return new Promise((resolve, reject) => {
@@ -43,5 +43,31 @@ export const convertBase64 = (file) => {
     fileReader.onerror = (error) => {
       reject(error);
     };
+  });
+};
+
+// Handles the upload of resume and sets the state with base64 conversion of file
+export const handleResumeUpload = async (event, setResumeName, setAppInfo) => {
+  const file = event.target.files[0];
+  setResumeName(file["name"]);
+  const base64 = await convertBase64(file);
+  setAppInfo((prevState) => {
+    const val = base64;
+    var newObj = {};
+    newObj["resume"] = val;
+    return Object.assign({}, prevState, newObj);
+  });
+};
+
+// Handles the upload of an image and sets the state with base64 conversion of file
+export const handleImageUpload = async (event, setImageName, setAppInfo) => {
+  const file = event.target.files[0];
+  setImageName(file["name"]);
+  const base64 = await convertBase64(file);
+  setAppInfo((prevState) => {
+    const val = base64;
+    var newObj = {};
+    newObj["image"] = val;
+    return Object.assign({}, prevState, newObj);
   });
 };
