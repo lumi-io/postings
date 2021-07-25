@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Helmet from "react-helmet";
 
 import ListingCard from "./components/ListingCard";
 import BackgroundOverlay from "../../BackgroundOverlay";
