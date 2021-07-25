@@ -3,8 +3,9 @@ import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import Login from './components/Public/Login/Login';
 
 import Portal from './components/Public/Portal/Portal';
-import PortalSubmission from './components/Public/PortalSubmission/PortalSubmission'
-import ThankYou from './components/Public/ThankYou/ThankYou'
+import PortalSubmission from './components/Public/PortalSubmission/PortalSubmission';
+import ThankYou from './components/Public/ThankYou/ThankYou';
+import Terms from './components/Public/Terms/Terms';
 
 import Listings from './components/Admin/Listings'
 import EditListing from './components/Admin/EditListing'
@@ -12,7 +13,9 @@ import CreateListing from './components/Admin/CreateListing/CreateListing'
 import ApplicantDashboard from './components/Admin/ApplicantDashboard/ApplicantDashboard'
 import ApplicantInfo from './components/Admin/ApplicantInfo'
 
+
 import NotFoundPage from './components/Public/PageNotFound/PageNotFound';
+
 function App() {
   return (
       <Router>
@@ -23,6 +26,7 @@ function App() {
           <Route exact path="/portal" component={Portal} />
           <Route exact path="/portal/:id" component={PortalSubmission}/>
           <Route exact path="/thank-you" component={ThankYou} />
+          <Route exact path="/terms" component={Terms} />
           <Route path="/login" component={Login} />
 
           {/* TODO: /admin -> Admin Dashboard Homepage */}
