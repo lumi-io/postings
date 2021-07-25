@@ -16,28 +16,30 @@ const Sidebar = (props) => {
   const { logout } = useAuth0();
   return (
     <Container>
-      <Title>whyphi</Title>
-      <NameText>Hey, {props.name}!</NameText>
-      <br></br>
-      <Link to="/admin/create-listing" style={{ textDecoration: "none" }}>
-        <MenuButton name="Create New Listing" />
-      </Link>
-      <MenuSubtitle>Menu</MenuSubtitle>
-      <Link to="/admin/listing" style={{ textDecoration: "none" }}>
-        <MenuButton name="Dashboard" />
-      </Link>
-      <Link to="/admin/listing" style={{ textDecoration: "none" }}>
-        <MenuButton name="Listings" />
-      </Link>
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <MenuButton name="Not ready..." />
-      </Link>
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <MenuButton name="Also not ready..." />
-      </Link>
-      <LogoutButton onClick={() => logout({ returnTo: window.location.origin })}>
-        Sign out
-      </LogoutButton>
+      <div style={{position: 'fixed'}}>
+        <Title>whyphi</Title>
+        <NameText>Hey, {props.name}!</NameText>
+        <br></br>
+        <Link to="/admin/create-listing" style={{ textDecoration: "none" }}>
+          <MenuButton name="Create New Listing" />
+        </Link>
+        <MenuSubtitle>Menu</MenuSubtitle>
+        <Link to="/admin/listing" style={{ textDecoration: "none" }}>
+          <MenuButton name="Dashboard" />
+        </Link>
+        <Link to="/admin/listing" style={{ textDecoration: "none" }}>
+          <MenuButton name="Listings" />
+        </Link>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <MenuButton name="Not ready..." />
+        </Link>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          <MenuButton name="Also not ready..." />
+        </Link>
+        <LogoutButton onClick={() => logout({ returnTo: window.location.origin })}>
+          Sign out
+        </LogoutButton>
+      </div>
     </Container>
   );
 };

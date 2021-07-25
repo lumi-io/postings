@@ -7,9 +7,8 @@ import CardContent from "@material-ui/core/CardContent";
 
 export const Container = styled.div`
   width: 100%;
-  height: 100%;
   padding: 81px 4vw 2px 4vw;
-  flex-direction: container;
+  flex-direction: horizontal;
 `;
 
 export const ApplicantDataGrid = styled.div`
