@@ -10,7 +10,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Divider from "@material-ui/core/Divider";
 
+import BackgroundOverlay from "../../../BackgroundOverlay";
+import PopupDisplay from "../../../Popups/PopupDisplay";
+
 import axios from "axios";
+
+import { checkIfEssayQuestionEmpty } from "../helpers/Functions";
 
 import {
   Container,
@@ -40,6 +45,10 @@ const CreateListingView = () => {
   const [listingInfo, setListingInfo] = useState({ isVisible: false });
   const [open, setOpen] = React.useState(false);
   const [essayQuestions, setEssayQuestions] = useState([]);
+
+  // States for Error Popups
+  const [openError, setOpenError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Function that changes the state of the overlay when button is clicked
   const handleClose = () => {
@@ -71,13 +80,20 @@ const CreateListingView = () => {
     if (
       !("title" in listingInfo) ||
       !("aboutUs" in listingInfo) ||
-      !("qualifications" in listingInfo)
+      !("qualifications" in listingInfo) ||
+      !("deadline" in listingInfo)
     ) {
-      console.log("Please fill out all necessary fields.");
+      setErrorMessage("Please fill out all necessary fields.");
+      setOpenError(true);
       return;
     }
     let listingInfoToSubmit = listingInfo;
     if (essayQuestions.length !== 0) {
+      if (checkIfEssayQuestionEmpty(essayQuestions)) {
+        setErrorMessage("Please fill out all necessary fields: Check Essay Questions.");
+        setOpenError(true);
+        return;
+      }
       listingInfoToSubmit["essay"] = essayQuestions;
     }
     axios
@@ -86,7 +102,6 @@ const CreateListingView = () => {
         listingInfoToSubmit
       )
       .then((res) => {
-        console.log(res);
         if (res.data.status) setOpen(true);
       });
     return;
@@ -139,6 +154,14 @@ const CreateListingView = () => {
 
   return (
     <Container>
+      <BackgroundOverlay color="#FEFCFF"/>
+      <PopupDisplay
+        message={errorMessage}
+        open={openError}
+        setOpen={setOpenError}
+        setErrorMessage={setErrorMessage}
+        severity="error"
+      />
       <Title>Create New Listing</Title>
       <br></br>
       <FormControlLabel
@@ -234,7 +257,7 @@ const CreateListingView = () => {
       <br></br>
       <Divider></Divider>
       <br></br>
-      <p>Deadline</p>
+      <p>Deadline*</p>
       <CustomTextField
         id="datetime-local"
         type="datetime-local"
