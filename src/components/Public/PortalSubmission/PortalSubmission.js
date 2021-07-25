@@ -10,10 +10,12 @@ import { DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 import FileUploadButton from "./components/FileUploadButton";
 import ContentContainer from "./components/ContentContainer";
+
 import PopupDisplay from "../../Popups/PopupDisplay";
 import CollegesCheckbox from "./components/CollegesCheckbox";
 import EmailForm from "./components/EmailForm";
 import PhoneForm from "./components/PhoneForm";
+
 
 import { getPostingData } from "./helpers/Data";
 

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
-import ListingCard from "./components/ListingCard";
 import axios from "axios";
+
+import ListingCard from "./components/ListingCard";
+import BackgroundOverlay from "../../BackgroundOverlay";
 
 import { Container, ContentContainer, ListingCardStyled, Title } from "./helpers/Style";
 
@@ -45,6 +47,7 @@ const Portal = () => {
 
   return (
     <Container>
+      <BackgroundOverlay color="#f9f6f9"/>
       <ContentContainer>
         <Title style={{ paddingLeft: "18px" }}>
           Current Openings at Phi Chi Theta
