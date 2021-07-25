@@ -292,7 +292,6 @@ const ListingsDashboard = (props) => {
 
 const Container = styled.div`
   width: 100%;
-  height: 100%;
   padding: 81px 91px 2px 91px;
   flex-direction: container;
 `;

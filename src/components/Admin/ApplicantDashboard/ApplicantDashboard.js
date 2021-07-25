@@ -35,10 +35,9 @@ const Container = styled.div`
   left:0;
   bottom:0;
   right:0;
-  display:flex;
   height:100%;
   width:100%;
-  position: absolute;
+  display: flex;
 `;
 
 export default ApplicantDashboard;

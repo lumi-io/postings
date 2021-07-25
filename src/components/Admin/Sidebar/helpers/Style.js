@@ -47,15 +47,14 @@ export const LogoutText = styled.div`
 export const Container = styled.div`
   min-width: 225px;
   background-color: #e1dee1;
-  height: 100%;
   padding-left: 40px;
   padding-right: 40px;
   padding-top: 80px;
+  padding-bottom: 80px;
 `;
 
 export const LogoutButton = withStyles((theme) => ({
   root: {
-    position: "absolute",
     bottom: "0",
     "marginBottom": "20px",
     color: "#61486A"
