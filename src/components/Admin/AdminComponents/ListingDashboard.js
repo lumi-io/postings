@@ -165,29 +165,7 @@ const ListingsDashboard = (props) => {
       <BackgroundOverlay color="#FEFCFF"/>
       <Title>Job Postings</Title>
       <br></br>
-      <Box style={{ paddingBottom: "10px" }} display="flex">
-        <Box flexGrow={1}>
-          <TextField
-            style={{ width: "500px", height: "30px", paddingBottom: "30px" }}
-            label="Search Job"
-            variant="outlined"
-          />
-        </Box>
-        <Box>
-          <Select
-            labelId="demo-customized-select-label"
-            id="demo-customized-select"
-            value={option}
-            style={{ width: "200px", paddingLeft: "50px" }}
-            onChange={handleChange}
-            input={<BootstrapInput />}
-          >
-            <MenuItem value={"recent"}>Most Recent</MenuItem>
-            <MenuItem value={"application"}>Application Num</MenuItem>
-            <MenuItem value={"type"}>Type</MenuItem>
-          </Select>
-        </Box>
-      </Box>
+    
       <TableContainer>
         <Table stickyHeader aria-label="sticky table">
           <TableHead>

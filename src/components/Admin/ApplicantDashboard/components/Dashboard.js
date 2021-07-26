@@ -17,7 +17,7 @@ import BasicInformationCard from "./BasicInformationCard";
 import CriticalCard from "./CriticalCard";
 
 import {
-  Container,
+  DashboardContainer,
   ApplicantDataGrid,
   ApplicantDataBorder,
   ApplicantScrollableBorder,
@@ -149,7 +149,7 @@ const Dashboard = () => {
   }
 
   return (
-    <Container>
+    <DashboardContainer>
       <Helmet>
         <style>{"body { background-color: #FEFCFF; }"}</style>
       </Helmet>
@@ -245,7 +245,7 @@ const Dashboard = () => {
           )}
         </ApplicantDataBorder>
       </ApplicantDataGrid>
-    </Container>
+    </DashboardContainer>
   );
 };
 

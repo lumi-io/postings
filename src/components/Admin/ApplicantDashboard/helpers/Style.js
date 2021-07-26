@@ -5,10 +5,11 @@ import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 
-export const Container = styled.div`
+export const DashboardContainer = styled.div`
   width: 100%;
   padding: 81px 4vw 2px 4vw;
-  flex-direction: horizontal;
+  flex-direction: row;
+  height: 75vw;
 `;
 
 export const ApplicantDataGrid = styled.div`
