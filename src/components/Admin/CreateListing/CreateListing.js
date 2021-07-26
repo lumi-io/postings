@@ -1,43 +1,31 @@
-import React from 'react'
-import Sidebar from '../Sidebar/Sidebar'
-import CreateListingView from './components/CreateListingView'
-import styled from 'styled-components';
+import React from "react";
+// import Sidebar from "../Sidebar/Sidebar";
+import CreateListingView from "./components/CreateListingView";
 
 import { useAuth0 } from "@auth0/auth0-react";
 
-const CreateListing = () => {
+import MaterialUiSidebar from "../MaterialUiSidebar/MaterialUiSidebar"
+import {AdminViewContainer} from "../Common/Styles"
 
-    const { user, isAuthenticated, isLoading, error } = useAuth0();
+const CreateListing = (props) => {
+  const { user, isAuthenticated, isLoading, error } = useAuth0();
 
     if (isLoading) {
-        return <div>Loading ...</div>;
+      return <div>Loading ...</div>;
     }
 
     if (error) {
-        return <div>Oops... {error.message}</div>;
+      return <div>Oops... {error.message}</div>;
     }
 
-    return (
-        (
-            isAuthenticated &&
-            <Container>
-                <Sidebar name={user.name}/>
-                <CreateListingView />
-            </Container>
-        )
-
+  return (
+    isAuthenticated && (
+      <AdminViewContainer>
+        <MaterialUiSidebar name={user.name}/>
+        <CreateListingView />
+      </AdminViewContainer>
     )
-}
-
-const Container = styled.div`
-  background: #FEFCFF;
-  top:0;
-  left:0;
-  bottom:0;
-  right:0;
-  display:flex;
-  height:100%;
-  width:100%;
-`;
+  );
+};
 
 export default CreateListing;

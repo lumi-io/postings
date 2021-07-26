@@ -11,6 +11,8 @@ export const Container = styled.div`
     height:100%;
     padding: 81px 91px 2px 91px;
     flex-direction:container;
+    flexGrow: 1;
+    padding: theme.spacing(3);
 `;
 
 export const Title = styled.div`

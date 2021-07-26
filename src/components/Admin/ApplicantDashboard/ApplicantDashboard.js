@@ -1,9 +1,10 @@
 import React from 'react'
-import Sidebar from '../Sidebar/Sidebar'
 import Dashboard from './components/Dashboard'
-import styled from 'styled-components';
 
 import { useAuth0 } from "@auth0/auth0-react";
+
+import MaterialUiSidebar from "../MaterialUiSidebar/MaterialUiSidebar"
+import {AdminViewContainer} from "../Common/Styles"
 
 const ApplicantDashboard = () => {
 
@@ -21,23 +22,13 @@ const ApplicantDashboard = () => {
     return (
         (
             isAuthenticated &&
-            <Container>
-                <Sidebar name={user.name}/>
+            <AdminViewContainer>
+                <MaterialUiSidebar name={user.name}/>
                 <Dashboard />
-            </Container>
+            </AdminViewContainer>
         )
     )
 }
 
-const Container = styled.div`
-  background: #FEFCFF;
-  top:0;
-  left:0;
-  bottom:0;
-  right:0;
-  height:100%;
-  width:100%;
-  display: flex;
-`;
 
 export default ApplicantDashboard;

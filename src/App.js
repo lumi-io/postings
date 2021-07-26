@@ -11,7 +11,6 @@ import Listings from './components/Admin/Listings'
 import EditListing from './components/Admin/EditListing'
 import CreateListing from './components/Admin/CreateListing/CreateListing'
 import ApplicantDashboard from './components/Admin/ApplicantDashboard/ApplicantDashboard'
-import ApplicantInfo from './components/Admin/ApplicantInfo'
 
 
 import NotFoundPage from './components/Public/PageNotFound/PageNotFound';
@@ -33,7 +32,6 @@ function App() {
           <Route exact path="/admin/listing" component={Listings} />
           <Route exact path="/admin/listing/:id" component={EditListing} />
           <Route exact path="/admin/listing/:id/applicant" component={ApplicantDashboard} />
-          <Route exact path="/admin/listing/:id/applicant/:applicantId" component={ApplicantInfo} />
           <Route path="/admin/create-listing" component={CreateListing} />
 
           {/* TODO: / -> Error Page */}
