@@ -1,9 +1,10 @@
 import React from 'react'
-import Sidebar from './Sidebar/Sidebar'
 import EditListingField from './AdminComponents/EditListingField'
-import styled from 'styled-components';
 
 import { useAuth0 } from "@auth0/auth0-react";
+
+import MaterialUiSidebar from "./MaterialUiSidebar/MaterialUiSidebar"
+import {AdminViewContainer} from "./Common/Styles"
 
 const Admin = () => {
     const { user, isAuthenticated, isLoading, error } = useAuth0();
@@ -18,24 +19,14 @@ const Admin = () => {
     return (
         (
             isAuthenticated &&
-            <Container>
-                <Sidebar name={user.name}/>
+            <AdminViewContainer>
+                <MaterialUiSidebar name={user.name}/>
                 <EditListingField />
-            </Container>
+            </AdminViewContainer>
         )
 
     )
 }
 
-const Container = styled.div`
-  background: #FEFCFF;
-  top:0;
-  left:0;
-  bottom:0;
-  right:0;
-  display:flex;
-  height:100%;
-  width:100%;
-`;
 
 export default Admin
