@@ -16,6 +16,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import styled from 'styled-components';
 import axios from 'axios';
@@ -36,8 +37,10 @@ const EditListingField = () => {
     let { id } = useParams();
 
     const [listingInfo, setListingInfo] = useState({});
-    const [open, setOpen] = React.useState(false);
     const [essayQuestions, setEssayQuestions] = useState([]);
+    const [visible, setVisible] = React.useState(false);
+    const [loading, setLoading] = React.useState(true);
+
 
 
     useEffect(() => {
@@ -62,6 +65,9 @@ const EditListingField = () => {
                 if (postingInfoToUpdate.essay.length !== 0) {
                     setEssayQuestions(postingInfoToUpdate.essay);
                 }
+                setVisible(postingInfo.isVisible);
+                setListingInfo(postingInfoToUpdate);
+                setLoading(false);
                 return;
             })
             .catch(err => {
@@ -70,11 +76,7 @@ const EditListingField = () => {
     }
 
 
-    // Function that changes the state of the overlay when button is clicked
-    const handleClose = () => {
-        setOpen(false);
-        window.location.href = process.env.REACT_APP_AUTH0_REDIRECT_URI;
-    };
+
 
     // Function that changes state of toggle in listingInfo object
     const handleVisibilityToggle = (event) => {
@@ -82,6 +84,7 @@ const EditListingField = () => {
             ...prevState,
             isVisible: !prevState.isVisible
         }));
+        setVisible(!visible);
         return;
     };
 
@@ -107,7 +110,6 @@ const EditListingField = () => {
             ...listingInfo,
             [id]: e.target.value
         });
-        console.log(listingInfo);
         return;
     }
 
@@ -159,18 +161,20 @@ const EditListingField = () => {
             listingInfo
         )
             .then(() => {
-                setOpen(true);
+                window.location.href = process.env.REACT_APP_AUTH0_REDIRECT_URI;
+                setLoading(false);
             })
     }
 
-
+    if (!loading){
     return (
         <Container>
             <Title>Listing Information</Title>
             <br></br>
             <FormControlLabel
-                control={<PurpleSwitch checked={listingInfo["isVisible"]}
+                control={<PurpleSwitch
                 onChange={handleVisibilityToggle}
+                checked={(visible)}
                 name="checked"
                 inputProps={{ 'aria-label': 'secondary checkbox' }} />}
                 label="Visible"
@@ -274,21 +278,11 @@ const EditListingField = () => {
             </CustomCancel>
             <br></br>
             <br></br>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{listingInfo["title"] + " listing updated!"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Click outside the box to go back to the main screen.
-                    </DialogContentText>
-                </DialogContent>
-            </Dialog>
         </Container>
-    )
+    )}
+    else {
+        return (<CircularProgress color="secondary" />)
+    }
 }
 
 const Container = styled.div`

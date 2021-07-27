@@ -195,9 +195,7 @@ const ListingsDashboard = (props) => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((row) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code} onClick={() =>
-                    (window.location.href =
-                      "/admin/listing/" + row._id + "/applicant")}>
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                     {columns.map((column) => {
                       const value = row[column.id];
                       const isName = column.id === "title";

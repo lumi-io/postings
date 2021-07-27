@@ -34,11 +34,6 @@ const CreateListing = () => {
     const [open, setOpen] = React.useState(false);
     const [essayQuestions, setEssayQuestions] = useState([]);
 
-    // Function that changes the state of the overlay when button is clicked
-    const handleClose = () => {
-        setOpen(false);
-        window.location.href = process.env.REACT_APP_FLASK_SERVER + "/admin/listing";
-    };
 
     // Function that changes state of toggle in listingInfo object
     const handleVisibilityToggle = (event) => {
@@ -81,6 +76,7 @@ const CreateListing = () => {
         .then(res => {
             console.log(res);
             if (res.data.status) setOpen(true);
+            window.location.href = process.env.REACT_APP_FLASK_SERVER + "/admin/listing";
         })
         .catch((e) => {
             window.alert(e);
@@ -243,19 +239,6 @@ const CreateListing = () => {
 
             <br></br>
             <br></br>
-            <Dialog
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">{listingInfo["title"] + " listing created!"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        Click outside the box to go back to the main screen.
-                    </DialogContentText>
-                </DialogContent>
-            </Dialog>
         </Container>
     )
 }
