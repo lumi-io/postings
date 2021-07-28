@@ -42,7 +42,8 @@ const EditListingField = () => {
 
     useEffect(() => {
         getListingInfo();
-    }, [])
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, []);
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
