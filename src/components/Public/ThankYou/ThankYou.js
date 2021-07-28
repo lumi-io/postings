@@ -35,17 +35,6 @@ const Title = styled.div`
 	text-align: center;
 `;
 
-// const Subtitle = styled.div`
-// 	text-align: center;
-//   font-family: Roboto;
-//   font-style: normal;
-//   font-size: 16px;
-//   line-height: 28px;
-//   color: #61486a;
-//   padding-top: 10px;
-//   padding-bottom: 10px;
-// `;
-
 const NoteTitle = styled.div`
 	text-align: center;
   font-family: Roboto;

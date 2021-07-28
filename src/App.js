@@ -1,4 +1,5 @@
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+<<<<<<< HEAD
 import React, { useState, useEffect } from 'react'
 import Login from './components/Public/Login';
 
@@ -6,15 +7,29 @@ import Portal from './components/Public/Portal';
 import PortalSubmission from './components/Public/PortalSubmission'
 import ThankYou from './components/Public/ThankYou/ThankYou'
 import LoadingScreen from './components/Public/Loading';
+=======
+
+import Login from './components/Public/Login/Login';
+
+import Portal from './components/Public/Portal/Portal';
+import PortalSubmission from './components/Public/PortalSubmission/PortalSubmission';
+import ThankYou from './components/Public/ThankYou/ThankYou';
+import Terms from './components/Public/Terms/Terms';
+>>>>>>> main
 
 import Listings from './components/Admin/Listings'
 import EditListing from './components/Admin/EditListing'
-import AdminNewListing from './components/Admin/AdminNewListing'
-import ApplicantDashboard from './components/Admin/ApplicantDashboard'
-import ApplicantInfo from './components/Admin/ApplicantInfo'
+import CreateListing from './components/Admin/CreateListing/CreateListing'
+import ApplicantDashboard from './components/Admin/ApplicantDashboard/ApplicantDashboard'
 
+
+import NotFoundPage from './components/Public/PageNotFound/PageNotFound';
+
+<<<<<<< HEAD
 import NotFoundPage from './components/Public/PageNotFound';
 
+=======
+>>>>>>> main
 function App() {
   const [loading, setLoading] = React.useState(true);
 
@@ -32,14 +47,14 @@ function App() {
           <Route exact path="/portal" component={Portal} />
           <Route exact path="/portal/:id" component={PortalSubmission}/>
           <Route exact path="/thank-you" component={ThankYou} />
+          <Route exact path="/terms" component={Terms} />
           <Route path="/login" component={Login} />
 
           {/* TODO: /admin -> Admin Dashboard Homepage */}
           <Route exact path="/admin/listing" component={Listings} />
           <Route exact path="/admin/listing/:id" component={EditListing} />
           <Route exact path="/admin/listing/:id/applicant" component={ApplicantDashboard} />
-          <Route exact path="/admin/listing/:id/applicant/:applicantId" component={ApplicantInfo} />
-          <Route path="/admin/create-listing" component={AdminNewListing} />
+          <Route path="/admin/create-listing" component={CreateListing} />
 
           {/* TODO: / -> Error Page */}
           <Route component={NotFoundPage} />
