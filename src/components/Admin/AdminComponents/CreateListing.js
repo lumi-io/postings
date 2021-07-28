@@ -4,10 +4,8 @@ import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 import { purple } from '@material-ui/core/colors';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -32,8 +30,17 @@ const CreateListing = () => {
 
     const [listingInfo, setListingInfo] = useState({ isVisible: false });
     const [open, setOpen] = React.useState(false);
+    const [error, setError] = React.useState(false);
+    const [create, setCreate] = React.useState(false);
     const [essayQuestions, setEssayQuestions] = useState([]);
 
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen(false);
+        setError(false);
+      };
 
     // Function that changes state of toggle in listingInfo object
     const handleVisibilityToggle = (event) => {
@@ -61,8 +68,8 @@ const CreateListing = () => {
 
     // Function that executes POST request to the backend
     const createJobListing = () => {
-        if (!('title' in listingInfo) || !('aboutUs' in listingInfo) || !('qualifications' in listingInfo)) {
-            window.alert("Please fill out all necessary fields.");
+        if (!('title' in listingInfo) || !('aboutUs' in listingInfo) || !('qualifications' in listingInfo) || !('deadline' in listingInfo)) {
+            setOpen(true);
             return;
         }
         let listingInfoToSubmit = listingInfo;
@@ -74,12 +81,11 @@ const CreateListing = () => {
             listingInfoToSubmit
         )
         .then(res => {
-            console.log(res);
-            if (res.data.status) setOpen(true);
-            window.location.href = process.env.REACT_APP_FLASK_SERVER + "/admin/listing";
+            if (res.data.status) setCreate(true);
+            window.location.href = process.env.REACT_APP_AUTH0_REDIRECT_URI;
         })
         .catch((e) => {
-            window.alert(e);
+            setError(true)
         });
         return;
     }
@@ -130,6 +136,21 @@ const CreateListing = () => {
 
     return (
         <Container>
+            <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                Please fill out all necessary fields.
+                </Alert>
+            </Snackbar>
+            <Snackbar open={create} autoHideDuration={4000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success">
+                Posting created!
+                </Alert>
+            </Snackbar>
+            <Snackbar open={error} autoHideDuration={4000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                Network/Login Error
+                </Alert>
+            </Snackbar>
             <Title>Create New Listing</Title>
             <br></br>
             <FormControlLabel

@@ -7,16 +7,13 @@ import { purple } from '@material-ui/core/colors';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Divider from '@material-ui/core/Divider';
+import Snackbar from '@material-ui/core/Snackbar';
+import Alert from '@material-ui/lab/Alert';
 
 import Switch from '@material-ui/core/Switch';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import styled from 'styled-components';
 import axios from 'axios';
@@ -39,13 +36,20 @@ const EditListingField = () => {
     const [listingInfo, setListingInfo] = useState({});
     const [essayQuestions, setEssayQuestions] = useState([]);
     const [visible, setVisible] = React.useState(false);
-    const [loading, setLoading] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
 
 
 
     useEffect(() => {
         getListingInfo();
     }, [])
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+          return;
+        }
+        setOpen(false);
+      };
 
     // API function that gets info of a listing
     const getListingInfo = () => {
@@ -67,7 +71,6 @@ const EditListingField = () => {
                 }
                 setVisible(postingInfo.isVisible);
                 setListingInfo(postingInfoToUpdate);
-                setLoading(false);
                 return;
             })
             .catch(err => {
@@ -160,13 +163,12 @@ const EditListingField = () => {
             process.env.REACT_APP_FLASK_SERVER + "admin/postings/" + id,
             listingInfo
         )
-            .then(() => {
-                window.location.href = process.env.REACT_APP_AUTH0_REDIRECT_URI;
-                setLoading(false);
-            })
+        .then(() => {
+            setTimeout(setOpen(true), 5000);
+            window.location.href = process.env.REACT_APP_AUTH0_REDIRECT_URI;
+        })
     }
 
-    if (!loading){
     return (
         <Container>
             <Title>Listing Information</Title>
@@ -278,11 +280,13 @@ const EditListingField = () => {
             </CustomCancel>
             <br></br>
             <br></br>
+            <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="success">
+                    Listing Updated!
+                </Alert>
+            </Snackbar>
         </Container>
-    )}
-    else {
-        return (<CircularProgress color="secondary" />)
-    }
+    )
 }
 
 const Container = styled.div`
