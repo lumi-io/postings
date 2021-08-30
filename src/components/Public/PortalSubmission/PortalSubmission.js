@@ -94,7 +94,8 @@ const PortalSubmission = () => {
     await axios
       .post(
         process.env.REACT_APP_FLASK_SERVER + "user/portal/submit/" + id,
-        appInfoToSubmit
+        {headers: {"Access-Control-Allow-Origin": "*"},
+        appInfoToSubmit}
       )
       .then(() => {
         appInfoToSubmit = {};
