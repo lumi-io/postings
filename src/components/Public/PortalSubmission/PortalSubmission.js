@@ -94,8 +94,7 @@ const PortalSubmission = () => {
     await axios
       .post(
         process.env.REACT_APP_FLASK_SERVER + "user/portal/submit/" + id,
-        {headers: {"Access-Control-Allow-Origin": "https://www.why-phi.com",'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS', "Access-Control-Allow-Credentials": true},
-        appInfoToSubmit}
+        appInfoToSubmit
       )
       .then(() => {
         appInfoToSubmit = {};
