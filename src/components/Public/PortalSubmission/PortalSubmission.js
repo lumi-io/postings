@@ -274,13 +274,13 @@ const PortalSubmission = () => {
               />
             </TextFieldStyled>
           ))}
-          <FieldText>Resume/CV*</FieldText>
+          <FieldText>Resume/CV*(upload file size LESS than 550KB)</FieldText>
           <FileUploadButton
             function={(event) => handleResumeUpload(event, setResumeName, setAppInfo)}
             textField={resumeName}
           />
 
-          <FieldText>Please attach a picture of yourself*</FieldText>
+          <FieldText>Please attach a picture of yourself*(upload file size LESS than 550KB) </FieldText>
           <FileUploadButton
             function={(event) => handleImageUpload(event, setImageName, setAppInfo)}
             textField={imageName}
