@@ -5,6 +5,7 @@ import ListingCard from "./components/ListingCard";
 import BackgroundOverlay from "../../BackgroundOverlay";
 
 import { Container, ContentContainer, ListingCardStyled, Title } from "./helpers/Style";
+import PCTlogo from "./PCTlogo.png"
 
 const Portal = () => {
   const [listings, setListings] = useState([]);
@@ -49,7 +50,17 @@ const Portal = () => {
     <Container>
       <BackgroundOverlay color="#f9f6f9"/>
       <ContentContainer>
-        <Title style={{ paddingLeft: "18px" }}>
+        <img src={PCTlogo} 
+             alt="PCT Logo" 
+             style={{
+               display:"block",
+               marginLeft:"auto",
+               marginRight:"auto",
+               width:"25%",
+               height:"25%"
+               }}
+        /> 
+        <Title style={{ paddingLeft: "18px", textAlign:"center" }}>
           Current Openings at Phi Chi Theta
         </Title>
         <p
@@ -57,19 +68,31 @@ const Portal = () => {
             fontFamily: "Arial",
             paddingBottom: "20px",
             paddingLeft: "20px",
+            textAlign:'center'
           }}
         >
           Total Results ({listings.length})
         </p>
-        {console.log(listings)}
-        {listings.map((listing) => (
-          <ListingCardStyled>
-            <ListingCard title={listing.title} id={listing._id} />
-          </ListingCardStyled>
-        ))}
+        <div
+        style={{
+          display: 'flex',
+          flexDirection: 'horizontal',
+          justifyContent: 'center'
+        }}
+        >
+          {console.log(listings)}
+          {listings.map((listing) => (
+            <ListingCardStyled>
+              <ListingCard title={listing.title} id={listing._id} deadline={listing.deadline} />
+            </ListingCardStyled>
+          ))}
+        </div>
       </ContentContainer>
     </Container>
   );
 };
 
 export default Portal;
+
+
+
