@@ -28,6 +28,13 @@ export function requiredFieldsExist(applicantInfo) {
     if (!(requiredFields[i] in applicantInfo)) {
       return false;
     }
+
+    if (requiredFields[i] === "essay") {
+      for (let j = 0; j < applicantInfo.essay.length; j++) {
+        if(applicantInfo.essay[j].answer === "")
+          return false;
+      }
+    }
   }
 
   return true;
