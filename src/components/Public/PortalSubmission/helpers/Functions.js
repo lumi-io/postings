@@ -24,8 +24,8 @@ export function requiredFieldsExist(applicantInfo) {
     "essay",
   ];
 
-  for (let i = 0; i < requiredFields.length; i++) {
-    if (!(requiredFields[i] in applicantInfo)) {
+  for (const field of requiredFields) {
+    if (!(field in applicantInfo) || !applicantInfo[field]) {
       return false;
     }
   }
