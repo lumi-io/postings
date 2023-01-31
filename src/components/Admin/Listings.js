@@ -16,7 +16,7 @@ const Listings = () => {
   if (error) {
     return <div>Oops... {error.message}</div>;
   }
-
+  
   return (
     isAuthenticated && (
       <AdminViewContainer>

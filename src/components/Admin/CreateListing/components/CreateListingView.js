@@ -96,6 +96,7 @@ const CreateListingView = () => {
       }
       listingInfoToSubmit["essay"] = essayQuestions;
     }
+    
     axios
       .post(
         process.env.REACT_APP_FLASK_SERVER + "admin/postings/create",
@@ -103,7 +104,7 @@ const CreateListingView = () => {
       )
       .then((res) => {
         if (res.data.status) setOpen(true);
-      });
+      }).catch(err => console.log(err));
     return;
   };
 

@@ -15,6 +15,7 @@ import ContactCard from "./ContactCard";
 import EssayCard from "./EssayCard";
 import BasicInformationCard from "./BasicInformationCard";
 import CriticalCard from "./CriticalCard";
+import SelectApplicationCard from "./SelectApplicationCard";
 
 import {
   DashboardContainer,
@@ -34,7 +35,7 @@ import {
 
 import { parseAndConvertCollegesArr } from "../helpers/Functions";
 
-const Dashboard = () => {
+const Dashboard = ({ user_id }) => {
   let { id } = useParams();
 
   const location = useLocation();
@@ -44,6 +45,7 @@ const Dashboard = () => {
   const [applicantDataExists, setApplicantDataExists] = useState(false);
   const [selectedApplicantIndex, setSelectedApplicantIndex] = useState(null);
   const [selectedApplicantData, setSelectedApplicantData] = useState({});
+  const [saveData, setSaveData] = useState(axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/${user_id}/${id}`));
 
   useEffect(() => {
     getApplicantData();
@@ -181,7 +183,7 @@ const Dashboard = () => {
                       scope="row"
                       onClick={() => _setCurrentApplicantProperties(row.index)}
                     >
-                      <span>{row.name}</span>
+                      <SelectApplicationCard ApplicantName={row.name} />
                     </TableCell>
                   </TableRow>
                 ))}

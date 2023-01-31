@@ -18,13 +18,14 @@ const ApplicantDashboard = () => {
         return <div>Oops... {error.message}</div>;
     }
 
+    const user_id = user.sub.split('|')[1]
 
     return (
         (
             isAuthenticated &&
             <AdminViewContainer>
                 <MaterialUiSidebar name={user.name}/>
-                <Dashboard />
+                <Dashboard user_id={user_id}/>
             </AdminViewContainer>
         )
     )
