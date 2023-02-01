@@ -45,8 +45,8 @@ const Dashboard = ({ user_id }) => {
   const [applicantDataExists, setApplicantDataExists] = useState(false);
   const [selectedApplicantIndex, setSelectedApplicantIndex] = useState(null);
   const [selectedApplicantData, setSelectedApplicantData] = useState({});
-  const [saveData, setSaveData] = useState(axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/${user_id}/${id}`));
-
+  const [saveData, setSaveData] = useState({});
+  
   useEffect(() => {
     getApplicantData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,6 +81,9 @@ const Dashboard = ({ user_id }) => {
 
   // Function that retrieves Applicant Data
   function getApplicantData() {
+    axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/${user_id}/${id}`)  //retrieves user save data for favorites and seen
+    .then((res) => setSaveData({ ...res.data?.user_posting_data }));
+    
     axios
       .get(
         process.env.REACT_APP_FLASK_SERVER +
@@ -150,6 +153,22 @@ const Dashboard = ({ user_id }) => {
     setSelectedApplicantIndex(idx);
   }
 
+  //This function will handle starring and unstarring applications
+  function handleStar(application_id, starred) {
+    let newSaveData = {...saveData};
+
+    if(starred)
+      newSaveData[application_id]= "starred";
+    
+    else
+        delete newSaveData[application_id];
+
+    axios
+      .post(process.env.REACT_APP_FLASK_SERVER + `/user/data/${user_id}/${id}`, newSaveData);
+    
+    setSaveData(newSaveData);
+  } 
+
   return (
     <DashboardContainer>
       <Helmet>
@@ -183,7 +202,7 @@ const Dashboard = ({ user_id }) => {
                       scope="row"
                       onClick={() => _setCurrentApplicantProperties(row.index)}
                     >
-                      <SelectApplicationCard ApplicantName={row.name} />
+                      <SelectApplicationCard ApplicantName={row.name} applicantId={applicantData[row.index].applicantId} checked={applicantData[row.index].applicantId in saveData} handleChange={handleStar} />
                     </TableCell>
                   </TableRow>
                 ))}

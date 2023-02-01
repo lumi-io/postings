@@ -5,10 +5,8 @@ import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
 import Box from '@mui/material/Box';
 
-export default function SelectApplicationCard({ApplicantName}) {
-    
-    const [checked, setChecked] = useState(false);
-    
+export default function SelectApplicationCard({ ApplicantName, applicantId, checked, handleChange }) {
+     
     return (
         <Box
             display="flex"
@@ -21,7 +19,7 @@ export default function SelectApplicationCard({ApplicantName}) {
                 icon={<StarBorderIcon sx={{ fontSize: 30 }} />}
                 checkedIcon={<StarIcon sx={{ fontSize: 30 }} />}
                 checked={checked}
-                onClick={(e) => {e.stopPropagation(); setChecked(prevState => !prevState)}}
+                onClick={(e) => {e.stopPropagation(); handleChange(applicantId, !checked)}}
             />                      
         </Box>
     )
