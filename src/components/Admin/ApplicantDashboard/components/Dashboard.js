@@ -81,7 +81,7 @@ const Dashboard = ({ user_id }) => {
 
   // Function that retrieves Applicant Data
   function getApplicantData() {
-    axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/${user_id}/${id}`)  //retrieves user save data for favorites and seen
+    axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/star/${user_id}/${id}`)  //retrieves user save data for favorites and seen
     .then((res) => setSaveData({ ...res.data?.user_posting_data }));
     
     axios
@@ -164,7 +164,7 @@ const Dashboard = ({ user_id }) => {
         delete newSaveData[application_id];
 
     axios
-      .post(process.env.REACT_APP_FLASK_SERVER + `/user/data/${user_id}/${id}`, newSaveData);
+      .post(process.env.REACT_APP_FLASK_SERVER + `/user/data/star/${user_id}/${id}`, newSaveData);
     
     setSaveData(newSaveData);
   } 

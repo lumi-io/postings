@@ -24,6 +24,7 @@ export function requiredFieldsExist(applicantInfo) {
     "essay",
   ];
 
+  //checks if all the required fields and their values exist in the applicant info 
   for (const field of requiredFields)
     if (!applicantInfo?.[field])
       return false;
