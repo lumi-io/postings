@@ -3,24 +3,17 @@ import React, { useState } from "react";
 import Checkbox from "@material-ui/core/Checkbox";
 import StarIcon from '@mui/icons-material/Star';
 import StarBorderIcon from '@mui/icons-material/StarBorder';
-import Box from '@mui/material/Box';
 
 export default function SelectApplicationCard({ ApplicantName, applicantId, checked, handleChange }) {
      
     return (
-        <Box
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-        >
-            <span>{ApplicantName}</span>
             <Checkbox
-                icon={<StarBorderIcon sx={{ fontSize: 30 }} />}
-                checkedIcon={<StarIcon sx={{ fontSize: 30 }} />}
+                // padding="none"
+                // margins="none"
+                icon={<StarBorderIcon sx={{ fontSize: 28 }} />}
+                checkedIcon={<StarIcon sx={{ fontSize: 28 }} />}
                 checked={checked}
                 onClick={(e) => {e.stopPropagation(); handleChange(applicantId, !checked)}}
             />                      
-        </Box>
     )
 }

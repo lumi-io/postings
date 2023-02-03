@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { Helmet } from "react-helmet";
@@ -8,6 +8,8 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableRow from "@material-ui/core/TableRow";
+import TableHead from '@mui/material/TableHead';
+import TableSortLabel from '@mui/material/TableSortLabel';
 
 import axios from "axios";
 
@@ -46,6 +48,8 @@ const Dashboard = ({ user_id }) => {
   const [selectedApplicantIndex, setSelectedApplicantIndex] = useState(null);
   const [selectedApplicantData, setSelectedApplicantData] = useState({});
   const [saveData, setSaveData] = useState({});
+  const [seenData, setSeenData] = useState({});
+  const [selectedSort] = useState("");
   
   useEffect(() => {
     getApplicantData();
@@ -60,6 +64,15 @@ const Dashboard = ({ user_id }) => {
       },
       "&$selected, &$selected:hover": {
         backgroundColor: "#fefcff",
+      },
+    },
+    tableRowSeen: {
+      backgroundColor: "#EFEBF5",
+      "&:hover": {
+        backgroundColor: "#EFEBF5",
+      },
+      "&$selected, &$selected:hover": {
+        backgroundColor: "#EFEBF5",
       },
     },
     tableCellSelected: {
@@ -81,8 +94,9 @@ const Dashboard = ({ user_id }) => {
 
   // Function that retrieves Applicant Data
   function getApplicantData() {
-    axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/star/${user_id}/${id}`)  //retrieves user save data for favorites and seen
-    .then((res) => setSaveData({ ...res.data?.user_posting_data }));
+
+    axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/all/${user_id}/${id}`)  //retrieves user star data for favorites and seen
+    .then((res) => {setSeenData({ ...res.data?.user_posting_data?.seen }); setSaveData({ ...res.data?.user_posting_data?.star })});
     
     axios
       .get(
@@ -169,6 +183,23 @@ const Dashboard = ({ user_id }) => {
     setSaveData(newSaveData);
   } 
 
+  const handleSeen = useCallback((application_id) => {
+    if (!seenData || application_id in seenData)
+      return;
+
+    axios
+      .post(process.env.REACT_APP_FLASK_SERVER + `/user/data/seen/${user_id}/${id}`, { ...seenData, [application_id]: "seen" });
+
+    setSeenData(prevState => ({ ...prevState, [application_id]: "seen" }))
+  }, [id, seenData, user_id]);
+
+  useEffect(() => {
+
+    if (applicantDataExists && selectedApplicantIndex != null)
+      handleSeen(applicantData[selectedApplicantIndex].applicantId);
+
+  }, [applicantDataExists, applicantData, selectedApplicantIndex, handleSeen]);
+
   return (
     <DashboardContainer>
       <Helmet>
@@ -184,6 +215,27 @@ const Dashboard = ({ user_id }) => {
               className={classes.table}
               aria-label="Table for List of Applicants"
             >
+
+              <TableHead>
+                <TableRow>
+                  <TableCell padding="small" >Name</TableCell>
+                  <TableCell padding="small" align="center" >
+                    <TableSortLabel
+                      active={selectedSort === "seen"}
+                    >
+                      Seen
+                    </TableSortLabel>
+                  </TableCell>
+                  <TableCell padding="small" align="center" >
+                    <TableSortLabel
+                      active={selectedSort === "star"}
+                    >
+                      Starred
+                    </TableSortLabel>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+
               <TableBody>
                 {applicantDataRows.map((row) => (
                   <TableRow
@@ -194,15 +246,22 @@ const Dashboard = ({ user_id }) => {
                       hover: classes.hover,
                       selected: classes.selected,
                     }}
-                    className={classes.tableRowSelected}
+                    className={(applicantData[row.index].applicantId in seenData) ? classes.tableRowSeen : classes.tableRowSelected}
                   >
                     <TableCell
                       className={classes.tableCellSelected}
                       component="th"
                       scope="row"
-                      onClick={() => _setCurrentApplicantProperties(row.index)}
+                      onClick={() => {handleSeen(applicantData[row.index].applicantId); _setCurrentApplicantProperties(row.index)}}
                     >
-                      <SelectApplicationCard ApplicantName={row.name} applicantId={applicantData[row.index].applicantId} checked={applicantData[row.index].applicantId in saveData} handleChange={handleStar} />
+                      <span>{row.name}</span>
+                    </TableCell>
+                    <TableCell></TableCell>
+                    <TableCell 
+                      padding="checkbox"  
+                      align="center"
+                    >
+                      <SelectApplicationCard applicantId={applicantData[row.index].applicantId} checked={applicantData[row.index].applicantId in saveData} handleChange={handleStar} />
                     </TableCell>
                   </TableRow>
                 ))}
