@@ -49,8 +49,9 @@ const Dashboard = ({ user_id }) => {
   const [selectedApplicantData, setSelectedApplicantData] = useState({});
   const [saveData, setSaveData] = useState({});
   const [seenData, setSeenData] = useState({});
+  const [fetchedSeen, setFetchedSeen] = useState(false);
   const [selectedSort] = useState("");
-  
+  console.log(seenData)
   useEffect(() => {
     getApplicantData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -96,7 +97,7 @@ const Dashboard = ({ user_id }) => {
   function getApplicantData() {
 
     axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/all/${user_id}/${id}`)  //retrieves user star data for favorites and seen
-    .then((res) => {setSeenData({ ...res.data?.user_posting_data?.seen }); setSaveData({ ...res.data?.user_posting_data?.star })});
+    .then((res) => {setFetchedSeen(true); setSeenData({ ...res.data?.user_posting_data?.seen }); setSaveData({ ...res.data?.user_posting_data?.star })});
     
     axios
       .get(
@@ -137,6 +138,7 @@ const Dashboard = ({ user_id }) => {
           console.log(modifiedData[0]);
           setSelectedApplicantData(modifiedData[0]);
           setSelectedApplicantIndex(0);
+          handleSeen(modifiedData[0].applicantId);
         } else {
           setApplicantDataExists(false);
         }
@@ -183,22 +185,15 @@ const Dashboard = ({ user_id }) => {
     setSaveData(newSaveData);
   } 
 
-  const handleSeen = useCallback((application_id) => {
-    if (!seenData || application_id in seenData)
+  function handleSeen(application_id) {
+    if (!fetchedSeen || application_id in seenData)
       return;
 
     axios
       .post(process.env.REACT_APP_FLASK_SERVER + `/user/data/seen/${user_id}/${id}`, { ...seenData, [application_id]: "seen" });
 
     setSeenData(prevState => ({ ...prevState, [application_id]: "seen" }))
-  }, [id, seenData, user_id]);
-
-  useEffect(() => {
-
-    if (applicantDataExists && selectedApplicantIndex != null)
-      handleSeen(applicantData[selectedApplicantIndex].applicantId);
-
-  }, [applicantDataExists, applicantData, selectedApplicantIndex, handleSeen]);
+  };
 
   return (
     <DashboardContainer>
@@ -252,11 +247,11 @@ const Dashboard = ({ user_id }) => {
                       className={classes.tableCellSelected}
                       component="th"
                       scope="row"
+                      colSpan={2}
                       onClick={() => {handleSeen(applicantData[row.index].applicantId); _setCurrentApplicantProperties(row.index)}}
                     >
                       <span>{row.name}</span>
                     </TableCell>
-                    <TableCell></TableCell>
                     <TableCell 
                       padding="checkbox"  
                       align="center"
