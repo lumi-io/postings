@@ -97,7 +97,7 @@ const Dashboard = ({ user_id }) => {
   function getApplicantData() {
 
     axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/all/${user_id}/${id}`)  //retrieves user star data for favorites and seen
-    .then((res) => {setFetchedSeen(true); setSeenData({ ...res.data?.user_posting_data?.seen }); setSaveData({ ...res.data?.user_posting_data?.star })});
+    .then((res) => {setFetchedSeen(true); setSeenData(prevState => ({ ...prevState, ...res.data?.user_posting_data?.seen })); setSaveData(prevState => ({ ...prevState, ...res.data?.user_posting_data?.star }))});
     
     axios
       .get(
