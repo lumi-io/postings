@@ -23,12 +23,11 @@ export function requiredFieldsExist(applicantInfo) {
     "image",
     "essay",
   ];
-
-  for (let i = 0; i < requiredFields.length; i++) {
-    if (!(requiredFields[i] in applicantInfo)) {
+  
+  //checks if all the required fields and their values exist in the applicant info 
+  for (const field of requiredFields)
+    if (!applicantInfo?.[field])
       return false;
-    }
-  }
 
   return true;
 }
