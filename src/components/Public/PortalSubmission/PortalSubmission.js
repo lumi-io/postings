@@ -76,6 +76,29 @@ const PortalSubmission = () => {
     // Turns on circular loading
     setSubmission(true);
 
+    // Check if the deadline has passed
+    var d = new Date();
+    var month = "-0" + (d.getMonth() + 1);
+    var date = "-0" + d.getDate();
+    if (d.getMonth() > 8) {
+      month = "-" + (d.getMonth() + 1);
+    }
+    if (d.getDate() > 9) {
+      date = "-" + d.getDate();
+    }
+    var formattedDate = d.getFullYear() + month + date;
+    const dateTime = (date) => {
+      return date.substring(0, 10);
+    };
+    if (dateTime(listingsInfo["deadline"]) < formattedDate){
+      setSubmission(false);
+      setErrorMessage(
+        "Deadline has passed. Applications are not accpeted anymore."
+      );
+      setOpenError(true);
+      return
+    }
+
     // Parse out colleges for submission and add to object
     const collegesToSubmit = parseOutColleges(colleges);
     let appInfoToSubmit = appInfo;
