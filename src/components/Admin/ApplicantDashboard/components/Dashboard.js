@@ -44,14 +44,17 @@ const Dashboard = ({ user_id }) => {
   const { jobTitle } = location.state;
 
   const [applicantData, setApplicantData] = useState([]);
+  const [displayRowData, setDispalyRowData] = useState([]); //This will be used for sorting and displaying appicant data
   const [applicantDataExists, setApplicantDataExists] = useState(false);
   const [selectedApplicantIndex, setSelectedApplicantIndex] = useState(null);
   const [selectedApplicantData, setSelectedApplicantData] = useState({});
   const [saveData, setSaveData] = useState({});
   const [seenData, setSeenData] = useState({});
   const [fetchedSeen, setFetchedSeen] = useState(false);
-  const [selectedSort] = useState("");
-  console.log(seenData)
+  const [selectedLabel, setSelectedLabel] = useState("");
+  const [starLabel, setStarLabel] = useState("");
+  const [seenLabel, setSeenLabel] = useState("");
+  
   useEffect(() => {
     getApplicantData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -133,6 +136,12 @@ const Dashboard = ({ user_id }) => {
           gpa: app["gpa"]
         }));
         setApplicantData(modifiedData);
+        setDispalyRowData(modifiedData.map((applicant, index) =>
+          _createData(
+            applicant["firstName"] + " " + applicant["lastName"],
+            "testUrl",
+            index
+          )));
         if (modifiedData.length !== 0) {
           setApplicantDataExists(true);
           console.log(modifiedData[0]);
@@ -185,14 +194,42 @@ const Dashboard = ({ user_id }) => {
     setSaveData(newSaveData);
   } 
 
+  //This function will sort the rows by whether they are starred or not
+  function handleLabelSort(label, labelState, setLabelState, labelData) {
+
+    if (selectedLabel === label && labelState === "asc") {
+      setSelectedLabel("");
+      setLabelState("desc");
+      setDispalyRowData(applicantDataRows);
+      return;
+    }
+
+    const trueArr = [];
+    const falseArr = [];
+    applicantDataRows.map((row) => applicantData[row.index].applicantId in labelData ? trueArr.push(row) : falseArr.push(row));
+    const combinedArr = trueArr.concat(falseArr);
+
+    if (selectedLabel !== label) {
+      setLabelState("desc");
+      setSelectedLabel(label);
+      setDispalyRowData(combinedArr);
+    }
+
+    else if (labelState === "desc") {
+      setLabelState("asc");
+      setDispalyRowData(combinedArr.reverse());
+    }
+
+  }
+
   function handleSeen(application_id) {
+    setSeenData(prevState => ({ ...prevState, [application_id]: "seen" }))
+
     if (!fetchedSeen || application_id in seenData)
       return;
 
     axios
       .post(process.env.REACT_APP_FLASK_SERVER + `/user/data/seen/${user_id}/${id}`, { ...seenData, [application_id]: "seen" });
-
-    setSeenData(prevState => ({ ...prevState, [application_id]: "seen" }))
   };
 
   return (
@@ -216,14 +253,18 @@ const Dashboard = ({ user_id }) => {
                   <TableCell padding="small" >Name</TableCell>
                   <TableCell padding="small" align="center" >
                     <TableSortLabel
-                      active={selectedSort === "seen"}
+                      active={selectedLabel === "seen"}
+                      direction={seenLabel}
+                      onClick={() => handleLabelSort("seen", seenLabel, setSeenLabel, seenData)}
                     >
                       Seen
                     </TableSortLabel>
                   </TableCell>
                   <TableCell padding="small" align="center" >
                     <TableSortLabel
-                      active={selectedSort === "star"}
+                      active={selectedLabel === "star"}
+                      direction={starLabel}
+                      onClick={() => handleLabelSort("star", starLabel, setStarLabel, saveData)}
                     >
                       Starred
                     </TableSortLabel>
@@ -232,7 +273,7 @@ const Dashboard = ({ user_id }) => {
               </TableHead>
 
               <TableBody>
-                {applicantDataRows.map((row) => (
+                {displayRowData.map((row) => (
                   <TableRow
                     hover
                     key={row.name}
