@@ -54,7 +54,7 @@ const Dashboard = ({ user_id }) => {
   const [selectedLabel, setSelectedLabel] = useState("");
   const [starLabel, setStarLabel] = useState("");
   const [seenLabel, setSeenLabel] = useState("");
-  
+
   useEffect(() => {
     getApplicantData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -97,11 +97,17 @@ const Dashboard = ({ user_id }) => {
   const classes = useStyles();
 
   // Function that retrieves Applicant Data
-  function getApplicantData() {
+  async function getApplicantData() {
 
-    axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/all/${user_id}/${id}`)  //retrieves user star data for favorites and seen
-    .then((res) => {setFetchedSeen(true); setSeenData(prevState => ({ ...prevState, ...res.data?.user_posting_data?.seen })); setSaveData(prevState => ({ ...prevState, ...res.data?.user_posting_data?.star }))});
-    
+    const res = await axios.get(process.env.REACT_APP_FLASK_SERVER + `user/data/all/${user_id}/${id}`)  //retrieves user star data for favorites and seen
+    const localSeenData = { ...seenData, ...res.data?.user_posting_data?.seen };
+    setSaveData(prevState => ({ ...prevState, ...res.data?.user_posting_data?.star }));
+    // .then((res) => {
+    //   setFetchedSeen(true); 
+    //   localSeenData = { ...seenData, ...res.data?.user_posting_data?.seen }
+    //   // setSeenData(prevState => ({ ...prevState, ...res.data?.user_posting_data?.seen })); 
+    //   setSaveData(prevState => ({ ...prevState, ...res.data?.user_posting_data?.star }))});
+
     axios
       .get(
         process.env.REACT_APP_FLASK_SERVER +
@@ -147,7 +153,7 @@ const Dashboard = ({ user_id }) => {
           console.log(modifiedData[0]);
           setSelectedApplicantData(modifiedData[0]);
           setSelectedApplicantIndex(0);
-          handleSeen(modifiedData[0].applicantId);
+          handleFirstSeen(modifiedData[0].applicantId, localSeenData);
         } else {
           setApplicantDataExists(false);
         }
@@ -204,10 +210,7 @@ const Dashboard = ({ user_id }) => {
       return;
     }
 
-    const trueArr = [];
-    const falseArr = [];
-    applicantDataRows.map((row) => applicantData[row.index].applicantId in labelData ? trueArr.push(row) : falseArr.push(row));
-    const combinedArr = trueArr.concat(falseArr);
+    const combinedArr = applicantSort(labelData);
 
     if (selectedLabel !== label) {
       setLabelState("desc");
@@ -222,14 +225,40 @@ const Dashboard = ({ user_id }) => {
 
   }
 
-  function handleSeen(application_id) {
-    setSeenData(prevState => ({ ...prevState, [application_id]: "seen" }))
+  //This is the helper sort function for label sorting
+  function applicantSort(labelData) {
+    if (selectedLabel === "name") {
+      const finArr = [...applicantData];
+      finArr.sort((a, b) => a.localeCompare(b));
+      return finArr;
+    }
 
-    if (!fetchedSeen || application_id in seenData)
+    const trueArr = [];
+    const falseArr = [];
+    applicantDataRows.map((row) => applicantData[row.index].applicantId in labelData ? trueArr.push(row) : falseArr.push(row));
+    return trueArr.concat(falseArr);
+  }
+
+  //This function will update the seen variable and post to database every click
+  function handleSeen(application_id) {
+  
+    setSeenData(prevState => ({ ...prevState, [application_id]: "seen" }));
+    
+    if (application_id in seenData)
       return;
 
     axios
       .post(process.env.REACT_APP_FLASK_SERVER + `/user/data/seen/${user_id}/${id}`, { ...seenData, [application_id]: "seen" });
+  };
+
+  //This function will handle the first initialization of the seen state variable
+  function handleFirstSeen(applicant_id, localSeenData) {
+    console.log({...localSeenData});
+    localSeenData[applicant_id] = "seen";
+    setSeenData(localSeenData);
+    
+    axios
+      .post(process.env.REACT_APP_FLASK_SERVER + `/user/data/seen/${user_id}/${id}`, localSeenData);
   };
 
   return (
