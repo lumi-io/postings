@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import EqualizerIcon from '@material-ui/icons/Equalizer';
 
 import BackgroundOverlay from "../../BackgroundOverlay";
 import AlertDialog from "./AlertDialog";
@@ -44,11 +45,12 @@ const ListingsDashboard = (props) => {
   const columns = [
     { id: "title", label: "Job Name", minWidth: 100 },
     { id: "_id", label: "Job No.", minWidth: 80 },
-    { id: "type", label: "Type", minWidth: 30 },
+    // { id: "type", label: "Type", minWidth: 30 },
     { id: "deadline", label: "Deadline", minWidth: 60 },
-    { id: "applicants_num", label: "Applications", minWidth: 20 },
+    // { id: "applicants_num", label: "Applications", minWidth: 20 },
     { id: "status", label: "Public", minWidth: 20 },
     { id: "edit", label: "Edit Options", minWidth: 20 },
+    { id: "stats", label: "Stats", minWidth: 20 },
   ];
 
   //get postings data
@@ -147,6 +149,7 @@ const ListingsDashboard = (props) => {
                       const isName = column.id === "title";
                       const isStatus = column.id === "status";
                       const isEdit = column.id === "edit";
+                      const isStats = column.id === "stats";
                       return (
                         <TableCell
                           style={{
@@ -157,6 +160,17 @@ const ListingsDashboard = (props) => {
                           align={column.align}
                         >
                           {
+                            isStats ? (
+                              <div>
+                                <EqualizerIcon
+                                  style={{cursor: "pointer"}}
+                                    onClick={() =>
+                                      (window.location.href =
+                                        "/admin/listing/" + row._id + "/statistics")
+                                    }>
+                                </EqualizerIcon>
+                              </div>
+                            ) :
                             isStatus ? (
                               <GreenCheckbox
                                 checked={Boolean(row["isVisible"])}
